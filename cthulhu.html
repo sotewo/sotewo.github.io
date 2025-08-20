@@ -176,7 +176,7 @@
 
   <p style="text-align: center; max-width: 700px; margin: 0 auto 20px; font-style: normal; color: #bdb8a4; font-size: 0.7em;">
     This generator includes:<br>
-    Investigators from S1–2, Episodes from S1–2, Pathologies from S1,<br>
+    Investigators from S1–2 and Eddie the Head, Episodes from S1–2, Pathologies from S1,<br>
     Bosses (Cthulhu, Hastur, Black Goat of the Woods, and Yog-Sothoth), Relics from S3–4.
   </p>
 
@@ -207,8 +207,8 @@
   </div>
 
   <script>
-    const words1to20 = [
-      "Lord Adam Benchley", "Ahmed Yasin", "Borden", "Elizabeth Ives", "Fatima Safar",
+    const words1to21 = [
+      "Lord Adam Benchley", "Ahmed Yasin", "Borden", "Elizabeth Ives", "Eddie the Head", "Fatima Safar",
       "Sergeant Ian Welles", "John Morgan", "Rasputin", "Sister Beth", "The Kid",
       "Adilah Vidal", "Alex Parker", "Ariele Venturi", "Hailia Hovath", "Father Luke",
       "Margarethe Richter", "Sergeant Mario Braghieri", "Mary Diaz", "Sam Wood", "Mate Tony Boyle"
@@ -282,10 +282,10 @@
         const box = document.createElement("div");
         box.className = "player-box";
 
-        const remaining = Array.from({ length: 20 }, (_, j) => j + 1).filter(n => !used.includes(n));
+        const remaining = Array.from({ length: 21 }, (_, j) => j + 1).filter(n => !used.includes(n));
         const selected = remaining[Math.floor(Math.random() * remaining.length)];
         used.push(selected);
-        const name = getWord(selected, words1to20);
+        const name = getWord(selected, words1to21);
         const fileName = sanitizeFileName(name) + ".png";
 
         const playerDiv = document.createElement("div");
@@ -389,3 +389,4 @@
   </script>
 </body>
 </html>
+

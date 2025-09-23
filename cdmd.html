@@ -14,6 +14,7 @@
       background-size: 40px 40px;
       background-position: 0 0, 20px 20px;
     }
+
     a.back-button {
       position: fixed;
       top: 20px;
@@ -28,10 +29,12 @@
       transition: background-color 0.3s, transform 0.2s;
       z-index: 1000;
     }
+
     a.back-button:hover {
       background-color: #2a2a2a;
       transform: scale(1.1);
     }
+
     h1 {
       font-size: 2.5em;
       text-align: center;
@@ -39,7 +42,9 @@
       color: #b0a06f;
       text-shadow: 1px 1px 2px #000;
     }
+
     .section { text-align: center; margin-bottom: 20px; }
+
     select#numPlayers {
       padding: 5px;
       font-size: 1em;
@@ -47,7 +52,9 @@
       border-radius: 5px;
       background-color: #222;
       color: #eee;
+      appearance: none;
     }
+
     button {
       padding: 10px 20px;
       font-size: 1em;
@@ -59,13 +66,16 @@
       box-shadow: 0 0 8px rgba(0,0,0,0.5);
       transition: background-color 0.3s;
     }
+
     button:hover { background-color: #5c3d3d; }
+
     #gameGrid {
       display: none;
       margin-top: 30px;
       flex-direction: column;
       gap: 30px;
     }
+
     .player-box {
       border: 2px solid #444;
       padding: 15px;
@@ -76,34 +86,40 @@
       background-color: #1c1c1c;
       box-shadow: 0 0 10px #00000099;
     }
+
     #playerResults {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
     }
+
     .player-output, .relic-output, .disorder-output {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 1.1em;
     }
+
     #gameGrid img {
       width: 100px;
       height: 100px;
       object-fit: contain;
       border-radius: 6px;
     }
+
     em.bold-italic {
       font-style: italic;
       font-weight: bold;
       color: #e2d7a7;
     }
+
     .game-info-row {
       display: flex;
       justify-content: flex-start;
       gap: 40px;
       flex-wrap: wrap;
     }
+
     .info-container {
       border: 2px solid #444;
       padding: 15px;
@@ -115,207 +131,169 @@
       justify-content: center;
       flex-wrap: wrap;
     }
+
+    @media (max-width: 600px) {
+      #gameGrid img { width: 80px; height: 80px; }
+      #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+      button { padding: 16px 32px; font-size: 1.3em; }
+      select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
+    }
   </style>
 </head>
 <body>
 
-  <a href="index.html" class="back-button" title="Back to Game Selection">&#8592;</a>
-  <h1>Cthulhu: Death May Die (RNG)</h1>
+<a href="index.html" class="back-button" title="Back to Game Selection">&#8592;</a>
 
-  <div class="section">
-    <label>Number of players (1–5):
-      <select id="numPlayers">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3" selected>3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </label>
-  </div>
+<h1>Cthulhu: Death May Die (RNG)</h1>
 
-  <div class="section">
-    <button onclick="generate()">Generate</button>
-  </div>
+<div class="section">
+  <label>Number of players (1–5):
+    <select id="numPlayers">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" selected>3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </label>
+</div>
 
-  <div id="gameGrid">
-    <div id="playerResults"></div>
-    <div class="game-info-row">
-      <div class="info-container">
-        <div id="episodeSection"></div>
-        <div id="bossSection"></div>
-      </div>
+<div class="section">
+  <button onclick="generate()">Generate</button>
+</div>
+
+<div id="gameGrid">
+  <div id="playerResults"></div>
+  <div class="game-info-row">
+    <div class="info-container">
+      <div id="episodeSection"></div>
+      <div id="bossSection"></div>
     </div>
   </div>
+</div>
 
-  <script>
-    const words1to21 = [
-      "Lord Adam Benchley", "Ahmed Yasin", "Borden", "Elizabeth Ives", "Eddie the Head", "Fatima Safar",
-      "Sergeant Ian Welles", "John Morgan", "Rasputin", "Sister Beth", "The Kid",
-      "Adilah Vidal", "Alex Parker", "Ariele Venturi", "Hailia Hovath", "Father Luke",
-      "Margarethe Richter", "Sergeant Mario Braghieri", "Mary Diaz", "Sam Wood", "Mate Tony Boyle"
-    ];
-    const words1to4 = ["Cthulhu", "Hastur", "Black Goat of the Woods", "Yog-Sothoth"];
-    const episodes1to12 = [
-      "S01E01 - Blasphemous Alchemy", "S01E02 - Tomes of Madness", "S01E03 - Danse Macabre", "S01E04 - Eldritch Idols", "S01E05 - Accursed Tide", "S01E06 - Unspeakable Hour",
-      "S02E01 - Strange Bedfellows", "S02E02 - Nameless Woods", "S02E03 - Sanctificetur Nomen", "S02E04 - Shootout at the H.P. Corral", "S02E05 - Monsters in Sin City", "S02E06 - Endgame"
-    ];
-    const relics1to22 = [
-      "Skull", "Pumpkin", "Ivory Figure", "Skull Bracelet", "Viol", "Wooden Pipe", "Ritual Dagger", "Glowing Ring", "Old Rosary", "Handheld Magnifier", "Sinister Book", "Jade Amulet",
-      "Replica Blade", "Runecarved Spear", "Shiny Jewel", "Ancient Idol", "Lucky Coin", "Mysterious Key", "Ritual Mask", "Crystal Ball", "Brass Compass", "Ruby Talisman"
-    ];
-    const pathologies1to12 = [
-      "Catatonia", "Codependency", "Fear of Crowds", "Hypochondria", "Kleptomania", "Masochism",
-      "Obsessive Disorder", "Paranoia", "Psychotic Outbreaks", "Pyromania", "Recurring Trauma", "Short-Term Memory Loss"
-    ];
+<script>
+const words1to21 = [
+  "Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Eddie the Head",
+  "Fatima Safar","Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid",
+  "Adilah Vidal","Alex Parker","Ariele Venturi","Hailia Hovath","Father Luke",
+  "Margarethe Richter","Sergeant Mario Braghieri","Mary Diaz","Sam Wood","Mate Tony Boyle"
+];
 
-    function sanitizeFileName(name) {
-      return name.toLowerCase()
-        .replace(/[’'"]/g, '')
-        .replace(/\s+/g, '_')
-        .replace(/[^a-z0-9_-]/g, '');
-    }
-    function getWord(num, wordList) {
-      return wordList[num - 1] || num;
-    }
-    async function sendToGoogleSheets(payload) {
-      const endpoint = 'YOUR_WEB_APP_URL'; // Replace with your Apps Script Web App URL
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        console.log('Data sent:', await response.text());
-      } catch (error) {
-        console.error('Error sending data to Google Sheets:', error);
-      }
-    }
+const words1to4 = ["Cthulhu","Hastur","Black Goat of the Woods","Yog-Sothoth"];
 
-    function generate() {
-      const numPlayers = parseInt(document.getElementById("numPlayers").value);
-      if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) {
-        alert("Please select a number between 1 and 5.");
-        return;
-      }
+const episodes1to12 = [
+  "S01E01 - Blasphemous Alchemy","S01E02 - Tomes of Madness","S01E03 - Danse Macabre","S01E04 - Eldritch Idols",
+  "S01E05 - Accursed Tide","S01E06 - Unspeakable Hour","S02E01 - Strange Bedfellows","S02E02 - Nameless Woods",
+  "S02E03 - Sanctificetur Nomen","S02E04 - Shootout at the H.P. Corral","S02E05 - Monsters in Sin City","S02E06 - Endgame"
+];
 
-      document.getElementById("gameGrid").style.display = "flex";
-      const playerResults = document.getElementById("playerResults");
-      const episodeSection = document.getElementById("episodeSection");
-      const bossSection = document.getElementById("bossSection");
+const relics1to22 = [
+  "Skull","Pumpkin","Ivory Figure","Skull Bracelet","Viol","Wooden Pipe","Ritual Dagger","Glowing Ring","Old Rosary",
+  "Handheld Magnifier","Sinister Book","Jade Amulet","Replica Blade","Runecarved Spear","Shiny Jewel","Ancient Idol",
+  "Lucky Coin","Mysterious Key","Ritual Mask","Crystal Ball","Brass Compass","Ruby Talisman"
+];
 
-      playerResults.innerHTML = "";
-      episodeSection.innerHTML = "";
-      bossSection.innerHTML = "";
+const pathologies1to12 = [
+  "Catatonia","Codependency","Fear of Crowds","Hypochondria","Kleptomania","Masochism",
+  "Obsessive Disorder","Paranoia","Psychotic Outbreaks","Pyromania","Recurring Trauma","Short-Term Memory Loss"
+];
 
-      const used = [], usedRelics = [], usedPathologies = [];
+function sanitizeFileName(name) {
+  return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
+}
 
-      for (let i = 0; i < numPlayers; i++) {
-        const box = document.createElement("div");
-        box.className = "player-box";
+function getWord(num, list) { return list[num-1] || num; }
 
-        const remaining = Array.from({ length: 21 }, (_, j) => j + 1).filter(n => !used.includes(n));
-        const selected = remaining[Math.floor(Math.random() * remaining.length)];
-        used.push(selected);
-        const name = getWord(selected, words1to21);
-        const fileName = sanitizeFileName(name) + ".png";
+function sendToGoogleSheets(payload) {
+  const endpoint = 'https://script.google.com/macros/s/AKfycbzNsAk4_31BQsOz0c2tUn3iOb50hQTW6sppdpIO27taRt8fLjv1nl8REhT545CguP1e/exec'; // 🔗 Replace with your Web App URL
+  fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(data => console.log('Logged:', data))
+  .catch(err => console.error('Error sending to Google Sheets:', err));
+}
 
-        const playerDiv = document.createElement("div");
-        playerDiv.className = "player-output";
-        const img = document.createElement("img");
-        img.src = "assets/" + fileName;
-        img.alt = name;
-        img.onerror = () => { img.style.display = "none"; };
-        const textSpan = document.createElement("span");
-        textSpan.innerHTML = `Investigator:<br><em class="bold-italic">${name}</em>`;
-        playerDiv.appendChild(img);
-        playerDiv.appendChild(textSpan);
-        box.appendChild(playerDiv);
+function generate() {
+  const numPlayers = parseInt(document.getElementById("numPlayers").value);
+  if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { alert("Please select 1–5 players."); return; }
+  
+  document.getElementById("gameGrid").style.display = "flex";
 
-        // Relic
-        const relicRemaining = Array.from({ length: 22 }, (_, j) => j + 1).filter(n => !usedRelics.includes(n));
-        const relicNum = relicRemaining[Math.floor(Math.random() * relicRemaining.length)];
-        usedRelics.push(relicNum);
-        const relicName = getWord(relicNum, relics1to22);
-        const relicFile = sanitizeFileName(relicName) + ".png";
-        const relicDiv = document.createElement("div");
-        relicDiv.className = "relic-output";
-        const relicImg = document.createElement("img");
-        relicImg.src = "assets/" + relicFile;
-        relicImg.alt = relicName;
-        relicImg.onerror = () => { relicImg.style.display = "none"; };
-        const relicLabel = document.createElement("span");
-        relicLabel.innerHTML = `Relic:<br><em class="bold-italic">${relicName}</em>`;
-        relicDiv.appendChild(relicImg);
-        relicDiv.appendChild(relicLabel);
-        box.appendChild(relicDiv);
+  const playerResults = document.getElementById("playerResults");
+  const episodeSection = document.getElementById("episodeSection");
+  const bossSection = document.getElementById("bossSection");
+  playerResults.innerHTML = ""; episodeSection.innerHTML = ""; bossSection.innerHTML = "";
 
-        // Pathology
-        const pathologyRemaining = Array.from({ length: 12 }, (_, j) => j + 1).filter(n => !usedPathologies.includes(n));
-        const pathologyNum = pathologyRemaining[Math.floor(Math.random() * pathologyRemaining.length)];
-        usedPathologies.push(pathologyNum);
-        const pathologyName = getWord(pathologyNum, pathologies1to12);
-        const pathologyFile = sanitizeFileName(pathologyName) + ".png";
-        const pathologyDiv = document.createElement("div");
-        pathologyDiv.className = "disorder-output";
-        const pathologyImg = document.createElement("img");
-        pathologyImg.src = "assets/" + pathologyFile;
-        pathologyImg.alt = pathologyName;
-        pathologyImg.onerror = () => { pathologyImg.style.display = "none"; };
-        const pathologyLabel = document.createElement("span");
-        pathologyLabel.innerHTML = `Pathology:<br><em class="bold-italic">${pathologyName}</em>`;
-        pathologyDiv.appendChild(pathologyImg);
-        pathologyDiv.appendChild(pathologyLabel);
-        box.appendChild(pathologyDiv);
+  const used = [], usedRelics = [], usedPathologies = [];
 
-        playerResults.appendChild(box);
-      }
+  for (let i=0; i<numPlayers; i++) {
+    const box = document.createElement("div"); box.className="player-box";
 
-      // Episode
-      const epNum = Math.floor(Math.random() * 12) + 1;
-      const epFull = getWord(epNum, episodes1to12);
-      const epCode = epFull.split(" ")[0];
-      const epFile = epCode.toLowerCase() + ".png";
-      const epDiv = document.createElement("div");
-      epDiv.className = "player-output";
-      const epImg = document.createElement("img");
-      epImg.src = "assets/" + epFile;
-      epImg.alt = epCode;
-      epImg.onerror = () => { epImg.style.display = "none"; };
-      const epSpan = document.createElement("span");
-      epSpan.innerHTML = `Episode:<br><em class="bold-italic">${epFull}</em>`;
-      epDiv.appendChild(epImg);
-      epDiv.appendChild(epSpan);
-      episodeSection.appendChild(epDiv);
+    // Investigator
+    const remaining = Array.from({length:21}, (_,j)=>j+1).filter(n=>!used.includes(n));
+    const sel = remaining[Math.floor(Math.random()*remaining.length)]; used.push(sel);
+    const name = getWord(sel, words1to21); const file = sanitizeFileName(name)+".png";
 
-      // Boss
-      const bossNum = Math.floor(Math.random() * 4) + 1;
-      const bossName = getWord(bossNum, words1to4);
-      const bossFile = sanitizeFileName(bossName) + ".png";
-      const bossDiv = document.createElement("div");
-      bossDiv.className = "player-output";
-      const bossImg = document.createElement("img");
-      bossImg.src = "assets/" + bossFile;
-      bossImg.alt = bossName;
-      bossImg.onerror = () => { bossImg.style.display = "none"; };
-      const bossSpan = document.createElement("span");
-      bossSpan.innerHTML = `Boss:<br><em class="bold-italic">${bossName}</em>`;
-      bossDiv.appendChild(bossImg);
-      bossDiv.appendChild(bossSpan);
-      bossSection.appendChild(bossDiv);
+    const div = document.createElement("div"); div.className="player-output";
+    const img = document.createElement("img"); img.src="assets/"+file; img.alt=name;
+    img.onerror=()=>{img.style.display="none";};
+    const span = document.createElement("span"); span.innerHTML=`Investigator:<br><em class="bold-italic">${name}</em>`;
+    div.appendChild(img); div.appendChild(span); box.appendChild(div);
 
-      // Send to Google Sheets
-      const payload = {
-        timestamp: new Date().toISOString(),
-        numPlayers: numPlayers,
-        investigators: used.map(index => getWord(index, words1to21)),
-        relics: usedRelics.map(index => getWord(index, relics1to22)),
-        pathologies: usedPathologies.map(index => getWord(index, pathologies1to12)),
-        episode: epFull,
-        boss: bossName
-      };
-      sendToGoogleSheets(payload);
-    }
-  </script>
+    // Relic
+    const relicRem = Array.from({length:22}, (_,j)=>j+1).filter(n=>!usedRelics.includes(n));
+    const relicSel = relicRem[Math.floor(Math.random()*relicRem.length)]; usedRelics.push(relicSel);
+    const relicName = getWord(relicSel, relics1to22); const relicFile = sanitizeFileName(relicName)+".png";
+    const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
+    const relicImg = document.createElement("img"); relicImg.src="assets/"+relicFile; relicImg.alt=relicName;
+    relicImg.onerror=()=>{relicImg.style.display="none";};
+    const relicSpan = document.createElement("span"); relicSpan.innerHTML=`Relic:<br><em class="bold-italic">${relicName}</em>`;
+    relicDiv.appendChild(relicImg); relicDiv.appendChild(relicSpan); box.appendChild(relicDiv);
+
+    // Pathology
+    const pathRem = Array.from({length:12},(_,j)=>j+1).filter(n=>!usedPathologies.includes(n));
+    const pathSel = pathRem[Math.floor(Math.random()*pathRem.length)]; usedPathologies.push(pathSel);
+    const pathName = getWord(pathSel,pathologies1to12); const pathFile=sanitizeFileName(pathName)+".png";
+    const pathDiv = document.createElement("div"); pathDiv.className="disorder-output";
+    const pathImg = document.createElement("img"); pathImg.src="assets/"+pathFile; pathImg.alt=pathName;
+    pathImg.onerror=()=>{pathImg.style.display="none";};
+    const pathSpan = document.createElement("span"); pathSpan.innerHTML=`Pathology:<br><em class="bold-italic">${pathName}</em>`;
+    pathDiv.appendChild(pathImg); pathDiv.appendChild(pathSpan); box.appendChild(pathDiv);
+
+    playerResults.appendChild(box);
+  }
+
+  // Episode
+  const epNum=Math.floor(Math.random()*12)+1; const epFull=getWord(epNum,episodes1to12);
+  const epCode=epFull.split(" ")[0]; const epFile=epCode.toLowerCase()+".png";
+  const epDiv=document.createElement("div"); epDiv.className="player-output";
+  const epImg=document.createElement("img"); epImg.src="assets/"+epFile; epImg.alt=epCode; epImg.onerror=()=>{epImg.style.display="none";};
+  const epSpan=document.createElement("span"); epSpan.innerHTML=`Episode:<br><em class="bold-italic">${epFull}</em>`;
+  epDiv.appendChild(epImg); epDiv.appendChild(epSpan); episodeSection.appendChild(epDiv);
+
+  // Boss
+  const bossNum=Math.floor(Math.random()*4)+1; const bossName=getWord(bossNum,words1to4); const bossFile=sanitizeFileName(bossName)+".png";
+  const bossDiv=document.createElement("div"); bossDiv.className="player-output";
+  const bossImg=document.createElement("img"); bossImg.src="assets/"+bossFile; bossImg.alt=bossName; bossImg.onerror=()=>{bossImg.style.display="none";};
+  const bossSpan=document.createElement("span"); bossSpan.innerHTML=`Boss:<br><em class="bold-italic">${bossName}</em>`;
+  bossDiv.appendChild(bossImg); bossDiv.appendChild(bossSpan); bossSection.appendChild(bossDiv);
+
+  // Send to Google Sheets
+  const payload = {
+    timestamp: new Date().toISOString(),
+    numPlayers: numPlayers,
+    investigators: used.map(i=>getWord(i, words1to21)),
+    relics: usedRelics.map(i=>getWord(i, relics1to22)),
+    pathologies: usedPathologies.map(i=>getWord(i, pathologies1to12)),
+    episode: epFull,
+    boss: bossName
+  };
+  sendToGoogleSheets(payload);
+}
+</script>
 </body>
 </html>

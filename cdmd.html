@@ -205,18 +205,6 @@ function sanitizeFileName(name) {
 
 function getWord(num, list) { return list[num-1] || num; }
 
-function sendToGoogleSheets(payload) {
-  const endpoint = 'https://script.google.com/macros/s/AKfycbzNsAk4_31BQsOz0c2tUn3iOb50hQTW6sppdpIO27taRt8fLjv1nl8REhT545CguP1e/exec'; // 🔗 Replace with your Web App URL
-  fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type':'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(r => r.json())
-  .then(data => console.log('Logged:', data))
-  .catch(err => console.error('Error sending to Google Sheets:', err));
-}
-
 function generate() {
   const numPlayers = parseInt(document.getElementById("numPlayers").value);
   if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { alert("Please select 1–5 players."); return; }
@@ -281,18 +269,6 @@ function generate() {
   const bossImg=document.createElement("img"); bossImg.src="assets/"+bossFile; bossImg.alt=bossName; bossImg.onerror=()=>{bossImg.style.display="none";};
   const bossSpan=document.createElement("span"); bossSpan.innerHTML=`Boss:<br><em class="bold-italic">${bossName}</em>`;
   bossDiv.appendChild(bossImg); bossDiv.appendChild(bossSpan); bossSection.appendChild(bossDiv);
-
-  // Send to Google Sheets
-  const payload = {
-    timestamp: new Date().toISOString(),
-    numPlayers: numPlayers,
-    investigators: used.map(i=>getWord(i, words1to21)),
-    relics: usedRelics.map(i=>getWord(i, relics1to22)),
-    pathologies: usedPathologies.map(i=>getWord(i, pathologies1to12)),
-    episode: epFull,
-    boss: bossName
-  };
-  sendToGoogleSheets(payload);
 }
 </script>
 </body>

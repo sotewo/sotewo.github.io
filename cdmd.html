@@ -14,7 +14,6 @@
       background-size: 40px 40px;
       background-position: 0 0, 20px 20px;
     }
-
     a.back-button {
       position: fixed;
       top: 20px;
@@ -29,12 +28,10 @@
       transition: background-color 0.3s, transform 0.2s;
       z-index: 1000;
     }
-
     a.back-button:hover {
       background-color: #2a2a2a;
       transform: scale(1.1);
     }
-
     h1 {
       font-size: 2.5em;
       text-align: center;
@@ -42,12 +39,7 @@
       color: #b0a06f;
       text-shadow: 1px 1px 2px #000;
     }
-
-    .section {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
+    .section { text-align: center; margin-bottom: 20px; }
     select#numPlayers {
       padding: 5px;
       font-size: 1em;
@@ -55,11 +47,7 @@
       border-radius: 5px;
       background-color: #222;
       color: #eee;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
     }
-
     button {
       padding: 10px 20px;
       font-size: 1em;
@@ -71,34 +59,13 @@
       box-shadow: 0 0 8px rgba(0,0,0,0.5);
       transition: background-color 0.3s;
     }
-
-    button:hover {
-      background-color: #5c3d3d;
-    }
-
-    @media (max-width: 600px) {
-      button {
-        padding: 16px 32px;
-        font-size: 1.3em;
-      }
-      
-      select#numPlayers {
-        font-size: 1.2em;
-        padding: 6px 10px;
-        border-radius: 5px;
-        background-color: #222;
-        color: #eee;
-        border: 1px solid #555;
-      }
-    }
-
+    button:hover { background-color: #5c3d3d; }
     #gameGrid {
       display: none;
       margin-top: 30px;
       flex-direction: column;
       gap: 30px;
     }
-
     .player-box {
       border: 2px solid #444;
       padding: 15px;
@@ -109,40 +76,34 @@
       background-color: #1c1c1c;
       box-shadow: 0 0 10px #00000099;
     }
-
     #playerResults {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
     }
-
     .player-output, .relic-output, .disorder-output {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 1.1em;
     }
-
     #gameGrid img {
       width: 100px;
       height: 100px;
       object-fit: contain;
       border-radius: 6px;
     }
-
     em.bold-italic {
       font-style: italic;
       font-weight: bold;
       color: #e2d7a7;
     }
-
     .game-info-row {
       display: flex;
       justify-content: flex-start;
       gap: 40px;
       flex-wrap: wrap;
     }
-
     .info-container {
       border: 2px solid #444;
       padding: 15px;
@@ -154,31 +115,12 @@
       justify-content: center;
       flex-wrap: wrap;
     }
-
-    @media (max-width: 600px) {
-      #gameGrid img {
-        width: 80px;
-        height: 80px;
-      }
-
-      #playerResults {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 15px;
-      }
-    }
   </style>
 </head>
 <body>
 
   <a href="index.html" class="back-button" title="Back to Game Selection">&#8592;</a>
-
   <h1>Cthulhu: Death May Die (RNG)</h1>
-
-  <p style="text-align: center; max-width: 700px; margin: 0 auto 20px; font-style: normal; color: #bdb8a4; font-size: 0.7em;">
-    This generator includes:<br>
-    Investigators from S1–2 and Eddie the Head, Episodes from S1–2, Pathologies from S1,<br>
-    Bosses (Cthulhu, Hastur, Black Goat of the Woods, and Yog-Sothoth), Relics from S3–4.
-  </p>
 
   <div class="section">
     <label>Number of players (1–5):
@@ -213,19 +155,15 @@
       "Adilah Vidal", "Alex Parker", "Ariele Venturi", "Hailia Hovath", "Father Luke",
       "Margarethe Richter", "Sergeant Mario Braghieri", "Mary Diaz", "Sam Wood", "Mate Tony Boyle"
     ];
-
     const words1to4 = ["Cthulhu", "Hastur", "Black Goat of the Woods", "Yog-Sothoth"];
-
     const episodes1to12 = [
       "S01E01 - Blasphemous Alchemy", "S01E02 - Tomes of Madness", "S01E03 - Danse Macabre", "S01E04 - Eldritch Idols", "S01E05 - Accursed Tide", "S01E06 - Unspeakable Hour",
       "S02E01 - Strange Bedfellows", "S02E02 - Nameless Woods", "S02E03 - Sanctificetur Nomen", "S02E04 - Shootout at the H.P. Corral", "S02E05 - Monsters in Sin City", "S02E06 - Endgame"
     ];
-
     const relics1to22 = [
       "Skull", "Pumpkin", "Ivory Figure", "Skull Bracelet", "Viol", "Wooden Pipe", "Ritual Dagger", "Glowing Ring", "Old Rosary", "Handheld Magnifier", "Sinister Book", "Jade Amulet",
       "Replica Blade", "Runecarved Spear", "Shiny Jewel", "Ancient Idol", "Lucky Coin", "Mysterious Key", "Ritual Mask", "Crystal Ball", "Brass Compass", "Ruby Talisman"
     ];
-
     const pathologies1to12 = [
       "Catatonia", "Codependency", "Fear of Crowds", "Hypochondria", "Kleptomania", "Masochism",
       "Obsessive Disorder", "Paranoia", "Psychotic Outbreaks", "Pyromania", "Recurring Trauma", "Short-Term Memory Loss"
@@ -237,24 +175,21 @@
         .replace(/\s+/g, '_')
         .replace(/[^a-z0-9_-]/g, '');
     }
-
     function getWord(num, wordList) {
       return wordList[num - 1] || num;
     }
-
-    function sendToGoogleSheets(payload) {
-      const endpoint = 'https://script.google.com/macros/s/AKfycbxThdFjxw_PtM27fcAMux4OgCIJ6N24_f0NiNiLbNT4-lHj9M5OlkduYYDt21bWJ4_Q/exec'; // ← Replace with your Google Apps Script Web App URL
-
-      fetch(endpoint, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      }).catch(error => {
+    async function sendToGoogleSheets(payload) {
+      const endpoint = 'YOUR_WEB_APP_URL'; // Replace with your Apps Script Web App URL
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        console.log('Data sent:', await response.text());
+      } catch (error) {
         console.error('Error sending data to Google Sheets:', error);
-      });
+      }
     }
 
     function generate() {
@@ -265,7 +200,6 @@
       }
 
       document.getElementById("gameGrid").style.display = "flex";
-      
       const playerResults = document.getElementById("playerResults");
       const episodeSection = document.getElementById("episodeSection");
       const bossSection = document.getElementById("bossSection");
@@ -274,9 +208,7 @@
       episodeSection.innerHTML = "";
       bossSection.innerHTML = "";
 
-      const used = [];
-      const usedRelics = [];
-      const usedPathologies = [];
+      const used = [], usedRelics = [], usedPathologies = [];
 
       for (let i = 0; i < numPlayers; i++) {
         const box = document.createElement("div");
@@ -344,7 +276,6 @@
       const epFull = getWord(epNum, episodes1to12);
       const epCode = epFull.split(" ")[0];
       const epFile = epCode.toLowerCase() + ".png";
-
       const epDiv = document.createElement("div");
       epDiv.className = "player-output";
       const epImg = document.createElement("img");
@@ -361,7 +292,6 @@
       const bossNum = Math.floor(Math.random() * 4) + 1;
       const bossName = getWord(bossNum, words1to4);
       const bossFile = sanitizeFileName(bossName) + ".png";
-
       const bossDiv = document.createElement("div");
       bossDiv.className = "player-output";
       const bossImg = document.createElement("img");
@@ -378,7 +308,7 @@
       const payload = {
         timestamp: new Date().toISOString(),
         numPlayers: numPlayers,
-        investigators: used.map(index => getWord(index, words1to20)),
+        investigators: used.map(index => getWord(index, words1to21)),
         relics: usedRelics.map(index => getWord(index, relics1to22)),
         pathologies: usedPathologies.map(index => getWord(index, pathologies1to12)),
         episode: epFull,
@@ -389,4 +319,3 @@
   </script>
 </body>
 </html>
-

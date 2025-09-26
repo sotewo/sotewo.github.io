@@ -149,11 +149,12 @@
 <div style="max-width: 700px; margin: 0 auto 20px; font-style: normal; color: #bdb8a4; font-size: 0.7em; text-align: center;">
   <p style="margin-bottom: 8px;">This generator includes:</p>
   <ul style="display: inline-block; text-align: left; margin: 0; padding-left: 20px;">
-    <li>Investigators from S1–2 and Eddie the Head</li>
-    <li>Episodes from S1–2</li>
-    <li>Pathologies from S1</li>
-    <li>Bosses (Cthulhu, Hastur, Black Goat of the Woods, and Yog-Sothoth)</li>
-    <li>Relics from S3–4</li>
+    <li>Investigators from S1–2 and Eddie the Head;</li>
+    <li>Episodes from S1–2;</li>
+    <li>Pathologies from S1;</li>
+    <li>Bosses (Cthulhu, Hastur, Black Goat of the Woods, and Yog-Sothoth);</li>
+    <li>Relics from S3–4;</li>
+    <li>Animal Allies (treated as relics).</li>
   </ul>
 </div>
 
@@ -199,10 +200,11 @@ const episodes1to12 = [
   "S02E03 - Sanctificetur Nomen","S02E04 - Shootout at the H.P. Corral","S02E05 - Monsters in Sin City","S02E06 - Endgame"
 ];
 
-const relics1to22 = [
+const relics1to27 = [
   "Skull","Pumpkin","Ivory Figure","Skull Bracelet","Viol","Wooden Pipe","Ritual Dagger","Glowing Ring","Old Rosary",
   "Handheld Magnifier","Sinister Book","Jade Amulet","Replica Blade","Runecarved Spear","Shiny Jewel","Ancient Idol",
-  "Lucky Coin","Mysterious Key","Ritual Mask","Crystal Ball","Brass Compass","Ruby Talisman"
+  "Lucky Coin","Mysterious Key","Ritual Mask","Crystal Ball","Brass Compass","Ruby Talisman", "Midna the Cat",
+  "Titus the Chimp", "Percy the Owl", "Luna the Hound", "Celeste the Snake"
 ];
 
 const pathologies1to12 = [
@@ -244,9 +246,9 @@ function generate() {
     div.appendChild(img); div.appendChild(span); box.appendChild(div);
 
     // Relic
-    const relicRem = Array.from({length:22}, (_,j)=>j+1).filter(n=>!usedRelics.includes(n));
+    const relicRem = Array.from({length:27}, (_,j)=>j+1).filter(n=>!usedRelics.includes(n));
     const relicSel = relicRem[Math.floor(Math.random()*relicRem.length)]; usedRelics.push(relicSel);
-    const relicName = getWord(relicSel, relics1to22); const relicFile = sanitizeFileName(relicName)+".png";
+    const relicName = getWord(relicSel, relics1to27); const relicFile = sanitizeFileName(relicName)+".png";
     const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
     const relicImg = document.createElement("img"); relicImg.src="assets/"+relicFile; relicImg.alt=relicName;
     relicImg.onerror=()=>{relicImg.style.display="none";};
@@ -284,6 +286,7 @@ function generate() {
 </script>
 </body>
 </html>
+
 
 
 

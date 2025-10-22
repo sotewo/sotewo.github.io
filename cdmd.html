@@ -240,9 +240,9 @@ const relics1to27 = [
   "Titus the Chimp", "Percy the Owl", "Luna the Hound", "Celeste the Snake"
 ];
 
-const pathologies1to12 = [
+const pathologies1to13 = [
   "Catatonia","Codependency","Fear of Crowds","Hypochondria","Kleptomania","Masochism",
-  "Obsessive Disorder","Paranoia","Psychotic Outbreaks","Pyromania","Recurring Trauma","Short-Term Memory Loss"
+  "Obsessive Disorder","Paranoia","Psychotic Outbreaks","Pyromania","Recurring Trauma","Short-Term Memory Loss", "Fear of the Dark"
 ];
 
 function sanitizeFileName(name) {
@@ -289,9 +289,9 @@ function generate() {
     relicDiv.appendChild(relicImg); relicDiv.appendChild(relicSpan); box.appendChild(relicDiv);
 
     // Pathology
-    const pathRem = Array.from({length:12},(_,j)=>j+1).filter(n=>!usedPathologies.includes(n));
+    const pathRem = Array.from({length:13},(_,j)=>j+1).filter(n=>!usedPathologies.includes(n));
     const pathSel = pathRem[Math.floor(Math.random()*pathRem.length)]; usedPathologies.push(pathSel);
-    const pathName = getWord(pathSel,pathologies1to12); const pathFile=sanitizeFileName(pathName)+".png";
+    const pathName = getWord(pathSel,pathologies1to13); const pathFile=sanitizeFileName(pathName)+".png";
     const pathDiv = document.createElement("div"); pathDiv.className="disorder-output";
     const pathImg = document.createElement("img"); pathImg.src="assets/"+pathFile; pathImg.alt=pathName;
     pathImg.onerror=()=>{pathImg.style.display="none";};
@@ -319,6 +319,7 @@ function generate() {
 </script>
 </body>
 </html>
+
 
 
 

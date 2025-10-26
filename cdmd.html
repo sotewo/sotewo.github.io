@@ -234,7 +234,7 @@ const words1to21 = [
   "Margarethe Richter","Sergeant Mario Braghieri","Mary Diaz","Sam Wood","Mate Tony Boyle"
 ];
 
-const words1to4 = ["Cthulhu","Hastur","Black Goat of the Woods","Yog-Sothoth"];
+const words1to5 = ["Cthulhu","Hastur","Black Goat of the Woods","Yog-Sothoth", "Wicker Eddie"];
 
 const episodes1to12 = [
   "S01E01 - Blasphemous Alchemy","S01E02 - Tomes of Madness","S01E03 - Danse Macabre","S01E04 - Eldritch Idols",
@@ -319,7 +319,7 @@ function generate() {
   epDiv.appendChild(epImg); epDiv.appendChild(epSpan); episodeSection.appendChild(epDiv);
 
   // Boss
-  const bossNum=Math.floor(Math.random()*4)+1; const bossName=getWord(bossNum,words1to4); const bossFile=sanitizeFileName(bossName)+".png";
+  const bossNum=Math.floor(Math.random()*5)+1; const bossName=getWord(bossNum,words1to5); const bossFile=sanitizeFileName(bossName)+".png";
   const bossDiv=document.createElement("div"); bossDiv.className="player-output";
   const bossImg=document.createElement("img"); bossImg.src="assets/"+bossFile; bossImg.alt=bossName; bossImg.onerror=()=>{bossImg.style.display="none";};
   const bossSpan=document.createElement("span"); bossSpan.innerHTML=`Elder One:<br><em class="bold-italic">${bossName}</em>`;
@@ -328,5 +328,6 @@ function generate() {
 </script>
 </body>
 </html>
+
 
 

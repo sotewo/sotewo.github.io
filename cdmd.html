@@ -1,224 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cthulhu: Death May Die (RNG)</title>
-  <style>
+  <meta charset="UTF-8" />
+  <title>Cthulhu: Death May Die (RNG)</title>
+  <style>
 
-  @font-face {
-  font-family: 'Metallophile Sp8';
-  src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap; 
-  }
+  @font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; 
+  }
 
-  @font-face {
-  font-family: 'Metallophile Sp8';
-  src: url('assets/fonts/Metallophile-Sp8-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  }
+  @font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  }
 
-  @font-face {
-  font-family: 'Metallophile Sp8';
-  src: url('assets/fonts/Metallophile-Sp8-Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-  }
-  
-  @font-face {
-  font-family: 'Metallophile Sp8';
-  src: url('assets/fonts/Metallophile-Sp8-Bold-Italic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-  }
-    
-    body {
-      font-family: 'Metallophile Sp8', 'Georgia', serif;
-      background-color: #0e0e0e;
-      color: #d6d2c4;
-      margin: 0;
-      padding: 20px;
-      background-image: radial-gradient(#1b1b1b 1px, transparent 1px), radial-gradient(#1b1b1b 1px, transparent 1px);
-      background-size: 40px 40px;
-      background-position: 0 0, 20px 20px;
-    }
-
-    a.back-button {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      font-size: 2em;
-      text-decoration: none;
-      color: #b0a06f;
-      background-color: #1b1b1b;
-      padding: 5px 12px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #000;
-      transition: background-color 0.3s, transform 0.2s;
-      z-index: 1000;
-    }
-
-    a.back-button:hover {
-      background-color: #2a2a2a;
-      transform: scale(1.1);
-    }
-
-    h1 {
-      font-size: 2.5em;
-      text-align: center;
-      margin-bottom: 10px;
-      color: #b0a06f;
-      text-shadow: 1px 1px 2px #000;
-    }
-
-    .section { text-align: center; margin-bottom: 20px; }
-
-    select#numPlayers {
-      padding: 5px;
-      font-size: 1.2em;
-      border: 1px solid #555;
-      border-radius: 5px;
-      background-color: #222;
-      color: #eee;
-      appearance: none;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 1em;
-      background-color: #3c2c2c;
-      border: none;
-      border-radius: 8px;
-      color: #f5f5f5;
-      cursor: pointer;
-      box-shadow: 0 0 8px rgba(0,0,0,0.5);
-      transition: background-color 0.3s;
-    }
-
-    button:hover { background-color: #5c3d3d; }
-
-    #gameGrid {
-      display: none;
-      margin-top: 30px;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .player-box {
-      border: 2px solid #444;
-      padding: 15px;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background-color: #1c1c1c;
-      box-shadow: 0 0 10px #00000099;
-    }
-
-    #playerResults {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .player-output, .relic-output, .disorder-output {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.5em;
-    }
-
-    #gameGrid img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      border-radius: 6px;
-    }
-
-    em.bold-italic {
-      font-style: italic;
-      font-weight: bold;
-      color: #e2d7a7;
-    }
-
-    .game-info-row {
-      display: flex;
-      justify-content: flex-start;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
-    .info-container {
-      border: 2px solid #444;
-      padding: 15px;
-      border-radius: 12px;
-      background-color: #1c1c1c;
-      box-shadow: 0 0 10px #00000099;
-      display: flex;
-      gap: 30px;
-      justify-content: center;
-      flex-wrap: wrap;
-      flex: 1;
-    }
-    
-    #monsterSection {
-        display: flex; 
-        gap: 30px; 
-        flex-wrap: wrap; 
-        align-items: flex-start;
-    }
-    
-    #monsterSection .player-output {
-        display: flex;
-        flex-direction: row; 
-        align-items: center;
-    }
+  @font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  }
+  
+  @font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Bold-Italic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  }
     
-    /* MINIMAL CSS FOR NEW CONTROLS - Avoids new classes where possible */
-    .selection-group h3 {
-        color: #b0a06f; /* Gold accent for titles */
-        margin-top: 0;
-        margin-bottom: 8px;
-        font-size: 1.2em;
+    body {
+      font-family: 'Metallophile Sp8', 'Georgia', serif;
+      background-color: #0e0e0e;
+      color: #d6d2c4;
+      margin: 0;
+      padding: 20px;
+      background-image: radial-gradient(#1b1b1b 1px, transparent 1px), radial-gradient(#1b1b1b 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
     }
-    .selection-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px 30px;
-    }
-    .selection-container label {
-        display: flex;
-        align-items: center;
-        font-size: 1em;
-        cursor: pointer;
-    }
-    .selection-container input[type="checkbox"] {
-        margin-right: 8px;
-        transform: scale(1.3);
-        accent-color: #5c3d3d; 
-    }
-    .warning-text {
-        color: #ff6347; 
-        font-weight: bold;
-        margin-top: 10px;
-        display: none; 
-        text-align: center;
-    }
-    /* END MINIMAL NEW CSS */
 
-    @media (max-width: 600px) {
-      #gameGrid img { width: 80px; height: 80px; }
-      #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-      button { padding: 16px 32px; font-size: 1.3em; }
-      select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
-      .selection-container { flex-direction: column; gap: 8px; }
-    }
-  </style>
+    a.back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 2em;
+      text-decoration: none;
+      color: #b0a06f;
+      background-color: #1b1b1b;
+      padding: 5px 12px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #000;
+      transition: background-color 0.3s, transform 0.2s;
+      z-index: 1000;
+    }
+
+    a.back-button:hover {
+      background-color: #2a2a2a;
+      transform: scale(1.1);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #b0a06f;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .section { text-align: center; margin-bottom: 20px; }
+
+    select#numPlayers {
+      padding: 5px;
+      font-size: 1.2em;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background-color: #222;
+      color: #eee;
+      appearance: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #3c2c2c;
+      border: none;
+      border-radius: 8px;
+      color: #f5f5f5;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+      transition: background-color 0.3s;
+    }
+
+    button:hover { background-color: #5c3d3d; }
+
+    #gameGrid {
+      display: none;
+      margin-top: 30px;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .player-box {
+      border: 2px solid #444;
+      padding: 15px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: #1c1c1c;
+      box-shadow: 0 0 10px #00000099;
+    }
+
+    #playerResults {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .player-output, .relic-output, .disorder-output {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5em;
+    }
+
+    #gameGrid img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    em.bold-italic {
+      font-style: italic;
+      font-weight: bold;
+      color: #e2d7a7;
+    }
+
+    .game-info-row {
+      display: flex;
+      justify-content: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .info-container {
+      border: 2px solid #444;
+      padding: 15px;
+      border-radius: 12px;
+      background-color: #1c1c1c;
+      box-shadow: 0 0 10px #00000099;
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    #monsterSection {
+        display: flex; 
+        gap: 30px; 
+        flex-wrap: wrap; 
+        align-items: flex-start;
+    }
+    
+    #monsterSection .player-output {
+        display: flex;
+        flex-direction: row; 
+        align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      #gameGrid img { width: 80px; height: 80px; }
+      #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+      button { padding: 16px 32px; font-size: 1.3em; }
+      select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -227,361 +193,236 @@
 <h1>Cthulhu: Death May Die (RNG)</h1>
 
 <div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
-    <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
-    <ol style="margin: 5px 0 0 15px; padding: 0;">
-      <li>This generator is limited to the components currently owned by myself;</li>
-      <li>Components used may not constitute complete season sets;</li>
-      <li>Components may include non-official material.</li>
-    </ol>
+    <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
+    <ol style="margin: 5px 0 0 15px; padding: 0;">
+      <li>This generator is limited to the components currently owned by myself;</li>
+      <li>Components used may not constitute complete season sets;</li>
+      <li>Components may include non-official material.</li>
+    </ol>
 </div>
-  
+  
 <div style="max-width: 900px; margin: 0 auto 20px; font-style: normal; color: #bdb8a4; font-size: 1.0em; text-align: center;">
-  <p style="margin-bottom: 8px;">This generator includes:</p>
-  <ul style="display: inline-block; text-align: left; margin: 0; padding-left: 20px;">
-    <li>Investigators: S1, S2, S3, and Extra Investigator (Eddie the Head);</li>
-    <li>Episodes: S1, S2, and S3;</li>
-    <li>Pathologies: S1, S3, and Extra Pathology (Fear of the Dark);</li>
-    <li>Elder Ones: Cthulhu, Hastur, Black Goat of the Woods, Yog-Sothoth, Azathoth, Tsathoggua, and Wicker Eddie (fan-made component);</li>
-    <li>Relics: S3 and S4;</li>
-    <li>Animal Allies: Included in the Relic pool for generation.</li>
-    <li>Unknown Monsters: S1, S2, S3, and Extra Unknown Monsters (Fear Eddie and Undead Dead).</li>
-  </ul>
+  <p style="margin-bottom: 8px;">This generator includes:</p>
+  <ul style="display: inline-block; text-align: left; margin: 0; padding-left: 20px;">
+    <li>Investigators: S1, S2, S3, and Extra Investigator (Eddie the Head);</li>
+    <li>Episodes: S1, S2, and S3;</li>
+    <li>Pathologies: S1, S3, and Extra Pathology (Fear of the Dark);</li>
+    <li>Elder Ones: Cthulhu, Hastur, Black Goat of the Woods, Yog-Sothoth, Azathoth, Tsathoggua, and Wicker Eddie (fan-made component);</li>
+    <li>Relics: S3 and S4;</li>
+    <li>Animal Allies: Included in the Relic pool for generation.</li>
+    <li>Unknown Monsters: S1, S2, S3, and Extra Unknown Monsters (Fear Eddie and Undead Dead).</li>
+  </ul>
 </div>
 
 <div class="section">
-  <label>Number of players (1–5):
-    <select id="numPlayers">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3" selected>3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
-  </label>
+  <label>Number of players (1–5):
+    <select id="numPlayers">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" selected>3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </label>
 </div>
-
-<!-- Component Selection Block - Uses inline styles based on player-box/disclaimer block -->
-<div id="componentSelection" style="max-width: 900px; margin: 20px auto; padding: 20px; border: 2px solid #444; border-radius: 12px; background-color: #1c1c1c; box-shadow: 0 0 10px #00000099; text-align: left;">
-    <p style="color: #b0a06f; text-align: center; font-size: 1.2em; margin-top: 0;">Select Components for Generation</p>
-
-    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
-      <h3 class="selection-group-title">Investigators (Mandatory)</h3>
-      <div class="selection-container">
-        <label><input type="checkbox" name="investigators" value="s1" checked> Season 1 (S1)</label>
-        <label><input type="checkbox" name="investigators" value="s2" checked> Season 2 (S2)</label>
-        <label><input type="checkbox" name="investigators" value="s3" checked> Season 3 (S3)</label>
-        <label><input type="checkbox" name="investigators" value="extra" checked> Extra (Eddie the Head)</label>
-      </div>
-    </div>
-
-    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
-      <h3 class="selection-group-title">Relics (Optional)</h3>
-      <div class="selection-container">
-        <label><input type="checkbox" name="relics" value="s3" checked> Season 3 (S3)</label>
-        <label><input type="checkbox" name="relics" value="s4" checked> Season 4 (S4)</label>
-        <label><input type="checkbox" name="relics" value="extra" checked> Extra</label>
-        <label><input type="checkbox" name="relics" value="animal" checked> Animal Allies</label>
-      </div>
-    </div>
-
-    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
-      <h3 class="selection-group-title">Pathologies (Mandatory) </h3>
-      <div class="selection-container">
-        <label><input type="checkbox" name="pathologies" value="s1" checked> Season 1 (S1)</label>
-        <label><input type="checkbox" name="pathologies" value="s3" checked> Season 3 (S3)</label>
-        <label><input type="checkbox" name="pathologies" value="extra" checked> Fear of the Dark</label>
-      </div>
-    </div>
-
-    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
-      <h3 class="selection-group-title">Elder Ones/Bosses (Mandatory)</h3>
-      <div class="selection-container">
-        <label><input type="checkbox" name="bosses" value="cthulhu" checked> Cthulhu</label>
-        <label><input type="checkbox" name="bosses" value="hastur" checked> Hastur</label>
-        <label><input type="checkbox" name="bosses" value="blackgoat" checked> Black Goat of the Woods</label>
-        <label><input type="checkbox" name="bosses" value="yogsothoth" checked> Yog-Sothoth</label>
-        <label><input type="checkbox" name="bosses" value="azathoth" checked> Azathoth</label>
-        <label><input type="checkbox" name="bosses" value="tsathoggua" checked> Tsathoggua</label>
-        <label><input type="checkbox" name="bosses" value="wickereddie" checked> Wicker Eddie (Fan-made)</label>
-      </div>
-    </div>
-
-    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
-      <h3 class="selection-group-title">Episodes (Mandatory)</h3>
-      <div class="selection-container">
-        <label><input type="checkbox" name="episodes" value="s1" checked> Season 1 (S1)</label>
-        <label><input type="checkbox" name="episodes" value="s2" checked> Season 2 (S2)</label>
-        <label><input type="checkbox" name="episodes" value="s3" checked> Season 3 (S3)</label>
-      </div>
-    </div>
-
-    <div class="selection-group" style="padding-bottom: 0;">
-      <h3 class="selection-group-title">Unknown Monsters (Optional)</h3>
-      <div class="selection-container">
-        <label><input type="checkbox" name="monsters" value="s1" checked> Season 1 (S1)</label>
-        <label><input type="checkbox" name="monsters" value="s2" checked> Season 2 (S2)</label>
-        <label><input type="checkbox" name="monsters" value="s3" checked> Season 3 (S3)</label>
-        <label><input type="checkbox" name="monsters" value="extra" checked> Extra (Iron Maiden Pack)</label>
-      </div>
-    </div>
-    
-    <p id="selectionWarning" class="warning-text">Please select at least one option for all **Mandatory** sections (Investigators, Pathologies, Bosses, and Episodes).</p>
-</div>
-<!-- End Component Selection Block -->
 
 <div class="section">
-  <button onclick="generate()">Generate</button>
+  <button onclick="generate()">Generate</button>
 </div>
 
 <div id="gameGrid">
-  <div id="playerResults"></div>
-  <div class="game-info-row">
+  <div id="playerResults"></div>
+  <div class="game-info-row">
 
-    <div class="info-container">
-      <div id="episodeSection"></div>
-      <div id="bossSection"></div>
-    </div>
+    <div class="info-container">
+      <div id="episodeSection"></div>
+      <div id="bossSection"></div>
+    </div>
 
-    <div class="info-container">
-      <div id="monsterSection"></div> 
-    </div>
-  </div>
+    <div class="info-container">
+      <div id="monsterSection"></div> 
+    </div>
+  </div>
 </div>
 
 <script>
 
-// --- COMPONENT DEFINITIONS ---
-const components = {
-  investigators: {
-    s1: ["Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Fatima Safar","Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid"],
-    s2: ["Adilah Vidal","Alex Parker","Ariele Venturi","Hailia Hovath","Father Luke","Margarethe Richter","Sergeant Mario Braghieri","Mary Diaz","Sam Wood","Mate Tony Boyle"],
-    s3: ["Ruth Weber","Agatha May","Sally Withers","Huikong","Sandra Atkinson","Jakub Peters","Stella Fontaine","Julien Dulik","Leon Barnes","Mike Kozlov"],
-    extra: ["Eddie the Head"]
-  },
-  relics: {
-    s3: ["Sinister Book","Jade Amulet","Replica Blade","Runecarved Spear","Shiny Jewel","Ancient Idol","Lucky Coin","Mysterious Key","Ritual Mask","Crystal Ball","Brass Compass","Ruby Talisman"],
-    s4: ["Viol","Wooden Pipe","Ritual Dagger","Glowing Ring","Old Rosary","Handheld Magnifier"],
-    extra: ["Skull","Pumpkin","Ivory Figure","Skull Bracelet"],
-    animal: ["Midna the Cat", "Titus the Chimp", "Percy the Owl", "Luna the Hound", "Celeste the Snake"]
-  },
-  pathologies: {
-    s1: ["Catatonia","Codependency","Fear of Crowds","Hypochondria","Kleptomania","Masochism","Obsessive Disorder","Paranoia","Psychotic Outbreaks","Pyromania","Recurring Trauma","Short-Term Memory Loss"],
-    s3: ["Megalomania","Traveling Fatigue","Overcaring","Autophobia","Compulsive Accumulating","Bloodlust","Impulsive Aggression","Hallucinations"],
-    extra: ["Fear of the Dark"]
-  },
-  bosses: {
-    cthulhu: "Cthulhu",
-    hastur: "Hastur",
-    blackgoat: "Black Goat of the Woods",
-    yogsothoth: "Yog-Sothoth",
-    azathoth: "Azathoth",
-    tsathoggua: "Tsathoggua",
-    wickereddie: "Wicker Eddie"
-  },
-  episodes: {
-    s1: ["S01E01 - Blasphemous Alchemy","S01E02 - Tomes of Madness","S01E03 - Danse Macabre","S01E04 - Eldritch Idols","S01E05 - Accursed Tide","S01E06 - Unspeakable Hour"],
-    s2: ["S02E01 - Strange Bedfellows","S02E02 - Nameless Woods","S02E03 - Sanctificetur Nomen","S02E04 - Shootout at the H.P. Corral","S02E05 - Monsters in Sin City","S02E06 - Endgame"],
-    s3: ["S03E01 - Top of the Mourning","S03E02 - Isle of the Damned","S03E03 - Deliver Us From Evil","S03E04 - By Request of the Queen","S03E05 - Festival of Death","S03E06 - Die Schöne und das Biest"]
-  },
-  monsters: {
-    s1: ["Byakhee", "Deep One", "Fire Vampire", "Ghoul", "Hunting Horror", "Shoggoth", "Cthonian Entity"],
-    s2: ["Tcho-Tcho", "Dimensional Shambler", "Elder Thing", "Flying Polyp", "Nightgaunt", "Star Vampire", "Bokrug", "Yugg", "Hound of Tindalos"],
-    s3: ["Ghast", "Serpent Man", "Gug", "Gyaa-Yothn", "Fisher from Outside", "Dhole", "The Unnamable"],
-    extra: ["Fear Eddie", "Undead Eddie"]
-  }
-};
+const investigators1to31 = [
+  "Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Eddie the Head",
+  "Fatima Safar","Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid",
+  "Adilah Vidal","Alex Parker","Ariele Venturi","Hailia Hovath","Father Luke",
+  "Margarethe Richter","Sergeant Mario Braghieri","Mary Diaz","Sam Wood","Mate Tony Boyle",
+  "Ruth Weber","Agatha May","Sally Withers","Huikong","Sandra Atkinson",
+  "Jakub Peters","Stella Fontaine","Julien Dulik","Leon Barnes","Mike Kozlov"
+];
 
+const bosses1to7 = [
+  "Cthulhu","Hastur","Black Goat of the Woods",
+  "Yog-Sothoth", "Wicker Eddie","Azathoth",
+  "Tsathoggua"
+];
 
-// --- HELPER FUNCTIONS ---
+const episodes1to18 = [
+  "S01E01 - Blasphemous Alchemy","S01E02 - Tomes of Madness","S01E03 - Danse Macabre",
+  "S01E04 - Eldritch Idols","S01E05 - Accursed Tide","S01E06 - Unspeakable Hour",
+  "S02E01 - Strange Bedfellows","S02E02 - Nameless Woods","S02E03 - Sanctificetur Nomen",
+  "S02E04 - Shootout at the H.P. Corral","S02E05 - Monsters in Sin City","S02E06 - Endgame",
+  "S03E01 - Top of the Mourning","S03E02 - Isle of the Damned","S03E03 - Deliver Us From Evil",
+  "S03E04 - By Request of the Queen","S03E05 - Festival of Death","S03E06 - Die Schöne und das Biest"
+];
+
+const relics1to27 = [
+  "Skull","Pumpkin","Ivory Figure","Skull Bracelet","Viol","Wooden Pipe","Ritual Dagger","Glowing Ring","Old Rosary",
+  "Handheld Magnifier","Sinister Book","Jade Amulet","Replica Blade","Runecarved Spear","Shiny Jewel","Ancient Idol",
+  "Lucky Coin","Mysterious Key","Ritual Mask","Crystal Ball","Brass Compass","Ruby Talisman", "Midna the Cat",
+  "Titus the Chimp", "Percy the Owl", "Luna the Hound", "Celeste the Snake"
+];
+
+const pathologies1to21 = [
+  "Catatonia","Codependency","Fear of Crowds","Hypochondria","Kleptomania",
+  "Masochism","Obsessive Disorder","Paranoia","Psychotic Outbreaks","Pyromania",
+  "Recurring Trauma","Short-Term Memory Loss", "Fear of the Dark","Megalomania","Traveling Fatigue",
+  "Overcaring","Autophobia","Compulsive Accumulating","Impulsive Aggression","Hallucinations",
+  "Bloodlust"
+];
+
+const monsters1to25 = [
+    "Bokrug", "Byakhee", "Cthonian Entity", "Deep One", "Dhole", 
+    "Dimensional Shambler", "Elder Thing", "Fear Eddie", "Fire Vampire", "Fisher from Outside",
+    "Flying Polyp", "Ghast", "Ghoul", "Gug", "Gyaa-Yothn",
+    "Hound of Tindalos", "Hunting Horror", "Nightgaunt", "Serpent Man", "Shoggoth",
+    "Star Vampire", "Tcho-Tcho", "The Unnamable", "Undead Eddie", "Yugg"
+];
+
 function sanitizeFileName(name) {
-  return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
+  return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
 }
 
-/**
- * Gathers all selected component names for a specific category.
- */
-function getSelectedPool(category) {
-  const selectedPool = [];
-  const checkboxes = document.querySelectorAll(`input[name="${category}"]:checked`);
-
-  checkboxes.forEach(checkbox => {
-    const subKey = checkbox.value;
-    const list = components[category][subKey];
-
-    if (Array.isArray(list)) {
-      selectedPool.push(...list);
-    } else if (typeof list === 'string') {
-      selectedPool.push(list);
-    }
-  });
-  return selectedPool;
-}
+function getWord(num, list) { return list[num-1] || num; }
 
 
 /**
- * Helper function to create the standard display output (image + text) 
- */
-function createInfoItem(title, name, fileName, cssClass) {
-    const div = document.createElement("div");
-    div.className = cssClass;
-    
-    const img = document.createElement("img");
-    img.src = "assets/" + fileName;
-    img.alt = name;
-    img.onerror = () => { img.style.display = "none"; }; // Fallback if image not found
+ * Helper function to create the standard display output (image + text) 
+ * for large game components (Episode, Boss, Monsters).
+ * @param {string} title The display title (e.g., "Elder One").
+ * @param {string} name The generated name (e.g., "Cthulhu").
+ * @param {string} fileName The file path suffix (e.g., "cthulhu.png").
+ * @returns {HTMLDivElement} The complete player-output div.
+ */
+function createInfoItem(title, name, fileName) {
+    const div = document.createElement("div");
+    div.className = "player-output";
+    
+    const img = document.createElement("img");
+    img.src = "assets/" + fileName;
+    img.alt = name;
+    img.onerror = () => { img.style.display = "none"; }; // Fallback if image not found
 
-    const span = document.createElement("span");
-    span.innerHTML = `${title}:<br><em class="bold-italic">${name}</em>`;
-    
-    div.appendChild(img);
-    div.appendChild(span);
-    return div;
+    const span = document.createElement("span");
+    span.innerHTML = `${title}:<br><em class="bold-italic">${name}</em>`;
+    
+    div.appendChild(img);
+    div.appendChild(span);
+    return div;
 }
 
 
-// --- MAIN GENERATION FUNCTION ---
+function createMonsterDisplay(monsterIndex, monsterName) {
+    const fileName = sanitizeFileName(monsterName) + ".png";
+    const title = `Unknown Monster ${monsterIndex}`;
+
+    return createInfoItem(title, monsterName, fileName);
+}
+
 function generate() {
-  const numPlayers = parseInt(document.getElementById("numPlayers").value);
-  
-  const selectionWarning = document.getElementById("selectionWarning");
-  selectionWarning.style.display = "none";
-
-  if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { 
-    selectionWarning.innerText = "Please select 1–5 players.";
-    selectionWarning.style.display = "block";
-    document.getElementById("gameGrid").style.display = "none";
-    return; 
-  }
-  
-  const mandatorySections = ['investigators', 'pathologies', 'bosses', 'episodes'];
-  let allMandatorySelected = true;
-
-  // 1. Check Mandatory Selections and Build Pools
-  const pools = {};
-  for (const section of mandatorySections) {
-    pools[section] = getSelectedPool(section);
-    if (pools[section].length === 0) {
-      allMandatorySelected = false;
-    }
-  }
-
-  if (!allMandatorySelected) {
-    selectionWarning.innerText = "Please select at least one option for all **Mandatory** sections (Investigators, Pathologies, Bosses, and Episodes).";
-    selectionWarning.style.display = "block";
-    document.getElementById("gameGrid").style.display = "none";
-    return;
-  }
-  
-  // Get Optional Pools
-  pools.relics = getSelectedPool('relics');
-  pools.monsters = getSelectedPool('monsters');
-  
-
-  // Clear and display results area
-  document.getElementById("gameGrid").style.display = "flex";
-  const playerResults = document.getElementById("playerResults");
-  const episodeSection = document.getElementById("episodeSection");
-  const bossSection = document.getElementById("bossSection");
-  const monsterSection = document.getElementById("monsterSection");
-
-  playerResults.innerHTML = ""; 
-  episodeSection.innerHTML = ""; 
-  bossSection.innerHTML = ""; 
-  monsterSection.innerHTML = "";
-
-  // Arrays to track used items for player-specific draws (to ensure no duplicates)
-  const usedInvestigators = [];
-  const usedRelics = [];
-  const usedPathologies = [];
-
-  // --- Player Component Generation ---
-  for (let i=0; i<numPlayers; i++) {
-    const box = document.createElement("div"); box.className="player-box";
-
-    // Investigator (Mandatory)
-    const investigatorPool = pools.investigators.filter(name => !usedInvestigators.includes(name));
-    if (investigatorPool.length === 0) break; 
-
-    const investigatorName = investigatorPool[Math.floor(Math.random() * investigatorPool.length)];
-    usedInvestigators.push(investigatorName);
-    const investigatorFile = sanitizeFileName(investigatorName) + ".png";
-    box.appendChild(createInfoItem("Investigator", investigatorName, investigatorFile, "player-output"));
-
-
-    // Relic (Optional)
-    if (pools.relics.length > 0) {
-      const relicPool = pools.relics.filter(name => !usedRelics.includes(name));
-      if (relicPool.length > 0) {
-        const relicName = relicPool[Math.floor(Math.random() * relicPool.length)];
-        usedRelics.push(relicName);
-        const relicFile = sanitizeFileName(relicName) + ".png";
-        box.appendChild(createInfoItem("Relic", relicName, relicFile, "relic-output"));
-      } else {
-        const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
-        const span = document.createElement("span"); 
-        span.innerHTML = `Relic:<br><em style="font-style: italic; color: #666;">(Not enough unique Relics selected)</em>`; 
-        relicDiv.appendChild(span);
-        box.appendChild(relicDiv);
-      }
-    } else {
-        // Show placeholder for skipped optional section
-        const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
-        const span = document.createElement("span"); 
-        span.innerHTML = `Relic:<br><em style="font-style: italic; color: #666;">(Skipped)</em>`; 
-        relicDiv.appendChild(span);
-        box.appendChild(relicDiv);
-    }
-
-
-    // Pathology (Mandatory)
-    const pathologyPool = pools.pathologies.filter(name => !usedPathologies.includes(name));
-    if (pathologyPool.length === 0) break;
-    
-    const pathologyName = pathologyPool[Math.floor(Math.random() * pathologyPool.length)];
-    usedPathologies.push(pathologyName);
-    const pathologyFile = sanitizeFileName(pathologyName) + ".png";
-    box.appendChild(createInfoItem("Pathology", pathologyName, pathologyFile, "disorder-output"));
-
-    playerResults.appendChild(box);
-  }
-
-  // --- Game-Wide Component Generation (Mandatory) ---
-
-  // Episode
-  const epFull = pools.episodes[Math.floor(Math.random() * pools.episodes.length)];
-  const epCode = epFull.split(" ")[0]; 
-  const epFile = epCode.toLowerCase() + ".png";
-  episodeSection.appendChild(createInfoItem("Episode", epFull, epFile, "player-output"));
-
-  // Boss
-  const bossName = pools.bosses[Math.floor(Math.random() * pools.bosses.length)];
-  const bossFile = sanitizeFileName(bossName) + ".png";
-  bossSection.appendChild(createInfoItem("Elder One", bossName, bossFile, "player-output"));
-
-
-  // --- Game-Wide Component Generation (Optional) ---
-  
-  // Unknown Monster(s)
-  if (pools.monsters.length > 0) {
-    const monsterRem = [...pools.monsters]; // Clone the array for mutation
-
-    // Select Monster A
-    let randIndex1 = Math.floor(Math.random() * monsterRem.length);
-    let monsterName1 = monsterRem.splice(randIndex1, 1)[0];
-    monsterSection.appendChild(createInfoItem('Unknown Monster A', monsterName1, sanitizeFileName(monsterName1) + ".png", "player-output"));
-
-    // Select Monster B (only if pool size allows)
-    if (monsterRem.length > 0) {
-      let randIndex2 = Math.floor(Math.random() * monsterRem.length);
-      let monsterName2 = monsterRem.splice(randIndex2, 1)[0];
-      monsterSection.appendChild(createInfoItem('Unknown Monster B', monsterName2, sanitizeFileName(monsterName2) + ".png", "player-output"));
-    }
-  } else {
-      // Show empty space for monsters if none are selected
-      const span = document.createElement("span"); 
-      span.innerHTML = `Unknown Monsters:<br><em style="font-style: italic; color: #666;">(Skipped)</em>`; 
-      monsterSection.appendChild(span);
+  const numPlayers = parseInt(document.getElementById("numPlayers").value);
+  if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { 
+    const msg = "Please select 1–5 players.";
+    console.error(msg);
+    return; 
   }
+  
+  document.getElementById("gameGrid").style.display = "flex";
+
+  const playerResults = document.getElementById("playerResults");
+  const episodeSection = document.getElementById("episodeSection");
+  const bossSection = document.getElementById("bossSection");
+  const monsterSection = document.getElementById("monsterSection");
+
+  playerResults.innerHTML = ""; 
+  episodeSection.innerHTML = ""; 
+  bossSection.innerHTML = ""; 
+  monsterSection.innerHTML = "";
+
+  const used = [], usedRelics = [], usedPathologies = [];
+
+  for (let i=0; i<numPlayers; i++) {
+    const box = document.createElement("div"); box.className="player-box";
+
+    // Investigator 
+    const remaining = Array.from({length:31}, (_,j)=>j+1).filter(n=>!used.includes(n));
+    const sel = remaining[Math.floor(Math.random()*remaining.length)]; used.push(sel);
+    const name = getWord(sel, investigators1to31);
+    const file = sanitizeFileName(name)+".png";
+
+    // Note: Investigator, Relic, and Pathology still use dedicated DOM generation blocks 
+    // to correctly assign specific CSS classes (player-output, relic-output, disorder-output).
+    const div = document.createElement("div"); div.className="player-output";
+    const img = document.createElement("img"); img.src="assets/"+file; img.alt=name;
+    img.onerror=()=>{img.style.display="none";};
+    const span = document.createElement("span"); span.innerHTML=`Investigator:<br><em class="bold-italic">${name}</em>`;
+    div.appendChild(img); div.appendChild(span); box.appendChild(div);
+
+    // Relic
+    const relicRem = Array.from({length:27}, (_,j)=>j+1).filter(n=>!usedRelics.includes(n));
+    const relicSel = relicRem[Math.floor(Math.random()*relicRem.length)]; usedRelics.push(relicSel);
+    const relicName = getWord(relicSel, relics1to27); const relicFile = sanitizeFileName(relicName)+".png";
+    const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
+    const relicImg = document.createElement("img"); relicImg.src="assets/"+relicFile; relicImg.alt=relicName;
+    relicImg.onerror=()=>{relicImg.style.display="none";};
+    const relicSpan = document.createElement("span"); relicSpan.innerHTML=`Relic:<br><em class="bold-italic">${relicName}</em>`;
+    relicDiv.appendChild(relicImg); relicDiv.appendChild(relicSpan); box.appendChild(relicDiv);
+
+    // Pathology
+    const pathRem = Array.from({length:21},(_,j)=>j+1).filter(n=>!usedPathologies.includes(n));
+    const pathSel = pathRem[Math.floor(Math.random()*pathRem.length)]; usedPathologies.push(pathSel);
+    const pathName = getWord(pathSel,pathologies1to21); const pathFile=sanitizeFileName(pathName)+".png";
+    const pathDiv = document.createElement("div"); pathDiv.className="disorder-output";
+    const pathImg = document.createElement("img"); pathImg.src="assets/"+pathFile; pathImg.alt=pathName;
+    pathImg.onerror=()=>{pathImg.style.display="none";};
+    const pathSpan = document.createElement("span"); pathSpan.innerHTML=`Pathology:<br><em class="bold-italic">${pathName}</em>`;
+    pathDiv.appendChild(pathImg); pathDiv.appendChild(pathSpan); box.appendChild(pathDiv);
+
+    playerResults.appendChild(box);
+  }
+
+  // Episode
+  const epNum=Math.floor(Math.random()*18)+1; 
+  const epFull=getWord(epNum,episodes1to18);
+  const epCode=epFull.split(" ")[0]; 
+  const epFile=epCode.toLowerCase()+".png";
+  episodeSection.appendChild(createInfoItem("Episode", epFull, epFile));
+
+  // Boss
+  const bossNum=Math.floor(Math.random()*7)+1; 
+  const bossName=getWord(bossNum,bosses1to7); 
+  const bossFile=sanitizeFileName(bossName)+".png";
+  bossSection.appendChild(createInfoItem("Elder One", bossName, bossFile));
+
+  // Unknown Monster(s)
+  const monsterRem = Array.from({length: 25}, (_, j) => j + 1);
+
+  // Select Monster A
+  let randIndex1 = Math.floor(Math.random() * monsterRem.length);
+  let monsterNum1 = monsterRem.splice(randIndex1, 1)[0];
+  let monsterName1 = getWord(monsterNum1, monsters1to25);
+  monsterSection.appendChild(createMonsterDisplay('A', monsterName1));
+
+  // Select Monster B
+  let randIndex2 = Math.floor(Math.random() * monsterRem.length);
+  let monsterNum2 = monsterRem.splice(randIndex2, 1)[0];
+  let monsterName2 = getWord(monsterNum2, monsters1to25);
+  monsterSection.appendChild(createMonsterDisplay('B', monsterName2));
 }
 </script>
 </body>

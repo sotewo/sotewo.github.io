@@ -178,7 +178,7 @@
         align-items: center;
     }
 
-    /* New CSS for Component List Container (Replaces Inline Styles) */
+    /* New CSS for Component List Container (Restores original div styles) */
     .component-list-container {
         max-width: 900px;
         margin: 0 auto 20px;
@@ -196,19 +196,28 @@
         padding-left: 20px;
         list-style: none; /* Removed default list styling */
     }
+    
+    /* FIX: Ensures the list item (li) contents align correctly on one line */
+    .component-list li {
+        list-style-type: none; 
+        margin-bottom: 5px; 
+    }
 
     /* Styling for Checkboxes (Ensures theme compliance and clickability) */
     .component-list input[type="checkbox"] {
-        accent-color: #b0a06f; /* Sets the color of the checkmark/box borders */
-        transform: scale(1.1); /* Match the text size */
+        accent-color: #b0a06f; 
+        transform: scale(1.1); 
         vertical-align: middle; 
         margin-right: 5px;
         cursor: pointer;
     }
     
+    /* FIX: Used margin-left on the label to create separation space */
     .component-list label {
-        cursor: pointer; /* Makes the text label clickable */
-        margin-right: 15px; /* Spacing between checkboxes/labels */
+        cursor: pointer; 
+        margin-right: 15px; 
+        /* The margin below the list item text (e.g., Investigators:) for better alignment */
+        margin-left: 5px; 
     }
 
     @media (max-width: 600px) {

@@ -316,6 +316,8 @@
           <span class="group-checkbox"><input type="checkbox" id="inv_s2" data-group="investigators" data-sub="s2"><label for="inv_s2">S2</label></span>
           <span class="group-checkbox"><input type="checkbox" id="inv_s3" data-group="investigators" data-sub="s3"><label for="inv_s3">S3</label></span>
           <span class="group-checkbox"><input type="checkbox" id="inv_extra" data-group="investigators" data-sub="extra"><label for="inv_extra">Extra (Eddie the Head)</label></span>
+          <button onclick="selectAll('investigators')">Select All</button>
+          <button onclick="clearAll('investigators')">Clear All</button>
         </td>
       </tr>
 
@@ -326,6 +328,8 @@
           <span class="group-checkbox"><input type="checkbox" id="pth_s1" data-group="pathologies" data-sub="s1"><label for="pth_s1">S1</label></span>
           <span class="group-checkbox"><input type="checkbox" id="pth_s3" data-group="pathologies" data-sub="s3"><label for="pth_s3">S3</label></span>
           <span class="group-checkbox"><input type="checkbox" id="pth_extra" data-group="pathologies" data-sub="extra"><label for="pth_extra">Extra (Fear of the Dark)</label></span>
+          <button onclick="selectAll('pathologies')">Select All</button>
+          <button onclick="clearAll('pathologies')">Clear All</button>
         </td>
       </tr>
 
@@ -340,6 +344,8 @@
           <span class="group-checkbox"><input type="checkbox" id="boss_wicker" data-group="bosses" data-sub="Wicker Eddie"><label for="boss_wicker">Wicker Eddie</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_azathoth" data-group="bosses" data-sub="Azathoth"><label for="boss_azathoth">Azathoth</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_tsath" data-group="bosses" data-sub="Tsathoggua"><label for="boss_tsath">Tsathoggua</label></span>
+          <button onclick="selectAll('bosses')">Select All</button>
+          <button onclick="clearAll('bosses')">Clear All</button>
         </td>
       </tr>
 
@@ -350,6 +356,8 @@
           <span class="group-checkbox"><input type="checkbox" id="ep_s1" data-group="episodes" data-sub="s1"><label for="ep_s1">S1</label></span>
           <span class="group-checkbox"><input type="checkbox" id="ep_s2" data-group="episodes" data-sub="s2"><label for="ep_s2">S2</label></span>
           <span class="group-checkbox"><input type="checkbox" id="ep_s3" data-group="episodes" data-sub="s3"><label for="ep_s3">S3</label></span>
+          <button onclick="selectAll('episodes')">Select All</button>
+          <button onclick="clearAll('episodes')">Clear All</button>
         </td>
       </tr>
 
@@ -361,6 +369,8 @@
           <span class="group-checkbox"><input type="checkbox" id="rel_s4" data-group="relics" data-sub="s4"><label for="rel_s4">S4</label></span>
           <span class="group-checkbox"><input type="checkbox" id="rel_extra" data-group="relics" data-sub="extra"><label for="rel_extra">Extra (KS exclusive)</label></span>
           <span class="group-checkbox"><input type="checkbox" id="rel_animal" data-group="relics" data-sub="animal"><label for="rel_animal">Animal Allies</label></span>
+          <button onclick="selectAll('relics')">Select All</button>
+          <button onclick="clearAll('relics')">Clear All</button>
         </td>
       </tr>
 
@@ -372,6 +382,8 @@
           <span class="group-checkbox"><input type="checkbox" id="mon_s2" data-group="monsters" data-sub="s2"><label for="mon_s2">S2</label></span>
           <span class="group-checkbox"><input type="checkbox" id="mon_s3" data-group="monsters" data-sub="s3"><label for="mon_s3">S3</label></span>
           <span class="group-checkbox"><input type="checkbox" id="mon_iron" data-group="monsters" data-sub="iron"><label for="mon_iron">Extra (Iron Maiden Pack)</label></span>
+          <button onclick="selectAll('monsters')">Select All</button>
+          <button onclick="clearAll('monsters')">Clear All</button>
         </td>
       </tr>
 
@@ -698,6 +710,18 @@ function generate() {
 
 } // end generate
 </script>
+
+<script>
+// --- Quick select/clear functions ---
+function selectAll(groupName) {
+  document.querySelectorAll(`[data-group='${groupName}']`).forEach(cb => cb.checked = true);
+}
+function clearAll(groupName) {
+  document.querySelectorAll(`[data-group='${groupName}']`).forEach(cb => cb.checked = false);
+}
+</script>
+
 </body>
 </html>
+
 

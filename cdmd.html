@@ -10,7 +10,7 @@
   src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap; /* shows fallback until font loads */
+  font-display: swap; 
   }
 
   @font-face {
@@ -165,11 +165,10 @@
       flex-wrap: wrap;
     }
     
-    /* Ensure the monster section elements are styled to match */
     #monsterSection {
-        display: flex; /* Makes monster outputs lay out horizontally */
-        gap: 30px; /* Separates Monster 1 and Monster 2 */
-        flex-wrap: wrap; /* Ensures responsiveness if space is tight */
+        display: flex; 
+        gap: 30px; 
+        flex-wrap: wrap; 
         align-items: flex-start;
     }
     
@@ -234,20 +233,20 @@
 <div id="gameGrid">
   <div id="playerResults"></div>
   <div class="game-info-row">
-    <!-- Box 1: Episode and Elder One -->
+
     <div class="info-container">
       <div id="episodeSection"></div>
       <div id="bossSection"></div>
     </div>
-    <!-- Box 2: Unknown Monsters -->
+
     <div class="info-container">
-      <div id="monsterSection"></div> <!-- Unknown Monsters Section -->
+      <div id="monsterSection"></div> 
     </div>
   </div>
 </div>
 
 <script>
-// Component Lists (renamed for clarity in previous steps)
+
 const investigators1to31 = [
   "Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Eddie the Head",
   "Fatima Safar","Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid",
@@ -327,11 +326,11 @@ function createInfoItem(title, name, fileName) {
     return div;
 }
 
-// Simplified monster display logic using the new helper function
+
 function createMonsterDisplay(monsterIndex, monsterName) {
     const fileName = sanitizeFileName(monsterName) + ".png";
     const title = `Unknown Monster ${monsterIndex}`;
-    // Reuses the core logic from createInfoItem
+
     return createInfoItem(title, monsterName, fileName);
 }
 
@@ -397,14 +396,14 @@ function generate() {
     playerResults.appendChild(box);
   }
 
-  // Episode (REDUNDANCY REMOVED)
+  // Episode
   const epNum=Math.floor(Math.random()*18)+1; 
   const epFull=getWord(epNum,episodes1to18);
   const epCode=epFull.split(" ")[0]; 
   const epFile=epCode.toLowerCase()+".png";
   episodeSection.appendChild(createInfoItem("Episode", epFull, epFile));
 
-  // Boss (REDUNDANCY REMOVED)
+  // Boss
   const bossNum=Math.floor(Math.random()*7)+1; 
   const bossName=getWord(bossNum,bosses1to7); 
   const bossFile=sanitizeFileName(bossName)+".png";
@@ -428,4 +427,5 @@ function generate() {
 </script>
 </body>
 </html>
+
 

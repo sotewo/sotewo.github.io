@@ -88,7 +88,7 @@
       appearance: none;
     }
     
-    /* New styles for component selection */
+    /* Styles for component selection */
     #componentSelection {
       max-width: 900px;
       margin: 20px auto;
@@ -137,10 +137,10 @@
     }
 
     .warning-text {
-      color: #ff6347; /* A warning red/orange */
+      color: #ff6347; 
       font-weight: bold;
       margin-top: 10px;
-      display: none; /* Controlled by JS */
+      display: none; 
       text-align: center;
     }
     /* End new styles */
@@ -223,6 +223,7 @@
       flex-wrap: wrap;
     }
     
+    /* Fix for monster section layout */
     #monsterSection {
         display: flex; 
         gap: 30px; 
@@ -523,7 +524,6 @@ function generate() {
     // Investigator (Mandatory)
     const investigatorPool = pools.investigators.filter(name => !usedInvestigators.includes(name));
     if (investigatorPool.length === 0) {
-      // Should only happen if numPlayers > pool size, but good practice to handle.
       console.error("Not enough unique Investigators selected for all players.");
       break;
     }
@@ -543,9 +543,11 @@ function generate() {
         box.appendChild(createInfoItem("Relic", relicName, relicFile, "relic-output"));
       } else {
         // Fallback if not enough relics for all players
+        const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
         const span = document.createElement("span"); 
-        span.innerHTML = `Relic:<br><em style="color: #666;">No unique Relic available</em>`; 
-        box.appendChild(span);
+        span.innerHTML = `Relic:<br><em style="font-style: italic; color: #666;">(Not enough unique Relics selected)</em>`; 
+        relicDiv.appendChild(span);
+        box.appendChild(relicDiv);
       }
     }
 

@@ -244,19 +244,7 @@
   </ul>
 </div>
 
-<div class="section">
-  <label>Number of players (1–5):
-    <select id="numPlayers">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3" selected>3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
-  </label>
-</div>
-
-<!-- NEW COMPONENT SELECTION BOX -->
+<!-- NEW COMPONENT SELECTION BOX (Moved up) -->
 <div id="selectionBox" style="max-width: 900px; margin: 20px auto; padding: 20px; border: 2px solid #5c3d3d; border-radius: 5px; background-color: #151515; box-shadow: 0 0 8px rgba(0,0,0,0.5); text-align: left;">
     <p style="color: #b0a06f; text-align: center; font-size: 1.2em; margin-top: 0; margin-bottom: 15px;">Select Components</p>
 
@@ -333,6 +321,18 @@
     </div>
 </div>
 <!-- END NEW COMPONENT SELECTION BOX -->
+
+<div class="section">
+  <label>Number of players (1–5):
+    <select id="numPlayers">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" selected>3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </label>
+</div>
 
 <div class="section">
   <button onclick="generate()">Generate</button>

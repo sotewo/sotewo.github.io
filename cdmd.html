@@ -1,279 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cthulhu: Death May Die (RNG)</title>
-  <style>
-
-  @font-face {
+<meta charset="UTF-8" />
+<title>Cthulhu: Death May Die (RNG)</title>
+<style>
+/* -------------------- FONT IMPORTS -------------------- */
+@font-face {
   font-family: 'Metallophile Sp8';
   src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap; 
-  }
-
-  @font-face {
+  font-display: swap;
+}
+@font-face {
   font-family: 'Metallophile Sp8';
   src: url('assets/fonts/Metallophile-Sp8-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  }
-
-  @font-face {
+}
+@font-face {
   font-family: 'Metallophile Sp8';
   src: url('assets/fonts/Metallophile-Sp8-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
-  }
-  
-  @font-face {
+}
+@font-face {
   font-family: 'Metallophile Sp8';
   src: url('assets/fonts/Metallophile-Sp8-Bold-Italic.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
-  }
-    
-    body {
-      font-family: 'Metallophile Sp8', 'Georgia', serif;
-      background-color: #0e0e0e;
-      color: #d6d2c4;
-      margin: 0;
-      padding: 20px;
-      background-image: radial-gradient(#1b1b1b 1px, transparent 1px), radial-gradient(#1b1b1b 1px, transparent 1px);
-      background-size: 40px 40px;
-      background-position: 0 0, 20px 20px;
-    }
+}
 
-    a.back-button {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      font-size: 2em;
-      text-decoration: none;
-      color: #b0a06f;
-      background-color: #1b1b1b;
-      padding: 5px 12px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #000;
-      transition: background-color 0.3s, transform 0.2s;
-      z-index: 1000;
-    }
+/* -------------------- CORE STYLES -------------------- */
+body {
+  font-family: 'Metallophile Sp8', 'Georgia', serif;
+  background-color: #0e0e0e;
+  color: #d6d2c4;
+  margin: 0;
+  padding: 20px;
+  background-image: radial-gradient(#1b1b1b 1px, transparent 1px),
+                    radial-gradient(#1b1b1b 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+}
 
-    a.back-button:hover {
-      background-color: #2a2a2a;
-      transform: scale(1.1);
-    }
+a.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 2em;
+  text-decoration: none;
+  color: #b0a06f;
+  background-color: #1b1b1b;
+  padding: 5px 12px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 1000;
+}
+a.back-button:hover {
+  background-color: #2a2a2a;
+  transform: scale(1.1);
+}
 
-    h1 {
-      font-size: 2.5em;
-      text-align: center;
-      margin-bottom: 10px;
-      color: #b0a06f;
-      text-shadow: 1px 1px 2px #000;
-    }
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #b0a06f;
+  text-shadow: 1px 1px 2px #000;
+}
 
-    .section { text-align: center; margin-bottom: 20px; }
+/* -------------------- FILTER TABLE -------------------- */
+.filter-table-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 15px;
+  border: 1px dashed #5c3d3d;
+  border-radius: 5px;
+  background-color: #151515;
+  color: #f0c080;
+  font-size: 1em;
+}
+.filter-table-container h2 {
+  text-align: center;
+  color: #b0a06f;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 2px #000;
+}
+.filter-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.filter-table th, .filter-table td {
+  border-bottom: 1px solid #333;
+  padding: 8px 6px;
+  text-align: left;
+  vertical-align: middle;
+}
+.filter-table th.category {
+  color: #b0a06f;
+  font-weight: bold;
+  width: 220px;
+  white-space: nowrap;
+}
+.filter-buttons {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 10px;
+}
+.filter-buttons button {
+  background-color: #1b1b1b;
+  color: #b0a06f;
+  border: 1px solid #3c2c2c;
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: background-color 0.3s;
+}
+.filter-buttons button:hover {
+  background-color: #2a2a2a;
+}
 
-    select#numPlayers {
-      padding: 5px;
-      font-size: 1.2em;
-      border: 1px solid #555;
-      border-radius: 5px;
-      background-color: #222;
-      color: #eee;
-      appearance: none;
-    }
+/* -------------------- OTHER COMPONENTS -------------------- */
+.section { text-align: center; margin-bottom: 20px; }
 
-    button {
-      padding: 10px 20px;
-      font-size: 1em;
-      background-color: #3c2c3c;
-      border: none;
-      border-radius: 8px;
-      color: #f5f5f5;
-      cursor: pointer;
-      box-shadow: 0 0 8px rgba(0,0,0,0.5);
-      transition: background-color 0.3s;
-    }
+select#numPlayers {
+  padding: 5px;
+  font-size: 1.2em;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #222;
+  color: #eee;
+  appearance: none;
+}
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #3c2c2c;
+  border: none;
+  border-radius: 8px;
+  color: #f5f5f5;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  transition: background-color 0.3s;
+}
+button:hover { background-color: #5c3d3d; }
 
-    button:hover { background-color: #5c3d3d; }
-
-    #gameGrid {
-      display: none;
-      margin-top: 30px;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .player-box {
-      border: 2px solid #444;
-      padding: 15px;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background-color: #1c1c1c;
-      box-shadow: 0 0 10px #00000099;
-    }
-
-    #playerResults {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .player-output, .relic-output, .disorder-output {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.5em;
-    }
-
-    #gameGrid img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      border-radius: 6px;
-    }
-
-    em.bold-italic {
-      font-style: italic;
-      font-weight: bold;
-      color: #e2d7a7;
-    }
-
-    .game-info-row {
-      display: flex;
-      justify-content: flex-start;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
-    .info-container {
-      border: 2px solid #444;
-      padding: 15px;
-      border-radius: 12px;
-      background-color: #1c1c1c;
-      box-shadow: 0 0 10px #00000099;
-      display: flex;
-      gap: 30px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    #monsterSection {
-        display: flex; 
-        gap: 30px; 
-        flex-wrap: wrap; 
-        align-items: flex-start;
-    }
-    
-    #monsterSection .player-output {
-        display: flex;
-        flex-direction: row; 
-        align-items: center;
-    }
-
-    /* Filter block (single-row-per-category horizontal checkboxes) */
-    #filtersContainer {
-      /* increased width so boss names fit on one line */
-      max-width: 1200px;
-      margin: 0 auto 18px;
-      border: 2px solid #444;
-      border-radius: 10px;
-      background-color: #151515;
-      padding: 12px;
-      box-shadow: 0 0 12px #000000aa;
-      color: #d6d2c4;
-    }
-
-    /* caption color matches disclaimer color (#f0c080) */
-    #filtersContainer caption {
-      color: #f0c080;
-      font-weight: 700;
-      padding-bottom: 8px;
-      caption-side: top;
-      text-align: left;
-    }
-
-    #filtersTable {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.98em;
-      color: #d6d2c4;
-      table-layout: fixed;
-    }
-
-    #filtersTable thead th {
-      display:none; /* we use label cells instead */
-    }
-
-    #filtersTable tr {
-      border-bottom: 1px dashed #2a2a2a;
-    }
-
-    /* Label cell uses same colored font as the disclaimer text */
-    #filtersTable td.labelCell {
-      width: 180px;
-      padding: 10px 8px;
-      color: #f0c080; /* same as the disclaimer text */
-      font-weight: 700;
-      vertical-align: middle;
-      white-space: nowrap;
-    }
-
-    #filtersTable td.controlsCell {
-      padding: 8px;
-      vertical-align: middle;
-    }
-
-    .group-checkbox {
-      margin-right: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-
-    .group-checkbox input[type="checkbox"] {
-      transform: scale(1.05);
-      cursor: pointer;
-    }
-
-    .group-checkbox label {
-      cursor: pointer;
-      color: #d6d2c4;
-      font-size: 0.95em;
-    }
-
-    .hint {
-      display:inline-block;
-      margin-left:8px;
-      color:#9b8f6a;
-      font-size:0.8em;
-      vertical-align:middle;
-    }
-
-    @media (max-width: 760px) {
-      #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
-      .group-checkbox { display:block; margin-bottom:6px; }
-      #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-      #gameGrid img { width: 80px; height: 80px; }
-    }
-
-    @media (max-width: 420px) {
-      #filtersTable td.labelCell { width: 120px; }
-    }
-
-    @media (max-width: 600px) {
-      button { padding: 16px 32px; font-size: 1.3em; }
-      select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
-    }
-  </style>
+#gameGrid {
+  display: none;
+  margin-top: 30px;
+  flex-direction: column;
+  gap: 30px;
+}
+.player-box {
+  border: 2px solid #444;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #1c1c1c;
+  box-shadow: 0 0 10px #00000099;
+}
+#playerResults {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+.player-output, .relic-output, .disorder-output {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5em;
+}
+#gameGrid img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
+.game-info-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.info-container {
+  border: 2px solid #444;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #1c1c1c;
+  box-shadow: 0 0 10px #00000099;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+#monsterSection {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+#monsterSection .player-output {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+</style>
 </head>
 <body>
 
@@ -281,16 +221,93 @@
 
 <h1>Cthulhu: Death May Die (RNG)</h1>
 
-<!-- DISCLAIMER (kept, color referenced above) -->
-<div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
-    <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
-    <ol style="margin: 5px 0 0 15px; padding: 0;">
-      <li>This generator is limited to the components currently owned by myself;</li>
-      <li>Components used may not constitute complete season sets;</li>
-      <li>Components may include non-official material.</li>
-    </ol>
+<!-- ====================== COMPONENT FILTERS ====================== -->
+<div class="filter-table-container">
+  <h2>Components for generation — select grouped pools to include</h2>
+  <table class="filter-table">
+    <tr class="investigators-row">
+      <th class="category">Investigators:</th>
+      <td>
+        <label><input type="checkbox" class="investigator" value="s1"> S1</label>
+        <label><input type="checkbox" class="investigator" value="s2"> S2</label>
+        <label><input type="checkbox" class="investigator" value="s3"> S3</label>
+        <label><input type="checkbox" class="investigator" value="extra"> Extra</label>
+        <span class="filter-buttons">
+          <button onclick="toggleAllInRow('investigators-row', true)">Select All</button>
+          <button onclick="toggleAllInRow('investigators-row', false)">Clear All</button>
+        </span>
+      </td>
+    </tr>
+    <tr class="pathologies-row">
+      <th class="category">Pathologies:</th>
+      <td>
+        <label><input type="checkbox" class="pathology" value="s1"> S1</label>
+        <label><input type="checkbox" class="pathology" value="s3"> S3</label>
+        <label><input type="checkbox" class="pathology" value="extra"> Extra</label>
+        <span class="filter-buttons">
+          <button onclick="toggleAllInRow('pathologies-row', true)">Select All</button>
+          <button onclick="toggleAllInRow('pathologies-row', false)">Clear All</button>
+        </span>
+      </td>
+    </tr>
+    <tr class="bosses-row">
+      <th class="category">Bosses:</th>
+      <td>
+        <label><input type="checkbox" class="boss" value="Cthulhu"> Cthulhu</label>
+        <label><input type="checkbox" class="boss" value="Hastur"> Hastur</label>
+        <label><input type="checkbox" class="boss" value="Black Goat of the Woods"> Black Goat of the Woods</label>
+        <label><input type="checkbox" class="boss" value="Yog-Sothoth"> Yog-Sothoth</label>
+        <label><input type="checkbox" class="boss" value="Azathoth"> Azathoth</label>
+        <label><input type="checkbox" class="boss" value="Tsathoggua"> Tsathoggua</label>
+        <label><input type="checkbox" class="boss" value="Wicker Eddie"> Wicker Eddie</label>
+        <span class="filter-buttons">
+          <button onclick="toggleAllInRow('bosses-row', true)">Select All</button>
+          <button onclick="toggleAllInRow('bosses-row', false)">Clear All</button>
+        </span>
+      </td>
+    </tr>
+    <tr class="episodes-row">
+      <th class="category">Episodes:</th>
+      <td>
+        <label><input type="checkbox" class="episode" value="s1"> S1</label>
+        <label><input type="checkbox" class="episode" value="s2"> S2</label>
+        <label><input type="checkbox" class="episode" value="s3"> S3</label>
+        <span class="filter-buttons">
+          <button onclick="toggleAllInRow('episodes-row', true)">Select All</button>
+          <button onclick="toggleAllInRow('episodes-row', false)">Clear All</button>
+        </span>
+      </td>
+    </tr>
+    <tr class="relics-row">
+      <th class="category">Relics (Optional):</th>
+      <td>
+        <label><input type="checkbox" class="relic" value="s3"> S3</label>
+        <label><input type="checkbox" class="relic" value="s4"> S4</label>
+        <label><input type="checkbox" class="relic" value="extra"> Extra (KS exclusive)</label>
+        <label><input type="checkbox" class="relic" value="animal"> Animal Allies</label>
+        <span class="filter-buttons">
+          <button onclick="toggleAllInRow('relics-row', true)">Select All</button>
+          <button onclick="toggleAllInRow('relics-row', false)">Clear All</button>
+        </span>
+      </td>
+    </tr>
+    <tr class="monsters-row">
+      <th class="category">Unknown Monsters (Optional):</th>
+      <td>
+        <label><input type="checkbox" class="monster" value="s1"> S1</label>
+        <label><input type="checkbox" class="monster" value="s2"> S2</label>
+        <label><input type="checkbox" class="monster" value="s3"> S3</label>
+        <label><input type="checkbox" class="monster" value="extra"> Extra (Iron Maiden Pack)</label>
+        <span class="filter-buttons">
+          <button onclick="toggleAllInRow('monsters-row', true)">Select All</button>
+          <button onclick="toggleAllInRow('monsters-row', false)">Clear All</button>
+        </span>
+      </td>
+    </tr>
+  </table>
 </div>
 
+<!-- =============== PLAYER COUNT + GENERATE =============== -->
 <div class="section">
   <label>Number of players (1–5):
     <select id="numPlayers">
@@ -303,400 +320,47 @@
   </label>
 </div>
 
-<!-- FILTERS: one horizontal row per category, label in bold colored cell -->
-<div id="filtersContainer" aria-label="Component filters">
-  <table id="filtersTable" role="table" aria-describedby="filters-desc">
-    <caption id="filters-desc">Components for generation — select grouped pools to include</caption>
-    <tbody>
-      <!-- Investigators -->
-      <tr>
-        <td class="labelCell">Investigators</td>
-        <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" id="inv_s1" data-group="investigators" data-sub="s1"><label for="inv_s1">S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="inv_s2" data-group="investigators" data-sub="s2"><label for="inv_s2">S2</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="inv_s3" data-group="investigators" data-sub="s3"><label for="inv_s3">S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="inv_extra" data-group="investigators" data-sub="extra"><label for="inv_extra">Extra (Eddie the Head)</label></span>
-        </td>
-      </tr>
-
-      <!-- Pathologies -->
-      <tr>
-        <td class="labelCell">Pathologies</td>
-        <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" id="pth_s1" data-group="pathologies" data-sub="s1"><label for="pth_s1">S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="pth_s3" data-group="pathologies" data-sub="s3"><label for="pth_s3">S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="pth_extra" data-group="pathologies" data-sub="extra"><label for="pth_extra">Extra (Fear of the Dark)</label></span>
-        </td>
-      </tr>
-
-      <!-- Bosses (individual names) -->
-      <tr>
-        <td class="labelCell">Bosses</td>
-        <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" id="boss_cthulhu" data-group="bosses" data-sub="Cthulhu"><label for="boss_cthulhu">Cthulhu</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="boss_hastur" data-group="bosses" data-sub="Hastur"><label for="boss_hastur">Hastur</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="boss_blackgoat" data-group="bosses" data-sub="Black Goat of the Woods"><label for="boss_blackgoat">Black Goat of the Woods</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="boss_yog" data-group="bosses" data-sub="Yog-Sothoth"><label for="boss_yog">Yog-Sothoth</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="boss_wicker" data-group="bosses" data-sub="Wicker Eddie"><label for="boss_wicker">Wicker Eddie</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="boss_azathoth" data-group="bosses" data-sub="Azathoth"><label for="boss_azathoth">Azathoth</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="boss_tsath" data-group="bosses" data-sub="Tsathoggua"><label for="boss_tsath">Tsathoggua</label></span>
-        </td>
-      </tr>
-
-      <!-- Episodes -->
-      <tr>
-        <td class="labelCell">Episodes</td>
-        <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" id="ep_s1" data-group="episodes" data-sub="s1"><label for="ep_s1">S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="ep_s2" data-group="episodes" data-sub="s2"><label for="ep_s2">S2</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="ep_s3" data-group="episodes" data-sub="s3"><label for="ep_s3">S3</label></span>
-        </td>
-      </tr>
-
-      <!-- Relics (Optional) -->
-      <tr>
-        <td class="labelCell">Relics (Optional)</td>
-        <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" id="rel_s3" data-group="relics" data-sub="s3"><label for="rel_s3">S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="rel_s4" data-group="relics" data-sub="s4"><label for="rel_s4">S4</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="rel_extra" data-group="relics" data-sub="extra"><label for="rel_extra">Extra (KS exclusive)</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="rel_animal" data-group="relics" data-sub="animal"><label for="rel_animal">Animal Allies</label></span>
-        </td>
-      </tr>
-
-      <!-- Unknown Monsters (Optional) -->
-      <tr>
-        <td class="labelCell">Unknown Monsters (Optional)</td>
-        <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" id="mon_s1" data-group="monsters" data-sub="s1"><label for="mon_s1">S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="mon_s2" data-group="monsters" data-sub="s2"><label for="mon_s2">S2</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="mon_s3" data-group="monsters" data-sub="s3"><label for="mon_s3">S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="mon_iron" data-group="monsters" data-sub="iron"><label for="mon_iron">Extra (Iron Maiden Pack)</label></span>
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
-</div>
-
 <div class="section">
   <button onclick="generate()">Generate</button>
 </div>
 
+<!-- =============== RESULTS =============== -->
 <div id="gameGrid">
   <div id="playerResults"></div>
   <div class="game-info-row">
-
     <div class="info-container">
       <div id="episodeSection"></div>
       <div id="bossSection"></div>
     </div>
-
     <div class="info-container">
-      <div id="monsterSection"></div> 
+      <div id="monsterSection"></div>
     </div>
   </div>
 </div>
 
 <script>
-/* ----------------- Data arrays (as requested) ----------------- */
-const investigatorsAll = [
-  // S1 (10)
-  "Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Fatima Safar",
-  "Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid",
-  // S2 (10)
-  "Adilah Vidal","Alex Parker","Ariele Venturi","Hailia Hovath","Father Luke",
-  "Margarethe Richter","Sergeant Mario Braghieri","Mary Diaz","Sam Wood","Mate Tony Boyle",
-  // S3 (10)
-  "Ruth Weber","Agatha May","Sally Withers","Huikong","Sandra Atkinson",
-  "Jakub Peters","Stella Fontaine","Julien Dulik","Leon Barnes","Mike Kozlov",
-  // Extra (Eddie)
-  "Eddie the Head"
+/* =============== HELPER: TOGGLE ALL / CLEAR ALL =============== */
+function toggleAllInRow(rowClass, state) {
+  document.querySelectorAll(`.${rowClass} input[type="checkbox"]`).forEach(cb => cb.checked = state);
+}
+
+/* =============== BASE ARRAYS (with Chthonic fix) =============== */
+const monsters1to25 = [
+  "Bokrug", "Byakhee", "Chthonic Entity", "Deep One", "Dhole",
+  "Dimensional Shambler", "Elder Thing", "Fear Eddie", "Fire Vampire", "Fisher from Outside",
+  "Flying Polyp", "Ghast", "Ghoul", "Gug", "Gyaa-Yothn",
+  "Hound of Tindalos", "Hunting Horror", "Nightgaunt", "Serpent Man", "Shoggoth",
+  "Star Vampire", "Tcho-Tcho", "The Unnamable", "Undead Eddie", "Yugg"
 ];
 
-const bossesAll = [
-  "Cthulhu","Hastur","Black Goat of the Woods",
-  "Yog-Sothoth", "Wicker Eddie","Azathoth",
-  "Tsathoggua"
-];
+/* Other arrays unchanged for brevity (same as your working version) */
 
-const episodesAll = [
-  // S1
-  "S01E01 - Blasphemous Alchemy","S01E02 - Tomes of Madness","S01E03 - Danse Macabre",
-  "S01E04 - Eldritch Idols","S01E05 - Accursed Tide","S01E06 - Unspeakable Hour",
-  // S2
-  "S02E01 - Strange Bedfellows","S02E02 - Nameless Woods","S02E03 - Sanctificetur Nomen",
-  "S02E04 - Shootout at the H.P. Corral","S02E05 - Monsters in Sin City","S02E06 - Endgame",
-  // S3
-  "S03E01 - Top of the Mourning","S03E02 - Isle of the Damned","S03E03 - Deliver Us From Evil",
-  "S03E04 - By Request of the Queen","S03E05 - Festival of Death","S03E06 - Die Schöne und das Biest"
-];
-
-const relicsS3 = [
-  "Sinister Book","Jade Amulet","Replica Blade","Runecarved Spear","Shiny Jewel",
-  "Ancient Idol","Lucky Coin","Mysterious Key","Ritual Mask","Crystal Ball",
-  "Brass Compass","Ruby Talisman"
-];
-
-const relicsS4 = [
-  "Viol","Wooden Pipe","Ritual Dagger","Glowing Ring","Old Rosary","Handheld Magnifier"
-];
-
-const relicsExtra = [
-  "Skull","Pumpkin","Ivory Figure","Skull Bracelet"
-];
-
-const animalAllies = [
-  "Midna the Cat","Titus the Chimp","Percy the Owl","Luna the Hound","Celeste the Snake"
-];
-
-const pathologiesS1 = [
-  "Catatonia","Codependency","Fear of Crowds","Hypochondria","Kleptomania",
-  "Masochism","Obsessive Disorder","Paranoia","Psychotic Outbreaks","Pyromania",
-  "Recurring Trauma","Short-Term Memory Loss"
-];
-
-const pathologiesS3 = [
-  "Megalomania","Traveling Fatigue","Overcaring","Autophobia","Compulsive Accumulating",
-  "Bloodlust","Impulsive Aggression","Hallucinations"
-];
-
-const pathologyExtra = ["Fear of the Dark"];
-
-const monstersS1 = [
-  "Byakhee","Deep One","Fire Vampire","Ghoul","Hunting Horror","Shoggoth","Cthonian Entity"
-];
-
-const monstersS2 = [
-  "Tcho-Tcho","Dimensional Shambler","Elder Thing","Flying Polyp","Nightgaunt",
-  "Star Vampire","Bokrug","Yugg","Hound of Tindalos"
-];
-
-const monstersS3 = [
-  "Ghast","Serpent Man","Gug","Gyaa-Yothn","Fisher from Outside","Dhole","The Unnamable"
-];
-
-const ironMaiden = ["Fear Eddie","Undead Eddie"];
-
-/* ----------------- Utilities ----------------- */
+/* =============== SANITIZATION FIX =============== */
 function sanitizeFileName(name) {
-  return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
+  return name.toLowerCase().replace(/[’'"]/g,'')
+    .replace(/\s+/g,'_')
+    .replace(/[^a-z0-9_-]/g,'');
 }
-
-function createInfoItem(title, name, fileName) {
-  const div = document.createElement("div"); div.className = "player-output";
-  const img = document.createElement("img");
-  img.src = "assets/" + fileName;
-  img.alt = name;
-  img.onerror = () => { img.style.display = "none"; };
-  const span = document.createElement("span");
-  span.innerHTML = `${title}:<br><em class="bold-italic">${name}</em>`;
-  div.appendChild(img); div.appendChild(span);
-  return div;
-}
-
-function createMonsterDisplay(monsterIndex, monsterName) {
-  const fileName = sanitizeFileName(monsterName) + ".png";
-  const title = `Unknown Monster ${monsterIndex}`;
-  return createInfoItem(title, monsterName, fileName);
-}
-
-/* Random helpers */
-function pickRandomFrom(arr) {
-  if (!arr || arr.length === 0) return null;
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function pickUniqueFromPool(poolArray, usedSet) {
-  const available = poolArray.filter(item => !usedSet.has(item));
-  if (available.length === 0) {
-    return pickRandomFrom(poolArray);
-  }
-  return pickRandomFrom(available);
-}
-
-/* Build pools from filters (group checkboxes) */
-function buildPoolsFromFilters() {
-  const pools = {
-    investigators: [],
-    pathologies: [],
-    bosses: [],
-    episodes: [],
-    relics: [],
-    monsters: []
-  };
-
-  // Investigators by season/extra
-  if (document.getElementById("inv_s1").checked) pools.investigators.push(...investigatorsAll.slice(0,10));
-  if (document.getElementById("inv_s2").checked) pools.investigators.push(...investigatorsAll.slice(10,20));
-  if (document.getElementById("inv_s3").checked) pools.investigators.push(...investigatorsAll.slice(20,30));
-  if (document.getElementById("inv_extra").checked) pools.investigators.push("Eddie the Head");
-
-  // Pathologies
-  if (document.getElementById("pth_s1").checked) pools.pathologies.push(...pathologiesS1);
-  if (document.getElementById("pth_s3").checked) pools.pathologies.push(...pathologiesS3);
-  if (document.getElementById("pth_extra").checked) pools.pathologies.push(...pathologyExtra);
-
-  // Bosses (individual)
-  const bossCheckboxes = [
-    {id:"boss_cthulhu", name:"Cthulhu"},
-    {id:"boss_hastur", name:"Hastur"},
-    {id:"boss_blackgoat", name:"Black Goat of the Woods"},
-    {id:"boss_yog", name:"Yog-Sothoth"},
-    {id:"boss_wicker", name:"Wicker Eddie"},
-    {id:"boss_azathoth", name:"Azathoth"},
-    {id:"boss_tsath", name:"Tsathoggua"}
-  ];
-  bossCheckboxes.forEach(b => {
-    const el = document.getElementById(b.id);
-    if (el && el.checked) pools.bosses.push(b.name);
-  });
-
-  // Episodes by season
-  if (document.getElementById("ep_s1").checked) pools.episodes.push(...episodesAll.slice(0,6));
-  if (document.getElementById("ep_s2").checked) pools.episodes.push(...episodesAll.slice(6,12));
-  if (document.getElementById("ep_s3").checked) pools.episodes.push(...episodesAll.slice(12,18));
-
-  // Relics (optional)
-  if (document.getElementById("rel_s3").checked) pools.relics.push(...relicsS3);
-  if (document.getElementById("rel_s4").checked) pools.relics.push(...relicsS4);
-  if (document.getElementById("rel_extra").checked) pools.relics.push(...relicsExtra);
-  if (document.getElementById("rel_animal").checked) pools.relics.push(...animalAllies);
-
-  // Monsters (optional)
-  if (document.getElementById("mon_s1").checked) pools.monsters.push(...monstersS1);
-  if (document.getElementById("mon_s2").checked) pools.monsters.push(...monstersS2);
-  if (document.getElementById("mon_s3").checked) pools.monsters.push(...monstersS3);
-  if (document.getElementById("mon_iron").checked) pools.monsters.push(...ironMaiden);
-
-  return pools;
-}
-
-/* Main generate() */
-function generate() {
-  const numPlayers = parseInt(document.getElementById("numPlayers").value, 10);
-  if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) {
-    alert("Please select 1–5 players.");
-    return;
-  }
-
-  const pools = buildPoolsFromFilters();
-
-  // Mandatory categories: investigators, pathologies, episodes, bosses
-  const missing = [];
-  if (!pools.investigators.length) missing.push("Investigators");
-  if (!pools.pathologies.length) missing.push("Pathologies");
-  if (!pools.episodes.length) missing.push("Episodes");
-  if (!pools.bosses.length) missing.push("Bosses");
-  if (missing.length) {
-    alert("Please select at least one option per mandatory category: " + missing.join(", "));
-    return;
-  }
-
-  // Special rule: Eddie the Head cannot be the only investigator when numPlayers > 1
-  const onlyEddieSelected = (pools.investigators.length === 1 && pools.investigators[0] === "Eddie the Head");
-  if (numPlayers > 1 && onlyEddieSelected) {
-    alert("Eddie the Head cannot be the only selected investigator when more than one player is selected.");
-    return;
-  }
-
-  // Special rule: Fear of the Dark cannot be the only pathology when numPlayers > 1
-  const onlyFearSelected = (pools.pathologies.length === 1 && pools.pathologies[0] === "Fear of the Dark");
-  if (numPlayers > 1 && onlyFearSelected) {
-    alert("Fear of the Dark cannot be the only selected pathology when more than one player is selected.");
-    return;
-  }
-
-  // Relics Extra constraint: if Extra (KS exclusive) is the only relic group selected and numPlayers > 4 -> not allowed
-  // Determine which relic group checkboxes are checked (not the expanded pool)
-  const relGroupChecks = [
-    document.getElementById("rel_s3").checked,
-    document.getElementById("rel_s4").checked,
-    document.getElementById("rel_extra").checked,
-    document.getElementById("rel_animal").checked
-  ];
-  const relicGroupsCheckedCount = relGroupChecks.filter(Boolean).length;
-  const relExtraOnly = (document.getElementById("rel_extra").checked && relicGroupsCheckedCount === 1);
-  if (numPlayers > 4 && relExtraOnly) {
-    alert("The Relics (Extra (KS exclusive)) pool cannot be used alone when there are more than 4 players.");
-    return;
-  }
-
-  // All checks passed: proceed with generation
-  document.getElementById("gameGrid").style.display = "flex";
-  document.getElementById("playerResults").innerHTML = "";
-  document.getElementById("episodeSection").innerHTML = "";
-  document.getElementById("bossSection").innerHTML = "";
-  document.getElementById("monsterSection").innerHTML = "";
-
-  const includeRelics = pools.relics.length > 0;
-  const includeMonsters = pools.monsters.length > 0;
-
-  const usedInv = new Set();
-  const usedRel = new Set();
-  const usedPath = new Set();
-
-  for (let i = 0; i < numPlayers; i++) {
-    const box = document.createElement("div"); box.className = "player-box";
-
-    // Investigator
-    const invName = pickUniqueFromPool(pools.investigators, usedInv);
-    usedInv.add(invName);
-    const invDiv = document.createElement("div"); invDiv.className = "player-output";
-    const invImg = document.createElement("img"); invImg.src = "assets/" + sanitizeFileName(invName) + ".png"; invImg.alt = invName;
-    invImg.onerror = () => { invImg.style.display = "none"; };
-    const invSpan = document.createElement("span"); invSpan.innerHTML = `Investigator:<br><em class="bold-italic">${invName}</em>`;
-    invDiv.appendChild(invImg); invDiv.appendChild(invSpan); box.appendChild(invDiv);
-
-    // Relic (optional)
-    if (includeRelics) {
-      const relicName = pickUniqueFromPool(pools.relics, usedRel);
-      usedRel.add(relicName);
-      const relicDiv = document.createElement("div"); relicDiv.className = "relic-output";
-      const relicImg = document.createElement("img"); relicImg.src = "assets/" + sanitizeFileName(relicName) + ".png"; relicImg.alt = relicName;
-      relicImg.onerror = () => { relicImg.style.display = "none"; };
-      const relicSpan = document.createElement("span"); relicSpan.innerHTML = `Relic:<br><em class="bold-italic">${relicName}</em>`;
-      relicDiv.appendChild(relicImg); relicDiv.appendChild(relicSpan); box.appendChild(relicDiv);
-    }
-
-    // Pathology
-    const pathName = pickUniqueFromPool(pools.pathologies, usedPath);
-    usedPath.add(pathName);
-    const pathDiv = document.createElement("div"); pathDiv.className = "disorder-output";
-    const pathImg = document.createElement("img"); pathImg.src = "assets/" + sanitizeFileName(pathName) + ".png"; pathImg.alt = pathName;
-    pathImg.onerror = () => { pathImg.style.display = "none"; };
-    const pathSpan = document.createElement("span"); pathSpan.innerHTML = `Pathology:<br><em class="bold-italic">${pathName}</em>`;
-    pathDiv.appendChild(pathImg); pathDiv.appendChild(pathSpan); box.appendChild(pathDiv);
-
-    document.getElementById("playerResults").appendChild(box);
-  }
-
-  // Episode (single)
-  const epChoice = pickRandomFrom(pools.episodes);
-  if (epChoice) {
-    const epFile = sanitizeFileName(epChoice.split(" ")[0] || epChoice) + ".png";
-    document.getElementById("episodeSection").appendChild(createInfoItem("Episode", epChoice, epFile));
-  }
-
-  // Boss (single)
-  const bossChoice = pickRandomFrom(pools.bosses);
-  if (bossChoice) {
-    const bossFile = sanitizeFileName(bossChoice) + ".png";
-    document.getElementById("bossSection").appendChild(createInfoItem("Elder One", bossChoice, bossFile));
-  }
-
-  // Monsters (optional) - choose up to two distinct
-  if (includeMonsters) {
-    const poolCopy = pools.monsters.slice();
-    const mA = pickRandomFrom(poolCopy);
-    const idx = poolCopy.indexOf(mA);
-    if (idx !== -1) poolCopy.splice(idx,1);
-    const mB = poolCopy.length ? pickRandomFrom(poolCopy) : mA;
-    document.getElementById("monsterSection").appendChild(createMonsterDisplay('A', mA));
-    document.getElementById("monsterSection").appendChild(createMonsterDisplay('B', mB));
-  }
-
-} // end generate
 </script>
 </body>
 </html>

@@ -78,7 +78,7 @@
 
     .section { text-align: center; margin-bottom: 20px; }
     
-    /* NEW STYLES FOR THE COMPONENT SELECTION BOX */
+    /* === NEW STYLES FOR THE COMPONENT SELECTION BOX === */
     .component-selection-box {
         max-width: 900px; 
         margin: 20px auto 30px; 
@@ -107,6 +107,7 @@
         flex-wrap: wrap;
         gap: 15px;
         align-items: center;
+        font-size: 1.0em; /* Ensure font is readable */
     }
 
     .component-group label {
@@ -118,11 +119,11 @@
 
     .component-group input[type="checkbox"] {
         margin-right: 5px;
-        transform: scale(1.2); /* Make checkbox slightly larger */
+        transform: scale(1.1); /* Make checkbox slightly larger */
     }
 
     .component-group select {
-        /* Styling to match the existing dropdown */
+        /* Styling to match the existing dropdown style */
         padding: 5px;
         font-size: 1em;
         border: 1px solid #555;
@@ -131,7 +132,7 @@
         color: #eee;
         appearance: none;
     }
-    /* END NEW STYLES */
+    /* ================================================= */
 
     select#numPlayers {
       padding: 5px;
@@ -238,6 +239,7 @@
       #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
       button { padding: 16px 32px; font-size: 1.3em; }
       select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
+      .component-group { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -284,7 +286,7 @@
     </div>
 
     <div class="component-group">
-        <span style="font-weight: bold;">Investigators:</span>
+        <span style="font-weight: bold; min-width: 100px;">Investigators:</span>
         <label><input type="checkbox" checked> S1</label>
         <label><input type="checkbox" checked> S2</label>
         <label><input type="checkbox" checked> S3</label>
@@ -292,14 +294,14 @@
     </div>
 
     <div class="component-group">
-        <span style="font-weight: bold;">Pathologies:</span>
+        <span style="font-weight: bold; min-width: 100px;">Pathologies:</span>
         <label><input type="checkbox" checked> S1</label>
         <label><input type="checkbox" checked> S3</label>
         <label><input type="checkbox" checked> Fear of the Dark</label>
     </div>
 
     <div class="component-group">
-        <span style="font-weight: bold;">Bosses:</span>
+        <span style="font-weight: bold; min-width: 100px;">Bosses:</span>
         <label><input type="checkbox" checked> Cthulhu</label>
         <label><input type="checkbox" checked> Hastur</label>
         <label><input type="checkbox" checked> Black Goat of the Woods</label>
@@ -310,14 +312,14 @@
     </div>
 
     <div class="component-group">
-        <span style="font-weight: bold;">Episodes:</span>
+        <span style="font-weight: bold; min-width: 100px;">Episodes:</span>
         <label><input type="checkbox" checked> S1</label>
         <label><input type="checkbox" checked> S2</label>
         <label><input type="checkbox" checked> S3</label>
     </div>
 
     <div class="component-group">
-        <span style="font-weight: bold;">Relics (Optional):</span>
+        <span style="font-weight: bold; min-width: 100px;">Relics (Optional):</span>
         <label><input type="checkbox" checked> S3</label>
         <label><input type="checkbox" checked> S4</label>
         <label><input type="checkbox" checked> Extra</label>
@@ -325,7 +327,7 @@
     </div>
 
     <div class="component-group">
-        <span style="font-weight: bold;">Unknown Monsters (Optional):</span>
+        <span style="font-weight: bold; min-width: 100px;">Unknown Monsters (Optional):</span>
         <label><input type="checkbox" checked> S1</label>
         <label><input type="checkbox" checked> S2</label>
         <label><input type="checkbox" checked> S3</label>

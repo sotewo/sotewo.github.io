@@ -179,7 +179,7 @@
         align-items: center;
     }
     
-    /* --- FILTER STYLES (Final Correction) --- */
+    /* --- FILTER STYLES --- */
     #filterSection {
       max-width: 900px; 
       margin: 20px auto; 
@@ -187,8 +187,7 @@
       border: 1px solid #3c2c2c; 
       border-radius: 8px; 
       background-color: #1a1a1a;
-      /* Ensure text in the filter section also uses the custom font */
-      font-family: 'Metallophile Sp8', 'Georgia', serif; 
+      /* Removed font-family here to rely on body inheritance */
     }
     #filterSection h2 {
         font-size: 1.8em;
@@ -248,7 +247,7 @@
         text-align: left;
     }
     .boss-checkbox-item {
-        display: block; /* Ensure correct vertical stacking */
+        display: block; 
         white-space: nowrap; 
     }
     

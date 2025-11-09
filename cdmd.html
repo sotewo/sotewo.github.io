@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="utf-8" />
 <title>Cthulhu: Death May Die (RNG)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
+/* ===== fonts (your local assets) ===== */
 @font-face {
   font-family: 'Metallophile Sp8';
   src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
@@ -33,14 +35,14 @@
   font-display: swap;
 }
 
+/* ===== page styling (preserved look) ===== */
 body {
   font-family: 'Metallophile Sp8', 'Georgia', serif;
   background-color: #0e0e0e;
   color: #d6d2c4;
   margin: 0;
   padding: 20px;
-  background-image: radial-gradient(#1b1b1b 1px, transparent 1px),
-                    radial-gradient(#1b1b1b 1px, transparent 1px);
+  background-image: radial-gradient(#1b1b1b 1px, transparent 1px), radial-gradient(#1b1b1b 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: 0 0, 20px 20px;
 }
@@ -59,10 +61,7 @@ a.back-button {
   transition: background-color 0.3s, transform 0.2s;
   z-index: 1000;
 }
-a.back-button:hover {
-  background-color: #2a2a2a;
-  transform: scale(1.1);
-}
+a.back-button:hover { background-color: #2a2a2a; transform: scale(1.1); }
 
 h1 {
   font-size: 2.5em;
@@ -72,10 +71,7 @@ h1 {
   text-shadow: 1px 1px 2px #000;
 }
 
-.section {
-  text-align: center;
-  margin-bottom: 20px;
-}
+.section { text-align: center; margin-bottom: 20px; }
 
 select#numPlayers {
   padding: 5px;
@@ -87,7 +83,21 @@ select#numPlayers {
   appearance: none;
 }
 
-/* GENERATE button styled like toggle-all */
+/* default generic button (kept for other UI) */
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #3c2c3c;
+  border: none;
+  border-radius: 8px;
+  color: #f5f5f5;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  transition: background-color 0.3s;
+}
+button:hover { background-color: #5c3d3d; }
+
+/* generate button styled like toggle */
 button.generate-btn {
   font-family: inherit;
   font-size: 1em;
@@ -106,17 +116,9 @@ button.generate-btn:hover {
   color: #f0c080;
   border-color: #8c5b3f;
 }
-button.generate-btn:active {
-  transform: scale(0.97);
-  opacity: 0.85;
-}
 
-#gameGrid {
-  display: none;
-  margin-top: 30px;
-  flex-direction: column;
-  gap: 30px;
-}
+/* grid for generated results */
+#gameGrid { display: none; margin-top: 30px; flex-direction: column; gap: 30px; }
 
 .player-box {
   border: 2px solid #444;
@@ -149,18 +151,9 @@ button.generate-btn:active {
   border-radius: 6px;
 }
 
-em.bold-italic {
-  font-style: italic;
-  font-weight: bold;
-  color: #e2d7a7;
-}
+em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 
-.game-info-row {
-  display: flex;
-  justify-content: flex-start;
-  gap: 40px;
-  flex-wrap: wrap;
-}
+.game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
 
 .info-container {
   border: 2px solid #444;
@@ -174,19 +167,10 @@ em.bold-italic {
   flex-wrap: wrap;
 }
 
-#monsterSection {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-#monsterSection .player-output {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+#monsterSection { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
+#monsterSection .player-output { display: flex; flex-direction: row; align-items: center; }
 
-/* Filter block */
+/* Filter block (single-row-per-category horizontal checkboxes) */
 #filtersContainer {
   max-width: 1200px;
   margin: 0 auto 18px;
@@ -229,7 +213,7 @@ em.bold-italic {
   vertical-align: middle;
 }
 
-/* Align toggle button and checkboxes perfectly */
+/* we align controls and toggle vertically centered with checkboxes */
 .controlsCell {
   display: flex;
   align-items: center;
@@ -238,6 +222,7 @@ em.bold-italic {
 }
 
 .group-checkbox {
+  margin-right: 12px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -246,11 +231,13 @@ em.bold-italic {
 .group-checkbox input[type="checkbox"] {
   transform: scale(1.05);
   cursor: pointer;
+  margin: 0;
 }
 .group-checkbox label {
   cursor: pointer;
   color: #d6d2c4;
   font-size: 0.95em;
+  margin-left: 2px;
 }
 
 /* Compact gothic-style toggle buttons */
@@ -276,6 +263,7 @@ em.bold-italic {
   opacity: 0.85;
 }
 
+/* small responsive tweaks preserved */
 @media (max-width: 760px) {
   #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
   .group-checkbox { display:block; margin-bottom:6px; }
@@ -294,14 +282,14 @@ em.bold-italic {
 <a href="index.html" class="back-button" title="Back to Game Selection">&#8592;</a>
 <h1>Cthulhu: Death May Die (RNG)</h1>
 
-<!-- DISCLAIMER -->
+<!-- DISCLAIMER (kept exactly) -->
 <div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
-  <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
-  <ol style="margin: 5px 0 0 15px; padding: 0;">
-    <li>This generator is limited to the components currently owned by myself;</li>
-    <li>Components used may not constitute complete season sets;</li>
-    <li>Components may include non-official material.</li>
-  </ol>
+    <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
+    <ol style="margin: 5px 0 0 15px; padding: 0;">
+      <li>This generator is limited to the components currently owned by myself;</li>
+      <li>Components used may not constitute complete season sets;</li>
+      <li>Components may include non-official material.</li>
+    </ol>
 </div>
 
 <!-- Number of players -->
@@ -317,98 +305,441 @@ em.bold-italic {
   </label>
 </div>
 
-<!-- FILTERS -->
-<div id="filtersContainer">
-  <table id="filtersTable">
-    <caption>Components for generation — select grouped pools to include</caption>
+<!-- FILTERS: each checkbox has the same IDs expected by generation logic -->
+<div id="filtersContainer" aria-label="Component filters">
+  <table id="filtersTable" role="table" aria-describedby="filters-desc">
+    <caption id="filters-desc">Components for generation — select grouped pools to include</caption>
     <tbody>
-      <tr><td class="labelCell">Investigators</td>
+
+      <!-- Investigators -->
+      <tr>
+        <td class="labelCell">Investigators</td>
         <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>S2</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>Extra (Eddie the Head)</label></span>
-          <button class="toggle-all" data-group="investigators">Select All</button>
+          <span class="group-checkbox"><input type="checkbox" id="inv_s1" data-group="investigators" data-sub="s1"><label for="inv_s1">S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="inv_s2" data-group="investigators" data-sub="s2"><label for="inv_s2">S2</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="inv_s3" data-group="investigators" data-sub="s3"><label for="inv_s3">S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="inv_extra" data-group="investigators" data-sub="extra"><label for="inv_extra">Extra (Eddie the Head)</label></span>
+          <button class="toggle-all" data-group="investigators" aria-label="Toggle investigators">Select All</button>
         </td>
       </tr>
-      <tr><td class="labelCell">Pathologies</td>
+
+      <!-- Pathologies -->
+      <tr>
+        <td class="labelCell">Pathologies</td>
         <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" data-group="pathologies"><label>S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="pathologies"><label>S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="pathologies"><label>Extra (Fear of the Dark)</label></span>
-          <button class="toggle-all" data-group="pathologies">Select All</button>
+          <span class="group-checkbox"><input type="checkbox" id="pth_s1" data-group="pathologies" data-sub="s1"><label for="pth_s1">S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="pth_s3" data-group="pathologies" data-sub="s3"><label for="pth_s3">S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="pth_extra" data-group="pathologies" data-sub="extra"><label for="pth_extra">Extra (Fear of the Dark)</label></span>
+          <button class="toggle-all" data-group="pathologies" aria-label="Toggle pathologies">Select All</button>
         </td>
       </tr>
-      <tr><td class="labelCell">Bosses</td>
+
+      <!-- Bosses -->
+      <tr>
+        <td class="labelCell">Bosses</td>
         <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Cthulhu</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Hastur</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Black Goat of the Woods</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Yog-Sothoth</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Wicker Eddie</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Azathoth</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Tsathoggua</label></span>
-          <button class="toggle-all" data-group="bosses">Select All</button>
+          <span class="group-checkbox"><input type="checkbox" id="boss_cthulhu" data-group="bosses" data-sub="Cthulhu"><label for="boss_cthulhu">Cthulhu</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_hastur" data-group="bosses" data-sub="Hastur"><label for="boss_hastur">Hastur</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_blackgoat" data-group="bosses" data-sub="Black Goat of the Woods"><label for="boss_blackgoat">Black Goat of the Woods</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_yog" data-group="bosses" data-sub="Yog-Sothoth"><label for="boss_yog">Yog-Sothoth</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_wicker" data-group="bosses" data-sub="Wicker Eddie"><label for="boss_wicker">Wicker Eddie</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_azathoth" data-group="bosses" data-sub="Azathoth"><label for="boss_azathoth">Azathoth</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_tsath" data-group="bosses" data-sub="Tsathoggua"><label for="boss_tsath">Tsathoggua</label></span>
+          <button class="toggle-all" data-group="bosses" aria-label="Toggle bosses">Select All</button>
         </td>
       </tr>
-      <tr><td class="labelCell">Episodes</td>
+
+      <!-- Episodes -->
+      <tr>
+        <td class="labelCell">Episodes</td>
         <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" data-group="episodes"><label>S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="episodes"><label>S2</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="episodes"><label>S3</label></span>
-          <button class="toggle-all" data-group="episodes">Select All</button>
+          <span class="group-checkbox"><input type="checkbox" id="ep_s1" data-group="episodes" data-sub="s1"><label for="ep_s1">S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="ep_s2" data-group="episodes" data-sub="s2"><label for="ep_s2">S2</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="ep_s3" data-group="episodes" data-sub="s3"><label for="ep_s3">S3</label></span>
+          <button class="toggle-all" data-group="episodes" aria-label="Toggle episodes">Select All</button>
         </td>
       </tr>
-      <tr><td class="labelCell">Relics (Optional)</td>
+
+      <!-- Relics (Optional) -->
+      <tr>
+        <td class="labelCell">Relics (Optional)</td>
         <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>S4</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>Extra (KS exclusive)</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>Animal Allies</label></span>
-          <button class="toggle-all" data-group="relics">Select All</button>
+          <span class="group-checkbox"><input type="checkbox" id="rel_s3" data-group="relics" data-sub="s3"><label for="rel_s3">S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="rel_s4" data-group="relics" data-sub="s4"><label for="rel_s4">S4</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="rel_extra" data-group="relics" data-sub="extra"><label for="rel_extra">Extra (KS exclusive)</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="rel_animal" data-group="relics" data-sub="animal"><label for="rel_animal">Animal Allies</label></span>
+          <button class="toggle-all" data-group="relics" aria-label="Toggle relics">Select All</button>
         </td>
       </tr>
-      <tr><td class="labelCell">Unknown Monsters (Optional)</td>
+
+      <!-- Unknown Monsters (Optional) -->
+      <tr>
+        <td class="labelCell">Unknown Monsters (Optional)</td>
         <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>S1</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>S2</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>Extra (Iron Maiden Pack)</label></span>
-          <button class="toggle-all" data-group="monsters">Select All</button>
+          <span class="group-checkbox"><input type="checkbox" id="mon_s1" data-group="monsters" data-sub="s1"><label for="mon_s1">S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="mon_s2" data-group="monsters" data-sub="s2"><label for="mon_s2">S2</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="mon_s3" data-group="monsters" data-sub="s3"><label for="mon_s3">S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="mon_iron" data-group="monsters" data-sub="iron"><label for="mon_iron">Extra (Iron Maiden Pack)</label></span>
+          <button class="toggle-all" data-group="monsters" aria-label="Toggle monsters">Select All</button>
         </td>
       </tr>
+
     </tbody>
   </table>
 </div>
 
+<!-- GENERATE -->
 <div class="section">
-  <button class="generate-btn" onclick="generate()">GENERATE</button>
+  <button class="generate-btn" id="generateBtn" onclick="generate()">GENERATE</button>
 </div>
 
+<!-- Results area (keeps original layout) -->
 <div id="gameGrid">
   <div id="playerResults"></div>
   <div class="game-info-row">
-    <div class="info-container"><div id="episodeSection"></div><div id="bossSection"></div></div>
-    <div class="info-container"><div id="monsterSection"></div></div>
+    <div class="info-container">
+      <div id="episodeSection"></div>
+      <div id="bossSection"></div>
+    </div>
+
+    <div class="info-container">
+      <div id="monsterSection"></div>
+    </div>
   </div>
 </div>
 
 <script>
-// Toggle all buttons
+/* ----------------- Data arrays (same pools you provided) ----------------- */
+const investigatorsAll = [
+  // S1 (10)
+  "Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Fatima Safar",
+  "Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid",
+  // S2 (10)
+  "Adilah Vidal","Alex Parker","Ariele Venturi","Hailia Hovath","Father Luke",
+  "Margarethe Richter","Sergeant Mario Braghieri","Mary Diaz","Sam Wood","Mate Tony Boyle",
+  // S3 (10)
+  "Ruth Weber","Agatha May","Sally Withers","Huikong","Sandra Atkinson",
+  "Jakub Peters","Stella Fontaine","Julien Dulik","Leon Barnes","Mike Kozlov",
+  // Extra (Eddie)
+  "Eddie the Head"
+];
+
+const bosses1to7 = [
+  "Cthulhu","Hastur","Black Goat of the Woods",
+  "Yog-Sothoth", "Wicker Eddie","Azathoth",
+  "Tsathoggua"
+];
+
+const episodes1to18 = [
+  "S01E01 - Blasphemous Alchemy","S01E02 - Tomes of Madness","S01E03 - Danse Macabre",
+  "S01E04 - Eldritch Idols","S01E05 - Accursed Tide","S01E06 - Unspeakable Hour",
+  "S02E01 - Strange Bedfellows","S02E02 - Nameless Woods","S02E03 - Sanctificetur Nomen",
+  "S02E04 - Shootout at the H.P. Corral","S02E05 - Monsters in Sin City","S02E06 - Endgame",
+  "S03E01 - Top of the Mourning","S03E02 - Isle of the Damned","S03E03 - Deliver Us From Evil",
+  "S03E04 - By Request of the Queen","S03E05 - Festival of Death","S03E06 - Die Schöne und das Biest"
+];
+
+const relicsS3 = [
+  "Sinister Book","Jade Amulet","Replica Blade","Runecarved Spear","Shiny Jewel",
+  "Ancient Idol","Lucky Coin","Mysterious Key","Ritual Mask","Crystal Ball",
+  "Brass Compass","Ruby Talisman"
+];
+
+const relicsS4 = [
+  "Viol","Wooden Pipe","Ritual Dagger","Glowing Ring","Old Rosary","Handheld Magnifier"
+];
+
+const relicsExtra = [
+  "Skull","Pumpkin","Ivory Figure","Skull Bracelet"
+];
+
+const animalAllies = [
+  "Midna the Cat","Titus the Chimp","Percy the Owl","Luna the Hound","Celeste the Snake"
+];
+
+const pathologiesS1 = [
+  "Catatonia","Codependency","Fear of Crowds","Hypochondria","Kleptomania",
+  "Masochism","Obsessive Disorder","Paranoia","Psychotic Outbreaks","Pyromania",
+  "Recurring Trauma","Short-Term Memory Loss"
+];
+
+const pathologiesS3 = [
+  "Megalomania","Traveling Fatigue","Overcaring","Autophobia","Compulsive Accumulating",
+  "Bloodlust","Impulsive Aggression","Hallucinations"
+];
+
+const pathologyExtra = ["Fear of the Dark"];
+
+const monstersS1 = [
+  "Byakhee","Deep One","Fire Vampire","Ghoul","Hunting Horror","Shoggoth","Chthonic Entity"
+];
+
+const monstersS2 = [
+  "Tcho-Tcho","Dimensional Shambler","Elder Thing","Flying Polyp","Nightgaunt",
+  "Star Vampire","Bokrug","Yugg","Hound of Tindalos"
+];
+
+const monstersS3 = [
+  "Ghast","Serpent Man","Gug","Gyaa-Yothn","Fisher from Outside","Dhole","The Unnamable"
+];
+
+const ironMaiden = ["Fear Eddie","Undead Eddie"];
+
+/* ----------------- Utility functions ----------------- */
+
+function sanitizeFileName(name) {
+  return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
+}
+
+function getWord(num, list) { return list[num-1] || num; }
+
+function createInfoItem(title, name, fileName) {
+    const div = document.createElement("div");
+    div.className = "player-output";
+
+    const img = document.createElement("img");
+    img.src = "assets/" + fileName;
+    img.alt = name;
+    img.onerror = () => { img.style.display = "none"; };
+
+    const span = document.createElement("span");
+    span.innerHTML = `${title}:<br><em class="bold-italic">${name}</em>`;
+
+    div.appendChild(img);
+    div.appendChild(span);
+    return div;
+}
+
+function createMonsterDisplay(monsterIndex, monsterName) {
+    const fileName = sanitizeFileName(monsterName) + ".png";
+    const title = `Unknown Monster ${monsterIndex}`;
+    return createInfoItem(title, monsterName, fileName);
+}
+
+/* random helpers */
+function pickRandomFrom(arr) {
+  if (!arr || arr.length === 0) return null;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function pickUniqueFromPool(poolArray, usedSet) {
+  const available = poolArray.filter(item => !usedSet.has(item));
+  if (available.length === 0) return pickRandomFrom(poolArray);
+  return pickRandomFrom(available);
+}
+
+/* build pools from selected filters */
+function buildPoolsFromFilters() {
+  const pools = { investigators: [], pathologies: [], bosses: [], episodes: [], relics: [], monsters: [] };
+
+  // Investigators by season/extra
+  if (document.getElementById("inv_s1").checked) pools.investigators.push(...investigatorsAll.slice(0,10));
+  if (document.getElementById("inv_s2").checked) pools.investigators.push(...investigatorsAll.slice(10,20));
+  if (document.getElementById("inv_s3").checked) pools.investigators.push(...investigatorsAll.slice(20,30));
+  if (document.getElementById("inv_extra").checked) pools.investigators.push("Eddie the Head");
+
+  // Pathologies
+  if (document.getElementById("pth_s1").checked) pools.pathologies.push(...pathologiesS1);
+  if (document.getElementById("pth_s3").checked) pools.pathologies.push(...pathologiesS3);
+  if (document.getElementById("pth_extra").checked) pools.pathologies.push(...pathologyExtra);
+
+  // Boss checkboxes
+  const bossCheckboxes = [
+    {id:"boss_cthulhu", name:"Cthulhu"},
+    {id:"boss_hastur", name:"Hastur"},
+    {id:"boss_blackgoat", name:"Black Goat of the Woods"},
+    {id:"boss_yog", name:"Yog-Sothoth"},
+    {id:"boss_wicker", name:"Wicker Eddie"},
+    {id:"boss_azathoth", name:"Azathoth"},
+    {id:"boss_tsath", name:"Tsathoggua"}
+  ];
+  bossCheckboxes.forEach(b => {
+    const el = document.getElementById(b.id);
+    if (el && el.checked) pools.bosses.push(b.name);
+  });
+
+  // Episodes by season
+  if (document.getElementById("ep_s1").checked) pools.episodes.push(...episodes1to18.slice(0,6));
+  if (document.getElementById("ep_s2").checked) pools.episodes.push(...episodes1to18.slice(6,12));
+  if (document.getElementById("ep_s3").checked) pools.episodes.push(...episodes1to18.slice(12,18));
+
+  // Relics (optional)
+  if (document.getElementById("rel_s3").checked) pools.relics.push(...relicsS3);
+  if (document.getElementById("rel_s4").checked) pools.relics.push(...relicsS4);
+  if (document.getElementById("rel_extra").checked) pools.relics.push(...relicsExtra);
+  if (document.getElementById("rel_animal").checked) pools.relics.push(...animalAllies);
+
+  // Monsters (optional)
+  if (document.getElementById("mon_s1").checked) pools.monsters.push(...monstersS1);
+  if (document.getElementById("mon_s2").checked) pools.monsters.push(...monstersS2);
+  if (document.getElementById("mon_s3").checked) pools.monsters.push(...monstersS3);
+  if (document.getElementById("mon_iron").checked) pools.monsters.push(...ironMaiden);
+
+  return pools;
+}
+
+/* main generate() - full logic restored */
+function generate() {
+  const numPlayers = parseInt(document.getElementById("numPlayers").value, 10);
+  if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) {
+    alert("Please select 1–5 players.");
+    return;
+  }
+
+  const pools = buildPoolsFromFilters();
+
+  // Mandatory categories: investigators, pathologies, episodes, bosses
+  const missing = [];
+  if (!pools.investigators.length) missing.push("Investigators");
+  if (!pools.pathologies.length) missing.push("Pathologies");
+  if (!pools.episodes.length) missing.push("Episodes");
+  if (!pools.bosses.length) missing.push("Bosses");
+  if (missing.length) {
+    alert("Please select at least one option per mandatory category: " + missing.join(", "));
+    return;
+  }
+
+  // Eddie constraint
+  const onlyEddieSelected = (pools.investigators.length === 1 && pools.investigators[0] === "Eddie the Head");
+  if (numPlayers > 1 && onlyEddieSelected) {
+    alert("Eddie the Head cannot be the only selected investigator when more than one player is selected.");
+    return;
+  }
+
+  // Fear of the Dark constraint
+  const onlyFearSelected = (pools.pathologies.length === 1 && pools.pathologies[0] === "Fear of the Dark");
+  if (numPlayers > 1 && onlyFearSelected) {
+    alert("Fear of the Dark cannot be the only selected pathology when more than one player is selected.");
+    return;
+  }
+
+  // Relics Extra constraint
+  const relGroupChecks = [
+    document.getElementById("rel_s3").checked,
+    document.getElementById("rel_s4").checked,
+    document.getElementById("rel_extra").checked,
+    document.getElementById("rel_animal").checked
+  ];
+  const relicGroupsCheckedCount = relGroupChecks.filter(Boolean).length;
+  const relExtraOnly = (document.getElementById("rel_extra").checked && relicGroupsCheckedCount === 1);
+  if (numPlayers > 4 && relExtraOnly) {
+    alert("The Relics (Extra (KS exclusive)) pool cannot be used alone when there are more than 4 players.");
+    return;
+  }
+
+  // Passed validation -> perform generation
+  document.getElementById("gameGrid").style.display = "flex";
+  document.getElementById("playerResults").innerHTML = "";
+  document.getElementById("episodeSection").innerHTML = "";
+  document.getElementById("bossSection").innerHTML = "";
+  document.getElementById("monsterSection").innerHTML = "";
+
+  const includeRelics = pools.relics.length > 0;
+  const includeMonsters = pools.monsters.length > 0;
+
+  const usedInv = new Set();
+  const usedRel = new Set();
+  const usedPath = new Set();
+
+  for (let i = 0; i < numPlayers; i++) {
+    const box = document.createElement("div"); box.className="player-box";
+
+    // Investigator
+    const invName = pickUniqueFromPool(pools.investigators, usedInv);
+    usedInv.add(invName);
+    const invDiv = document.createElement("div"); invDiv.className="player-output";
+    const invImg = document.createElement("img"); invImg.src="assets/" + sanitizeFileName(invName) + ".png"; invImg.alt=invName;
+    invImg.onerror=()=>{invImg.style.display="none";};
+    const invSpan = document.createElement("span"); invSpan.innerHTML=`Investigator:<br><em class="bold-italic">${invName}</em>`;
+    invDiv.appendChild(invImg); invDiv.appendChild(invSpan); box.appendChild(invDiv);
+
+    // Relic (optional)
+    if (includeRelics) {
+      const relicName = pickUniqueFromPool(pools.relics, usedRel);
+      usedRel.add(relicName);
+      const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
+      const relicImg = document.createElement("img"); relicImg.src="assets/" + sanitizeFileName(relicName) + ".png"; relicImg.alt=relicName;
+      relicImg.onerror=()=>{relicImg.style.display="none";};
+      const relicSpan = document.createElement("span"); relicSpan.innerHTML=`Relic:<br><em class="bold-italic">${relicName}</em>`;
+      relicDiv.appendChild(relicImg); relicDiv.appendChild(relicSpan); box.appendChild(relicDiv);
+    }
+
+    // Pathology
+    const pathName = pickUniqueFromPool(pools.pathologies, usedPath);
+    usedPath.add(pathName);
+    const pathDiv = document.createElement("div"); pathDiv.className="disorder-output";
+    const pathImg = document.createElement("img"); pathImg.src="assets/" + sanitizeFileName(pathName) + ".png"; pathImg.alt=pathName;
+    pathImg.onerror=()=>{pathImg.style.display="none";};
+    const pathSpan = document.createElement("span"); pathSpan.innerHTML=`Pathology:<br><em class="bold-italic">${pathName}</em>`;
+    pathDiv.appendChild(pathImg); pathDiv.appendChild(pathSpan); box.appendChild(pathDiv);
+
+    document.getElementById("playerResults").appendChild(box);
+  }
+
+  // Episode
+  const epChoice = pickRandomFrom(pools.episodes);
+  if (epChoice) {
+    const epFile = sanitizeFileName(epChoice.split(" ")[0] || epChoice) + ".png";
+    document.getElementById("episodeSection").appendChild(createInfoItem("Episode", epChoice, epFile));
+  }
+
+  // Boss
+  const bossChoice = pickRandomFrom(pools.bosses);
+  if (bossChoice) {
+    const bossFile = sanitizeFileName(bossChoice) + ".png";
+    document.getElementById("bossSection").appendChild(createInfoItem("Elder One", bossChoice, bossFile));
+  }
+
+  // Monsters (optional) - up to two distinct
+  if (includeMonsters) {
+    const poolCopy = pools.monsters.slice();
+    const mA = pickRandomFrom(poolCopy);
+    const idx = poolCopy.indexOf(mA);
+    if (idx !== -1) poolCopy.splice(idx,1);
+    const mB = poolCopy.length ? pickRandomFrom(poolCopy) : mA;
+    document.getElementById("monsterSection").appendChild(createMonsterDisplay('A', mA));
+    document.getElementById("monsterSection").appendChild(createMonsterDisplay('B', mB));
+  }
+} // end generate
+
+/* ---------------- toggle buttons behavior ----------------- */
+
+/*
+ * Single toggle button per group:
+ * - toggles select/clear for the group when clicked
+ * - updates text on click
+ * - also listens for manual checkbox changes to keep label in sync
+ */
+function updateToggleLabelForGroup(btn) {
+  const group = btn.dataset.group;
+  const checkboxes = document.querySelectorAll(`input[data-group='${group}']`);
+  if (!checkboxes.length) return;
+  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+  btn.textContent = allChecked ? "Clear All" : "Select All";
+}
+
+/* initialize toggle buttons and checkbox listeners */
 document.querySelectorAll("button.toggle-all").forEach(btn => {
+  const group = btn.dataset.group;
+
+  // initial label based on current state
+  updateToggleLabelForGroup(btn);
+
+  // click toggles
   btn.addEventListener("click", () => {
-    const group = btn.dataset.group;
     const checkboxes = document.querySelectorAll(`input[data-group='${group}']`);
     const allChecked = Array.from(checkboxes).every(cb => cb.checked);
     checkboxes.forEach(cb => cb.checked = !allChecked);
-    btn.textContent = allChecked ? "Select All" : "Clear All";
+
+    // update label
+    updateToggleLabelForGroup(btn);
+  });
+
+  // if user manually toggles checkboxes, update the button label
+  const checkboxesForGroup = document.querySelectorAll(`input[data-group='${group}']`);
+  checkboxesForGroup.forEach(cb => {
+    cb.addEventListener("change", () => updateToggleLabelForGroup(btn));
   });
 });
-
-// Placeholder for GENERATE functionality
-function generate() {
-  alert("Generate function executed! (placeholder)");
-}
 </script>
 
 </body>

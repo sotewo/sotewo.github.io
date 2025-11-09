@@ -5,6 +5,7 @@
   <title>Cthulhu: Death May Die (RNG)</title>
   <style>
 
+  /* --- FONT DEFINITIONS (Check paths for "assets/fonts/") --- */
   @font-face {
   font-family: 'Metallophile Sp8';
   src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
@@ -38,7 +39,7 @@
   }
     
     body {
-      font-family: 'Metallophile Sp8', 'Georgia', serif;
+      font-family: 'Metallophile Sp8', 'Georgia', serif; /* Custom font first */
       background-color: #0e0e0e;
       color: #d6d2c4;
       margin: 0;
@@ -178,7 +179,17 @@
         align-items: center;
     }
     
-    /* --- NEW FILTER STYLES --- */
+    /* --- FILTER STYLES (Final Correction) --- */
+    #filterSection {
+      max-width: 900px; 
+      margin: 20px auto; 
+      padding: 15px; 
+      border: 1px solid #3c2c2c; 
+      border-radius: 8px; 
+      background-color: #1a1a1a;
+      /* Ensure text in the filter section also uses the custom font */
+      font-family: 'Metallophile Sp8', 'Georgia', serif; 
+    }
     #filterSection h2 {
         font-size: 1.8em;
         color: #e2d7a7;
@@ -193,14 +204,16 @@
         border-bottom: 1px dotted #333;
         padding-bottom: 3px;
         font-weight: 400;
+        text-align: center;
     }
     .filter-group {
         padding: 10px;
         border: 1px solid #333;
         border-radius: 5px;
         background-color: #101010;
-        min-width: 150px;
+        min-width: 160px; 
         text-align: center;
+        margin: 5px;
     }
     .filter-group input[type="checkbox"] {
         margin-right: 5px;
@@ -223,7 +236,7 @@
     }
     .filter-group button {
         padding: 5px 10px;
-        font-size: 0.9em;
+        font-size: 0.8em; 
         margin: 2px;
     }
     #bossCheckboxes {
@@ -234,13 +247,24 @@
         margin-top: 5px; 
         text-align: left;
     }
+    .boss-checkbox-item {
+        display: block; /* Ensure correct vertical stacking */
+        white-space: nowrap; 
+    }
     
     @media (max-width: 600px) {
       #gameGrid img { width: 80px; height: 80px; }
       #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
       button { padding: 16px 32px; font-size: 1.3em; }
       select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
-      .filter-group { min-width: 90%; }
+      #filterSection > div {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .filter-group { 
+        min-width: 90%; 
+        margin: 5px auto;
+      }
     }
   </style>
 </head>
@@ -272,10 +296,10 @@
   </ul>
 </div>
 
-<div id="filterSection" style="max-width: 900px; margin: 20px auto; padding: 15px; border: 1px solid #3c2c2c; border-radius: 8px; background-color: #1a1a1a;">
+<div id="filterSection">
   <h2>🎲 Component Filters</h2>
 
-  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; font-size: 0.9em;">
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; font-size: 0.9em;">
 
     <div class="filter-group">
       <h3>Investigators:</h3>
@@ -353,7 +377,8 @@
     <div class="info-container">
       <div id="monsterSection"></div> 
     </div>
-  </div>
+    
+  </div>
 </div>
 
 <script>
@@ -534,13 +559,12 @@ function createInfoItem(title, name, fileName) {
     div.className = "player-output";
     
     const img = document.createElement("img");
-    // If the name contains an episode code (like S01E01), use the code for the filename
     const codeMatch = name.match(/^(S\d{2}E\d{2})/);
     const finalFileName = codeMatch ? codeMatch[0].toLowerCase() + ".png" : fileName;
 
     img.src = "assets/" + finalFileName;
     img.alt = name;
-    img.onerror = () => { img.style.display = "none"; }; // Fallback if image not found
+    img.onerror = () => { img.style.display = "none"; }; 
 
     const span = document.createElement("span");
     span.innerHTML = `${title}:<br><em class="bold-italic">${name}</em>`;
@@ -581,20 +605,23 @@ function filterComponents(componentArray, checkedTags) {
 function generateBossCheckboxes() {
     const container = document.getElementById('bossCheckboxes');
     bosses.forEach((boss, index) => {
+        const itemSpan = document.createElement('span'); 
+        itemSpan.className = 'boss-checkbox-item';
+        
         const id = `boss-${index}`;
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = id;
         checkbox.value = boss.name;
-        checkbox.checked = true; // Default to checked
+        checkbox.checked = true; 
 
         const label = document.createElement('label');
         label.htmlFor = id;
         label.textContent = boss.name;
 
-        container.appendChild(checkbox);
-        container.appendChild(label);
-        container.appendChild(document.createElement('br'));
+        itemSpan.appendChild(checkbox);
+        itemSpan.appendChild(label);
+        container.appendChild(itemSpan);
     });
 }
 
@@ -697,7 +724,7 @@ function generate() {
   
   // Episode
   const episode = filteredEpisodes[Math.floor(Math.random() * filteredEpisodes.length)];
-  episodeSection.appendChild(createInfoItem("Episode", episode.name, "")); // Filename is handled inside createInfoItem
+  episodeSection.appendChild(createInfoItem("Episode", episode.name, "")); 
 
   // Boss
   const boss = filteredBosses[Math.floor(Math.random() * filteredBosses.length)];

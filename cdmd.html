@@ -5,7 +5,7 @@
   <title>Cthulhu: Death May Die (RNG)</title>
   <style>
 
-  /* --- FONT DEFINITIONS (Check paths for "assets/fonts/") --- */
+  /* --- FONT DEFINITIONS (Crucial: Verify "assets/fonts/" path) --- */
   @font-face {
   font-family: 'Metallophile Sp8';
   src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
@@ -38,6 +38,7 @@
   font-display: swap;
   }
     
+    /* --- ROOT STYLES --- */
     body {
       font-family: 'Metallophile Sp8', 'Georgia', serif; /* Custom font first */
       background-color: #0e0e0e;
@@ -48,6 +49,20 @@
       background-size: 40px 40px;
       background-position: 0 0, 20px 20px;
     }
+
+    /* FORCED INHERITANCE FIX: Apply font-family to ALL elements to prevent inheritance breakage */
+    * {
+        font-family: inherit;
+    }
+    
+    /* STYLE FOR COMPONENT LIST (Moved from inline to CSS) */
+    .component-list {
+        display: inline-block; 
+        text-align: left; 
+        margin: 0; 
+        padding-left: 20px;
+    }
+
 
     a.back-button {
       position: fixed;
@@ -187,7 +202,6 @@
       border: 1px solid #3c2c2c; 
       border-radius: 8px; 
       background-color: #1a1a1a;
-      /* Removed font-family here to rely on body inheritance */
     }
     #filterSection h2 {
         font-size: 1.8em;
@@ -284,7 +298,7 @@
   
 <div style="max-width: 900px; margin: 0 auto 20px; font-style: normal; color: #bdb8a4; font-size: 1.0em; text-align: center;">
   <p style="margin-bottom: 8px;">This generator includes:</p>
-  <ul style="display: inline-block; text-align: left; margin: 0; padding-left: 20px;">
+  <ul class="component-list">
     <li>Investigators: S1, S2, S3, and Extra Investigator (Eddie the Head);</li>
     <li>Episodes: S1, S2, and S3;</li>
     <li>Pathologies: S1, S3, and Extra Pathology (Fear of the Dark);</li>
@@ -381,7 +395,7 @@
 </div>
 
 <script>
-// --- Component Data (now objects with tags) ---
+// --- Component Data ---
 
 const investigators = [
   { name: "Lord Adam Benchley", tag: "s1" },

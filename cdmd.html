@@ -273,6 +273,32 @@
       button { padding: 16px 32px; font-size: 1.3em; }
       select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
     }
+
+    /* Compact gothic-style buttons for Select All / Clear All inside the filters */
+    #filtersContainer button {
+      font-family: inherit;
+      font-size: 0.95em; /* same as component labels */
+      color: #e0d4b0;
+      background: none;
+      border: 1px solid #5c3d3d;
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-left: 6px;
+      cursor: pointer;
+      box-shadow: none;
+      transition: all 0.2s ease-in-out;
+    }
+    
+    #filtersContainer button:hover {
+      background-color: #2a1c1c;
+      color: #f0c080;
+      border-color: #8c5b3f;
+    }
+    
+    #filtersContainer button:active {
+      transform: scale(0.96);
+      opacity: 0.85;
+    }
   </style>
 </head>
 <body>
@@ -723,5 +749,6 @@ function clearAll(groupName) {
 
 </body>
 </html>
+
 
 

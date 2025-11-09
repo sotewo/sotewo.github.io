@@ -77,62 +77,6 @@
     }
 
     .section { text-align: center; margin-bottom: 20px; }
-    
-    /* === NEW STYLES FOR THE COMPONENT SELECTION BOX === */
-    .component-selection-box {
-        max-width: 900px; 
-        margin: 20px auto 30px; 
-        padding: 15px; 
-        border: 2px solid #5c3d3d; /* Dark red/brown border */
-        border-radius: 10px; 
-        background-color: #1a1a1a; /* Slightly darker background */
-        color: #d6d2c4; 
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .component-selection-box h2 {
-        font-size: 1.5em;
-        color: #b0a06f;
-        border-bottom: 1px solid #333;
-        padding-bottom: 5px;
-        margin-top: 0;
-        text-align: center;
-    }
-
-    .component-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        align-items: center;
-        font-size: 1.0em; /* Ensure font is readable */
-    }
-
-    .component-group label {
-        display: flex;
-        align-items: center;
-        margin-right: 15px;
-        cursor: pointer;
-    }
-
-    .component-group input[type="checkbox"] {
-        margin-right: 5px;
-        transform: scale(1.1); /* Make checkbox slightly larger */
-    }
-
-    .component-group select {
-        /* Styling to match the existing dropdown style */
-        padding: 5px;
-        font-size: 1em;
-        border: 1px solid #555;
-        border-radius: 5px;
-        background-color: #222;
-        color: #eee;
-        appearance: none;
-    }
-    /* ================================================= */
 
     select#numPlayers {
       padding: 5px;
@@ -239,8 +183,6 @@
       #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
       button { padding: 16px 32px; font-size: 1.3em; }
       select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
-      .component-group { flex-direction: column; align-items: flex-start; }
-      .component-group span { min-width: 100%; } /* Make titles full width on mobile */
     }
   </style>
 </head>
@@ -272,67 +214,17 @@
   </ul>
 </div>
 
-<div class="component-selection-box">
-    <h2>Component Selection (Appearance Only)</h2>
-
-    <div class="component-group">
-        <label for="fakeNumPlayers">Number of players (1–5):</label>
-        <select id="fakeNumPlayers">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3" selected>3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-    </div>
-
-    <div class="component-group">
-        <span style="font-weight: bold; min-width: 100px;">Investigators:</span>
-        <label><input type="checkbox" checked> S1</label>
-        <label><input type="checkbox" checked> S2</label>
-        <label><input type="checkbox" checked> S3</label>
-        <label><input type="checkbox" checked> Eddie the Head</label>
-    </div>
-
-    <div class="component-group">
-        <span style="font-weight: bold; min-width: 100px;">Pathologies:</span>
-        <label><input type="checkbox" checked> S1</label>
-        <label><input type="checkbox" checked> S3</label>
-        <label><input type="checkbox" checked> Fear of the Dark</label>
-    </div>
-
-    <div class="component-group">
-        <span style="font-weight: bold; min-width: 100px;">Bosses:</span>
-        <label><input type="checkbox" checked> Cthulhu</label>
-        <label><input type="checkbox" checked> Hastur</label>
-        <label><input type="checkbox" checked> Black Goat of the Woods</label>
-        <label><input type="checkbox" checked> Yog-Sothoth</label>
-        <label><input type="checkbox" checked> Azathoth</label>
-        <label><input type="checkbox" checked> Tsathoggua</label>
-        <label><input type="checkbox" checked> Wicker Eddie</label>
-    </div>
-
-    <div class="component-group">
-        <span style="font-weight: bold; min-width: 100px;">Episodes:</span>
-        <label><input type="checkbox" checked> S1</label>
-        <label><input type="checkbox" checked> S2</label>
-        <label><input type="checkbox" checked> S3</label>
-    </div>
-
-    <div class="component-group">
-        <span style="font-weight: bold; min-width: 100px;">Relics (Optional):</span>
-        <label><input type="checkbox" checked> S3</label>
-        <label><input type="checkbox" checked> S4</label>
-        <label><input type="checkbox" checked> Extra</label>
-        <label><input type="checkbox" checked> Animal Allies</label>
-    </div>
-
-    <div class="component-group">
-        <span style="font-weight: bold; min-width: 100px;">Unknown Monsters (Optional):</span>
-        <label><input type="checkbox" checked> S1</label>
-        <label><input type="checkbox" checked> S2</label>
-        <label><input type="checkbox" checked> S3</label>
-        <label><input type="checkbox"> Iron Maiden Pack</label> </div>
+<div style="max-width: 900px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
+    <p style="color: #b0a06f; margin: 0; font-size: 1.1em; font-weight: bold;">Available Components (Read-Only):</p>
+    <ul style="margin: 5px 0 0 15px; padding: 0; list-style-type: none;">
+        <li><span style="font-weight: bold; color: #d6d2c4;">Players (1–5):</span> All Available</li>
+        <li><span style="font-weight: bold; color: #d6d2c4;">Investigators:</span> S1, S2, S3, Eddie the Head</li>
+        <li><span style="font-weight: bold; color: #d6d2c4;">Pathologies:</span> S1, S3, Fear of the Dark</li>
+        <li><span style="font-weight: bold; color: #d6d2c4;">Bosses:</span> Cthulhu, Hastur, Black Goat of the Woods, Yog-Sothoth, Azathoth, Tsathoggua, Wicker Eddie</li>
+        <li><span style="font-weight: bold; color: #d6d2c4;">Episodes:</span> S1, S2, S3</li>
+        <li><span style="font-weight: bold; color: #d6d2c4;">Relics:</span> S3, S4, Extra, Animal Allies</li>
+        <li><span style="font-weight: bold; color: #d6d2c4;">Unknown Monsters:</span> S1, S2, S3, Iron Maiden Pack</li>
+    </ul>
 </div>
 <div class="section">
   <label>Number of players (1–5):

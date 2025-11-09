@@ -38,7 +38,7 @@
   }
     
     body {
-      font-family: 'Metallophile Sp8', 'Georgia', serif;
+      font-family: 'Metallophile Sp8', 'Georgia', serif !important; /* Added !important to enforce font */
       background-color: #0e0e0e;
       color: #d6d2c4;
       margin: 0;
@@ -178,7 +178,7 @@
         align-items: center;
     }
 
-    /* New CSS for Component List Container (Restores original div styles) */
+    /* Component List Container CSS (Restores original list environment) */
     .component-list-container {
         max-width: 900px;
         margin: 0 auto 20px;
@@ -188,19 +188,23 @@
         text-align: center;
     }
 
-    /* New CSS for the List (Ensures correct alignment/font) */
+    /* List (ul) wrapper */
     .component-list {
         display: inline-block;
         text-align: left;
         margin: 0;
         padding-left: 20px;
-        list-style: none; /* Removed default list styling */
+        list-style: none;
     }
     
-    /* FIX: Ensures the list item (li) contents align correctly on one line */
+    /* FIX: List Item (li) Styling for Alignment */
     .component-list li {
         list-style-type: none; 
-        margin-bottom: 5px; 
+        margin-bottom: 5px;
+        /* Use flexbox to ensure vertical alignment of text and checkboxes */
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap; /* Allows components to wrap to the next line if width is tight */
     }
 
     /* Styling for Checkboxes (Ensures theme compliance and clickability) */
@@ -210,14 +214,18 @@
         vertical-align: middle; 
         margin-right: 5px;
         cursor: pointer;
+        /* Inherits the font size/color from the li parent */
+        font-size: inherit; 
     }
     
-    /* FIX: Used margin-left on the label to create separation space */
+    /* Styling for the labels next to the checkboxes */
     .component-list label {
         cursor: pointer; 
         margin-right: 15px; 
-        /* The margin below the list item text (e.g., Investigators:) for better alignment */
         margin-left: 5px; 
+        /* Ensure the label text itself stays on the same line with its checkbox */
+        display: inline-block;
+        white-space: nowrap; 
     }
 
     @media (max-width: 600px) {

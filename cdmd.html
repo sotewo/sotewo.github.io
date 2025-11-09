@@ -177,7 +177,16 @@
         flex-direction: row; 
         align-items: center;
     }
-
+    
+    /* ADDED STYLES FOR CHECKBOXES TO FIX THEME BREAK */
+    .component-list input[type="checkbox"] {
+        /* Makes the checkbox visible on the dark background */
+        accent-color: #b0a06f; 
+        /* Match the text size */
+        transform: scale(1.1);
+        margin-right: 5px;
+    }
+    
     @media (max-width: 600px) {
       #gameGrid img { width: 80px; height: 80px; }
       #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
@@ -201,16 +210,16 @@
     </ol>
 </div>
   
-<div style="max-width: 900px; margin: 0 auto 20px; font-style: normal; color: #bdb8a4; font-size: 1.0em; text-align: center;">
+<div class="component-list" style="max-width: 900px; margin: 0 auto 20px; font-style: normal; color: #bdb8a4; font-size: 1.0em; text-align: center;">
   <p style="margin-bottom: 8px;">Component selection for generator</p>
   <ul style="display: inline-block; text-align: left; margin: 0; padding-left: 20px;">
-    <li>Investigators: <input type="checkbox" checked disabled> S1 <input type="checkbox" checked disabled> S2 <input type="checkbox" checked disabled> S3 <input type="checkbox" checked disabled> Extra Investigator (Eddie the Head);</li>
-    <li>Episodes: <input type="checkbox" checked disabled> S1 <input type="checkbox" checked disabled> S2 <input type="checkbox" checked disabled> S3;</li>
-    <li>Pathologies: <input type="checkbox" checked disabled> S1 <input type="checkbox" checked disabled> S3 <input type="checkbox" checked disabled> Extra Pathology (Fear of the Dark);</li>
-    <li>Elder Ones: <input type="checkbox" checked disabled> Cthulhu <input type="checkbox" checked disabled> Hastur <input type="checkbox" checked disabled> Black Goat of the Woods <input type="checkbox" checked disabled> Yog-Sothoth <input type="checkbox" checked disabled> Azathoth <input type="checkbox" checked disabled> Tsathoggua <input type="checkbox" checked disabled> Wicker Eddie (fan-made component);</li>
-    <li>Relics: <input type="checkbox" checked disabled> S3 <input type="checkbox" checked disabled> S4;</li>
+    <li>Investigators: <input type="checkbox" checked> S1 <input type="checkbox" checked> S2 <input type="checkbox" checked> S3 <input type="checkbox" checked> Extra Investigator (Eddie the Head);</li>
+    <li>Episodes: <input type="checkbox" checked> S1 <input type="checkbox" checked> S2 <input type="checkbox" checked> S3;</li>
+    <li>Pathologies: <input type="checkbox" checked> S1 <input type="checkbox" checked> S3 <input type="checkbox" checked> Extra Pathology (Fear of the Dark);</li>
+    <li>Elder Ones: <input type="checkbox" checked> Cthulhu <input type="checkbox" checked> Hastur <input type="checkbox" checked> Black Goat of the Woods <input type="checkbox" checked> Yog-Sothoth <input type="checkbox" checked> Azathoth <input type="checkbox" checked> Tsathoggua <input type="checkbox" checked> Wicker Eddie (fan-made component);</li>
+    <li>Relics: <input type="checkbox" checked> S3 <input type="checkbox" checked> S4;</li>
     <li>Animal Allies: Included in the Relic pool for generation.</li>
-    <li>Unknown Monsters: <input type="checkbox" checked disabled> S1 <input type="checkbox" checked disabled> S2 <input type="checkbox" checked disabled> S3 <input type="checkbox" checked disabled> Extra Unknown Monsters (Fear Eddie and Undead Dead).</li>
+    <li>Unknown Monsters: <input type="checkbox" checked> S1 <input type="checkbox" checked> S2 <input type="checkbox" checked> S3 <input type="checkbox" checked> Extra Unknown Monsters (Fear Eddie and Undead Dead).</li>
   </ul>
 </div>
 

@@ -37,28 +37,29 @@
   font-display: swap;
   }
     
-    /* GLOBAL BODY STYLES - Deeper, darker background */
+    /* Restored Original Body Style */
     body {
       font-family: 'Metallophile Sp8', 'Georgia', serif;
-      background-color: #070707; /* Very dark background */
-      color: #d6d2c4; /* Antique white/parchment text */
+      background-color: #0e0e0e;
+      color: #d6d2c4;
       margin: 0;
       padding: 20px;
-      /* Removed radial gradient for a cleaner, darker look */
+      background-image: radial-gradient(#1b1b1b 1px, transparent 1px), radial-gradient(#1b1b1b 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
     }
 
-    /* Back Button - Increased contrast */
     a.back-button {
       position: fixed;
       top: 20px;
       left: 20px;
       font-size: 2em;
       text-decoration: none;
-      color: #a0885c; /* Antique gold */
-      background-color: #151515;
+      color: #b0a06f;
+      background-color: #1b1b1b;
       padding: 5px 12px;
       border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.8); /* Stronger shadow */
+      box-shadow: 0 0 10px #000;
       transition: background-color 0.3s, transform 0.2s;
       z-index: 1000;
     }
@@ -68,44 +69,57 @@
       transform: scale(1.1);
     }
 
-    /* H1 - Title emphasis */
     h1 {
-      font-size: 3em; /* Slightly larger */
+      font-size: 2.5em;
       text-align: center;
-      margin-bottom: 20px;
-      color: #a0885c; /* Antique gold */
-      text-shadow: 2px 2px 4px #000, 0 0 5px #7a2828; /* Stronger shadow with red glow */
+      margin-bottom: 10px;
+      color: #b0a06f; /* Original Gold color */
+      text-shadow: 1px 1px 2px #000;
     }
 
     .section { text-align: center; margin-bottom: 20px; }
 
-    /* Player Count Selector */
     select#numPlayers {
-      padding: 8px; /* Slightly more padding */
+      padding: 5px;
       font-size: 1.2em;
-      border: 2px solid #a0885c; /* Gold border */
+      border: 1px solid #555;
       border-radius: 5px;
-      background-color: #1c1c1c; /* Darker field */
+      background-color: #222;
       color: #eee;
       appearance: none;
     }
-    
-    /* Component Selection Block Styles */
+
+    /* Restored Original Button Style */
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #3c2c2c;
+      border: none;
+      border-radius: 8px;
+      color: #f5f5f5;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+      transition: background-color 0.3s;
+    }
+
+    button:hover { background-color: #5c3d3d; }
+
+    /* Component Selection Styles - Integrated with original colors */
     #componentSelection {
       max-width: 900px;
       margin: 20px auto;
-      padding: 25px;
-      border: 1px solid #7a2828; /* Blood red border */
+      padding: 20px;
+      border: 2px solid #444; 
       border-radius: 12px;
-      background-color: #121212; /* Very dark container */
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+      background-color: #1c1c1c; 
+      box-shadow: 0 0 10px #00000099;
       text-align: left;
     }
 
     .component-group {
       margin-bottom: 15px;
       padding: 10px 0;
-      border-bottom: 1px dashed #7a2828; /* Dashed red separator */
+      border-bottom: 1px dashed #555; 
     }
 
     .component-group:last-child {
@@ -114,18 +128,16 @@
     }
 
     .component-group h3 {
-      color: #e2d7a7;
+      color: #b0a06f; 
       margin-top: 0;
       margin-bottom: 8px;
       font-size: 1.2em;
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
     .checkbox-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px 30px; /* Increased gap */
+      gap: 20px 30px; 
     }
 
     .checkbox-container label {
@@ -138,110 +150,84 @@
     .checkbox-container input[type="checkbox"] {
       margin-right: 8px;
       transform: scale(1.3);
-      accent-color: #7a2828; /* Red checkboxes */
+      accent-color: #5c3d3d; 
     }
 
     .warning-text {
       color: #ff6347; 
       font-weight: bold;
-      margin-top: 15px;
+      margin-top: 10px;
       display: none; 
       text-align: center;
     }
-    
-    /* Generate Button - Enhanced contrast */
-    button {
-      padding: 12px 25px;
-      font-size: 1.1em;
-      background-color: #7a2828; /* Blood red */
-      border: 1px solid #a0885c;
-      border-radius: 8px;
-      color: #f5f5f5;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
-      transition: background-color 0.3s, transform 0.1s;
-    }
+    /* End new styles */
 
-    button:hover { 
-        background-color: #a04242; /* Lighter red on hover */
-        transform: translateY(-2px);
-    }
 
-    /* Results Grid */
     #gameGrid {
       display: none;
-      margin-top: 40px;
+      margin-top: 30px;
       flex-direction: column;
-      gap: 40px;
+      gap: 30px;
     }
 
+    /* Restored Original Box Styles */
     .player-box {
-      border: 2px solid #a0885c; /* Gold border */
-      padding: 20px;
+      border: 2px solid #444;
+      padding: 15px;
       border-radius: 12px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      background-color: #121212;
-      box-shadow: 0 0 15px rgba(0,0,0,0.9);
+      gap: 12px;
+      background-color: #1c1c1c;
+      box-shadow: 0 0 10px #00000099;
     }
 
     #playerResults {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 30px;
+      gap: 20px;
     }
 
-    /* Individual Component Display */
     .player-output, .relic-output, .disorder-output {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
       font-size: 1.5em;
-      /* Subtle border for visual separation */
-      border-bottom: 1px dashed #333;
-      padding-bottom: 10px;
     }
-    .player-output:last-child, .relic-output:last-child, .disorder-output:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
 
     #gameGrid img {
       width: 100px;
       height: 100px;
       object-fit: contain;
       border-radius: 6px;
-      border: 1px solid #555;
-      box-shadow: 0 0 5px rgba(0,0,0,0.5);
     }
 
     em.bold-italic {
       font-style: italic;
       font-weight: bold;
-      color: #a0885c; /* Antique gold for names */
+      color: #e2d7a7;
     }
 
-    /* Game Info Rows (Episode/Boss & Monsters) */
     .game-info-row {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 40px;
       flex-wrap: wrap;
     }
 
+    /* Restored Original Info Container Style */
     .info-container {
-      /* Made info containers slightly larger to hold the content */
-      border: 2px solid #7a2828; /* Blood red border */
-      padding: 25px;
+      border: 2px solid #444;
+      padding: 15px;
       border-radius: 12px;
-      background-color: #121212;
-      box-shadow: 0 0 15px rgba(0,0,0,0.9);
+      background-color: #1c1c1c;
+      box-shadow: 0 0 10px #00000099;
       display: flex;
       gap: 30px;
       justify-content: center;
       flex-wrap: wrap;
-      flex-basis: 400px; /* Gives them a minimum size to balance better */
+      /* Ensure it takes up available space */
+      flex: 1; 
     }
     
     #monsterSection {
@@ -255,18 +241,17 @@
         display: flex;
         flex-direction: row; 
         align-items: center;
-        border-bottom: none; /* Removed redundant border */
     }
 
-    /* Responsive adjustments */
     @media (max-width: 600px) {
-      h1 { font-size: 2em; }
-      #gameGrid img { width: 70px; height: 70px; }
-      #playerResults { grid-template-columns: 1fr; gap: 20px; }
-      .player-box, .info-container { padding: 15px; }
-      button { padding: 14px 28px; font-size: 1.2em; }
+      #gameGrid img { width: 80px; height: 80px; }
+      #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+      button { padding: 16px 32px; font-size: 1.3em; }
+      select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
       .checkbox-container { flex-direction: column; gap: 8px; }
-      .game-info-row { gap: 20px; }
+      /* Ensure game info containers stack nicely */
+      .game-info-row { flex-direction: column; gap: 20px; }
+      .info-container { flex-basis: auto; }
     }
   </style>
 </head>
@@ -276,8 +261,8 @@
 
 <h1>Cthulhu: Death May Die (RNG)</h1>
 
-<div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #7a2828; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
-    <p style="color: #a0885c; margin: 0;">DISCLAIMER:</p>
+<div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
+    <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
     <ol style="margin: 5px 0 0 15px; padding: 0;">
       <li>This generator is limited to the components currently owned by myself;</li>
       <li>Components used may not constitute complete season sets;</li>
@@ -310,8 +295,9 @@
   </label>
 </div>
 
+<!-- Component Selection Block -->
 <div id="componentSelection">
-    <p style="color: #a0885c; text-align: center; font-size: 1.2em; margin-top: 0; text-transform: uppercase;">Select Components for Generation</p>
+    <p style="color: #b0a06f; text-align: center; font-size: 1.2em; margin-top: 0;">Select Components for Generation</p>
 
     <div class="component-group" id="investigators-group">
       <h3>Investigators (Mandatory)</h3>
@@ -334,7 +320,7 @@
     </div>
 
     <div class="component-group" id="pathologies-group">
-      <h3>Pathologies (Mandatory)</h3>
+      <h3>Pathologies (Mandatory) </h3>
       <div class="checkbox-container">
         <label><input type="checkbox" name="pathologies" value="s1" checked> Season 1 (S1)</label>
         <label><input type="checkbox" name="pathologies" value="s3" checked> Season 3 (S3)</label>
@@ -376,6 +362,8 @@
     
     <p id="selectionWarning" class="warning-text">Please select at least one option for all **Mandatory** sections (Investigators, Pathologies, Bosses, and Episodes).</p>
 </div>
+<!-- End Component Selection Block -->
+
 <div class="section">
   <button onclick="generate()">Generate</button>
 </div>
@@ -444,6 +432,11 @@ function sanitizeFileName(name) {
   return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
 }
 
+/**
+ * Gathers all selected component names for a specific category.
+ * @param {string} category The key in the 'components' object (e.g., 'investigators').
+ * @returns {string[]} An array of all component names in the selected sub-pools.
+ */
 function getSelectedPool(category) {
   const selectedPool = [];
   const checkboxes = document.querySelectorAll(`input[name="${category}"]:checked`);
@@ -462,6 +455,15 @@ function getSelectedPool(category) {
 }
 
 
+/**
+ * Helper function to create the standard display output (image + text) 
+ * for game components.
+ * @param {string} title The display title (e.g., "Elder One").
+ * @param {string} name The generated name (e.g., "Cthulhu").
+ * @param {string} fileName The file path suffix (e.g., "cthulhu.png").
+ * @param {string} cssClass The specific CSS class for the element (e.g., "player-output").
+ * @returns {HTMLDivElement} The complete display div.
+ */
 function createInfoItem(title, name, fileName, cssClass) {
     const div = document.createElement("div");
     div.className = cssClass;

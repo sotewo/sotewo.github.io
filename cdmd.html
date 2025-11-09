@@ -38,9 +38,12 @@
   font-display: swap;
   }
     
-    /* --- ROOT STYLES --- */
+    /* --- ROOT STYLES: FORCING FONT ON ALL MAJOR CONTAINERS --- */
+    body, #filterSection, div {
+      font-family: 'Metallophile Sp8', 'Georgia', serif !important; 
+    }
+    
     body {
-      font-family: 'Metallophile Sp8', 'Georgia', serif; /* Custom font first */
       background-color: #0e0e0e;
       color: #d6d2c4;
       margin: 0;
@@ -50,11 +53,6 @@
       background-position: 0 0, 20px 20px;
     }
 
-    /* FORCED INHERITANCE FIX: Apply font-family to ALL elements to prevent inheritance breakage */
-    * {
-        font-family: inherit;
-    }
-    
     /* STYLE FOR COMPONENT LIST (Moved from inline to CSS) */
     .component-list {
         display: inline-block; 

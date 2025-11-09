@@ -164,6 +164,20 @@
       justify-content: center;
       flex-wrap: wrap;
     }
+    
+    /* Ensure the monster section elements are styled to match */
+    #monsterSection {
+        display: flex; /* Makes monster outputs lay out horizontally */
+        gap: 30px; /* Separates Monster 1 and Monster 2 */
+        flex-wrap: wrap; /* Ensures responsiveness if space is tight */
+        align-items: flex-start;
+    }
+    
+    #monsterSection .player-output {
+        display: flex;
+        flex-direction: row; 
+        align-items: center;
+    }
 
     @media (max-width: 600px) {
       #gameGrid img { width: 80px; height: 80px; }
@@ -182,9 +196,9 @@
 <div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
     <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
     <ol style="margin: 5px 0 0 15px; padding: 0;">
-        <li>This generator is limited to the components currently owned by myself;</li>
-        <li>Components used may not constitute complete season sets;</li>
-        <li>Components may include non-official material.</li>
+      <li>This generator is limited to the components currently owned by myself;</li>
+      <li>Components used may not constitute complete season sets;</li>
+      <li>Components may include non-official material.</li>
     </ol>
 </div>
   
@@ -197,6 +211,7 @@
     <li>Elder Ones: Cthulhu, Hastur, Black Goat of the Woods, Yog-Sothoth, Azathoth, Tsathoggua, and Wicker Eddie (fan-made component);</li>
     <li>Relics: Season 3 and Season 4;</li>
     <li>Animal Allies: Included in the Relic pool for generation.</li>
+    <li>Unknown Monsters: A pool of 25 monster types.</li>
   </ul>
 </div>
 
@@ -219,15 +234,21 @@
 <div id="gameGrid">
   <div id="playerResults"></div>
   <div class="game-info-row">
+    <!-- Box 1: Episode and Elder One -->
     <div class="info-container">
       <div id="episodeSection"></div>
       <div id="bossSection"></div>
+    </div>
+    <!-- Box 2: Unknown Monsters -->
+    <div class="info-container">
+      <div id="monsterSection"></div> <!-- Unknown Monsters Section -->
     </div>
   </div>
 </div>
 
 <script>
-const words1to31 = [
+// Component Lists (renamed for clarity in previous steps)
+const investigators1to31 = [
   "Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Eddie the Head",
   "Fatima Safar","Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid",
   "Adilah Vidal","Alex Parker","Ariele Venturi","Hailia Hovath","Father Luke",
@@ -236,7 +257,7 @@ const words1to31 = [
   "Jakub Peters","Stella Fontaine","Julien Dulik","Leon Barnes","Mike Kozlov"
 ];
 
-const words1to7 = [
+const bosses1to7 = [
   "Cthulhu","Hastur","Black Goat of the Woods",
   "Yog-Sothoth", "Wicker Eddie","Azathoth",
   "Tsathoggua"
@@ -266,33 +287,87 @@ const pathologies1to21 = [
   "Bloodlust"
 ];
 
+const monsters1to25 = [
+    "Bokrug", "Byakhee", "Cthonian Entity", "Deep One", "Dhole", 
+    "Dimensional Shambler", "Elder Thing", "Fear Eddie", "Fire Vampire", "Fisher from Outside",
+    "Flying Polyp", "Ghast", "Ghoul", "Gug", "Gyaa-Yothn",
+    "Hound of Tindalos", "Hunting Horror", "Nightgaunt", "Serpent Man", "Shoggoth",
+    "Star Vampire", "Tcho-Tcho", "The Unnamable", "Undead Eddie", "Yugg"
+];
+
 function sanitizeFileName(name) {
   return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
 }
 
 function getWord(num, list) { return list[num-1] || num; }
 
+
+/**
+ * Helper function to create the standard display output (image + text) 
+ * for large game components (Episode, Boss, Monsters).
+ * @param {string} title The display title (e.g., "Elder One").
+ * @param {string} name The generated name (e.g., "Cthulhu").
+ * @param {string} fileName The file path suffix (e.g., "cthulhu.png").
+ * @returns {HTMLDivElement} The complete player-output div.
+ */
+function createInfoItem(title, name, fileName) {
+    const div = document.createElement("div");
+    div.className = "player-output";
+    
+    const img = document.createElement("img");
+    img.src = "assets/" + fileName;
+    img.alt = name;
+    img.onerror = () => { img.style.display = "none"; }; // Fallback if image not found
+
+    const span = document.createElement("span");
+    span.innerHTML = `${title}:<br><em class="bold-italic">${name}</em>`;
+    
+    div.appendChild(img);
+    div.appendChild(span);
+    return div;
+}
+
+// Simplified monster display logic using the new helper function
+function createMonsterDisplay(monsterIndex, monsterName) {
+    const fileName = sanitizeFileName(monsterName) + ".png";
+    const title = `Unknown Monster ${monsterIndex}`;
+    // Reuses the core logic from createInfoItem
+    return createInfoItem(title, monsterName, fileName);
+}
+
 function generate() {
   const numPlayers = parseInt(document.getElementById("numPlayers").value);
-  if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { alert("Please select 1–5 players."); return; }
+  if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { 
+    const msg = "Please select 1–5 players.";
+    console.error(msg);
+    return; 
+  }
   
   document.getElementById("gameGrid").style.display = "flex";
 
   const playerResults = document.getElementById("playerResults");
   const episodeSection = document.getElementById("episodeSection");
   const bossSection = document.getElementById("bossSection");
-  playerResults.innerHTML = ""; episodeSection.innerHTML = ""; bossSection.innerHTML = "";
+  const monsterSection = document.getElementById("monsterSection");
+
+  playerResults.innerHTML = ""; 
+  episodeSection.innerHTML = ""; 
+  bossSection.innerHTML = ""; 
+  monsterSection.innerHTML = "";
 
   const used = [], usedRelics = [], usedPathologies = [];
 
   for (let i=0; i<numPlayers; i++) {
     const box = document.createElement("div"); box.className="player-box";
 
-    // Investigator
+    // Investigator 
     const remaining = Array.from({length:31}, (_,j)=>j+1).filter(n=>!used.includes(n));
     const sel = remaining[Math.floor(Math.random()*remaining.length)]; used.push(sel);
-    const name = getWord(sel, words1to31); const file = sanitizeFileName(name)+".png";
+    const name = getWord(sel, investigators1to31);
+    const file = sanitizeFileName(name)+".png";
 
+    // Note: Investigator, Relic, and Pathology still use dedicated DOM generation blocks 
+    // to correctly assign specific CSS classes (player-output, relic-output, disorder-output).
     const div = document.createElement("div"); div.className="player-output";
     const img = document.createElement("img"); img.src="assets/"+file; img.alt=name;
     img.onerror=()=>{img.style.display="none";};
@@ -322,28 +397,34 @@ function generate() {
     playerResults.appendChild(box);
   }
 
-  // Episode
-  const epNum=Math.floor(Math.random()*18)+1; const epFull=getWord(epNum,episodes1to18);
-  const epCode=epFull.split(" ")[0]; const epFile=epCode.toLowerCase()+".png";
-  const epDiv=document.createElement("div"); epDiv.className="player-output";
-  const epImg=document.createElement("img"); epImg.src="assets/"+epFile; epImg.alt=epCode; epImg.onerror=()=>{epImg.style.display="none";};
-  const epSpan=document.createElement("span"); epSpan.innerHTML=`Episode:<br><em class="bold-italic">${epFull}</em>`;
-  epDiv.appendChild(epImg); epDiv.appendChild(epSpan); episodeSection.appendChild(epDiv);
+  // Episode (REDUNDANCY REMOVED)
+  const epNum=Math.floor(Math.random()*18)+1; 
+  const epFull=getWord(epNum,episodes1to18);
+  const epCode=epFull.split(" ")[0]; 
+  const epFile=epCode.toLowerCase()+".png";
+  episodeSection.appendChild(createInfoItem("Episode", epFull, epFile));
 
-  // Boss
-  const bossNum=Math.floor(Math.random()*7)+1; const bossName=getWord(bossNum,words1to7); const bossFile=sanitizeFileName(bossName)+".png";
-  const bossDiv=document.createElement("div"); bossDiv.className="player-output";
-  const bossImg=document.createElement("img"); bossImg.src="assets/"+bossFile; bossImg.alt=bossName; bossImg.onerror=()=>{bossImg.style.display="none";};
-  const bossSpan=document.createElement("span"); bossSpan.innerHTML=`Elder One:<br><em class="bold-italic">${bossName}</em>`;
-  bossDiv.appendChild(bossImg); bossDiv.appendChild(bossSpan); bossSection.appendChild(bossDiv);
+  // Boss (REDUNDANCY REMOVED)
+  const bossNum=Math.floor(Math.random()*7)+1; 
+  const bossName=getWord(bossNum,bosses1to7); 
+  const bossFile=sanitizeFileName(bossName)+".png";
+  bossSection.appendChild(createInfoItem("Elder One", bossName, bossFile));
+
+  // Unknown Monster(s)
+  const monsterRem = Array.from({length: 25}, (_, j) => j + 1);
+
+  // Select Monster A
+  let randIndex1 = Math.floor(Math.random() * monsterRem.length);
+  let monsterNum1 = monsterRem.splice(randIndex1, 1)[0];
+  let monsterName1 = getWord(monsterNum1, monsters1to25);
+  monsterSection.appendChild(createMonsterDisplay('A', monsterName1));
+
+  // Select Monster B
+  let randIndex2 = Math.floor(Math.random() * monsterRem.length);
+  let monsterNum2 = monsterRem.splice(randIndex2, 1)[0];
+  let monsterName2 = getWord(monsterNum2, monsters1to25);
+  monsterSection.appendChild(createMonsterDisplay('B', monsterName2));
 }
 </script>
 </body>
 </html>
-
-
-
-
-
-
-

@@ -1,69 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cthulhu: Death May Die — Scenario Generator</title>
-
+<meta charset="UTF-8" />
+<title>Cthulhu: Death May Die (RNG)</title>
 <style>
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Bold-Italic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 body {
-  font-family: 'Metallophile Sp8', serif;
-  background-color: #0d0d0d;
-  color: #e0d4b0;
+  font-family: 'Metallophile Sp8', 'Georgia', serif;
+  background-color: #0e0e0e;
+  color: #d6d2c4;
   margin: 0;
-  padding: 0;
-  text-align: center;
+  padding: 20px;
+  background-image: radial-gradient(#1b1b1b 1px, transparent 1px),
+                    radial-gradient(#1b1b1b 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+}
+
+a.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 2em;
+  text-decoration: none;
+  color: #b0a06f;
+  background-color: #1b1b1b;
+  padding: 5px 12px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 1000;
+}
+a.back-button:hover {
+  background-color: #2a2a2a;
+  transform: scale(1.1);
 }
 
 h1 {
-  font-size: 2.2em;
-  margin: 20px 0 10px;
-  color: #f0c080;
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #b0a06f;
+  text-shadow: 1px 1px 2px #000;
 }
 
-#filtersContainer {
-  max-width: 1100px;
-  margin: 30px auto;
-  border: 1px solid #5c3d3d;
+.section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+select#numPlayers {
+  padding: 5px;
+  font-size: 1.2em;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #222;
+  color: #eee;
+  appearance: none;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #3c2c3c;
+  border: none;
+  border-radius: 8px;
+  color: #f5f5f5;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  transition: background-color 0.3s;
+}
+button:hover { background-color: #5c3d3d; }
+
+#gameGrid {
+  display: none;
+  margin-top: 30px;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.player-box {
+  border: 2px solid #444;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #1c1c1c;
+  box-shadow: 0 0 10px #00000099;
+}
+
+#playerResults {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.player-output, .relic-output, .disorder-output {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5em;
+}
+
+#gameGrid img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
   border-radius: 6px;
+}
+
+em.bold-italic {
+  font-style: italic;
+  font-weight: bold;
+  color: #e2d7a7;
+}
+
+.game-info-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.info-container {
+  border: 2px solid #444;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #1c1c1c;
+  box-shadow: 0 0 10px #00000099;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#monsterSection {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+#monsterSection .player-output {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Filter block */
+#filtersContainer {
+  max-width: 1200px;
+  margin: 0 auto 18px;
+  border: 2px solid #444;
+  border-radius: 10px;
   background-color: #151515;
-  padding: 20px;
+  padding: 12px;
+  box-shadow: 0 0 12px #000000aa;
+  color: #d6d2c4;
 }
 
-#filtersContainer h2 {
+#filtersContainer caption {
   color: #f0c080;
-  font-size: 1.4em;
-  margin-bottom: 15px;
+  font-weight: 700;
+  padding-bottom: 8px;
+  caption-side: top;
+  text-align: left;
 }
 
-.filter-table-container {
+#filtersTable {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.98em;
+  color: #d6d2c4;
+  table-layout: fixed;
+}
+#filtersTable tr { border-bottom: 1px dashed #2a2a2a; }
+
+#filtersTable td.labelCell {
+  width: 180px;
+  padding: 10px 8px;
+  color: #f0c080;
+  font-weight: 700;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-.filter-table-container td {
+#filtersTable td.controlsCell {
   padding: 8px;
   vertical-align: middle;
 }
 
-.labelCell {
-  text-align: right;
-  color: #f0c080;
-  font-weight: bold;
-  padding-right: 15px;
-  width: 180px;
+.group-checkbox {
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   white-space: nowrap;
 }
-
-.controlsCell {
-  text-align: left;
+.group-checkbox input[type="checkbox"] {
+  transform: scale(1.05);
+  cursor: pointer;
 }
-
-.group-checkbox {
-  margin-right: 10px;
+.group-checkbox label {
+  cursor: pointer;
+  color: #d6d2c4;
+  font-size: 0.95em;
 }
 
 /* Compact gothic-style toggle buttons */
-#filtersContainer button {
+#filtersContainer button.toggle-all {
   font-family: inherit;
   font-size: 0.95em;
   color: #e0d4b0;
@@ -76,138 +249,143 @@ h1 {
   box-shadow: none;
   transition: all 0.2s ease-in-out;
 }
-
-#filtersContainer button:hover {
+#filtersContainer button.toggle-all:hover {
   background-color: #2a1c1c;
   color: #f0c080;
   border-color: #8c5b3f;
 }
-
-#filtersContainer button:active {
+#filtersContainer button.toggle-all:active {
   transform: scale(0.96);
   opacity: 0.85;
 }
 
-/* Disclaimer */
-#disclaimer {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 10px;
-  border: 1px dashed #5c3d3d;
-  border-radius: 5px;
-  background-color: #151515;
-  color: #f0c080;
-  font-size: 0.9em;
-  text-align: left;
+@media (max-width: 760px) {
+  #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
+  .group-checkbox { display:block; margin-bottom:6px; }
+  #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+  #gameGrid img { width: 80px; height: 80px; }
 }
-#disclaimer p {
-  color: #b0a06f;
-  margin: 0;
-}
-#disclaimer ol {
-  margin: 5px 0 0 15px;
-  padding: 0;
-}
-
+@media (max-width: 420px) { #filtersTable td.labelCell { width: 120px; } }
 @media (max-width: 600px) {
   button { padding: 16px 32px; font-size: 1.3em; }
   select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
 }
 </style>
 </head>
-
 <body>
-<h1>Cthulhu: Death May Die — Scenario Generator</h1>
 
-<div id="filtersContainer">
-  <h2>Components for generation — select grouped pools to include</h2>
-  <table class="filter-table-container">
-    <tr>
-      <td class="labelCell">Investigators</td>
-      <td class="controlsCell">
-        <span class="group-checkbox"><input type="checkbox" id="inv_s1" data-group="investigators" data-sub="s1"><label for="inv_s1">S1</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="inv_s2" data-group="investigators" data-sub="s2"><label for="inv_s2">S2</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="inv_s3" data-group="investigators" data-sub="s3"><label for="inv_s3">S3</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="inv_extra" data-group="investigators" data-sub="extra"><label for="inv_extra">Extra (Eddie the Head)</label></span>
-        <button onclick="toggleGroup(this, 'investigators')">Select All</button>
-      </td>
-    </tr>
+<a href="index.html" class="back-button" title="Back to Game Selection">&#8592;</a>
+<h1>Cthulhu: Death May Die (RNG)</h1>
 
-    <tr>
-      <td class="labelCell">Pathologies</td>
-      <td class="controlsCell">
-        <span class="group-checkbox"><input type="checkbox" id="pth_s1" data-group="pathologies" data-sub="s1"><label for="pth_s1">S1</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="pth_s3" data-group="pathologies" data-sub="s3"><label for="pth_s3">S3</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="pth_extra" data-group="pathologies" data-sub="extra"><label for="pth_extra">Extra (Fear of the Dark)</label></span>
-        <button onclick="toggleGroup(this, 'pathologies')">Select All</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="labelCell">Bosses</td>
-      <td class="controlsCell">
-        <span class="group-checkbox"><input type="checkbox" id="boss_cthulhu" data-group="bosses" data-sub="Cthulhu"><label for="boss_cthulhu">Cthulhu</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="boss_hastur" data-group="bosses" data-sub="Hastur"><label for="boss_hastur">Hastur</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="boss_blackgoat" data-group="bosses" data-sub="Black Goat of the Woods"><label for="boss_blackgoat">Black Goat of the Woods</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="boss_yog" data-group="bosses" data-sub="Yog-Sothoth"><label for="boss_yog">Yog-Sothoth</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="boss_wicker" data-group="bosses" data-sub="Wicker Eddie"><label for="boss_wicker">Wicker Eddie</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="boss_azathoth" data-group="bosses" data-sub="Azathoth"><label for="boss_azathoth">Azathoth</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="boss_tsath" data-group="bosses" data-sub="Tsathoggua"><label for="boss_tsath">Tsathoggua</label></span>
-        <button onclick="toggleGroup(this, 'bosses')">Select All</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="labelCell">Episodes</td>
-      <td class="controlsCell">
-        <span class="group-checkbox"><input type="checkbox" id="ep_s1" data-group="episodes" data-sub="s1"><label for="ep_s1">S1</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="ep_s2" data-group="episodes" data-sub="s2"><label for="ep_s2">S2</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="ep_s3" data-group="episodes" data-sub="s3"><label for="ep_s3">S3</label></span>
-        <button onclick="toggleGroup(this, 'episodes')">Select All</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="labelCell">Relics (Optional)</td>
-      <td class="controlsCell">
-        <span class="group-checkbox"><input type="checkbox" id="rel_s3" data-group="relics" data-sub="s3"><label for="rel_s3">S3</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="rel_s4" data-group="relics" data-sub="s4"><label for="rel_s4">S4</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="rel_extra" data-group="relics" data-sub="extra"><label for="rel_extra">Extra (KS exclusive)</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="rel_animal" data-group="relics" data-sub="animal"><label for="rel_animal">Animal Allies</label></span>
-        <button onclick="toggleGroup(this, 'relics')">Select All</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="labelCell">Unknown Monsters (Optional)</td>
-      <td class="controlsCell">
-        <span class="group-checkbox"><input type="checkbox" id="mon_s1" data-group="monsters" data-sub="s1"><label for="mon_s1">S1</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="mon_s2" data-group="monsters" data-sub="s2"><label for="mon_s2">S2</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="mon_s3" data-group="monsters" data-sub="s3"><label for="mon_s3">S3</label></span>
-        <span class="group-checkbox"><input type="checkbox" id="mon_iron" data-group="monsters" data-sub="iron"><label for="mon_iron">Extra (Iron Maiden Pack)</label></span>
-        <button onclick="toggleGroup(this, 'monsters')">Select All</button>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<!-- DISCLAIMER (kept, color referenced above) -->
-<div id="disclaimer">
-  <p>DISCLAIMER:</p>
-  <ol>
+<!-- DISCLAIMER -->
+<div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
+  <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
+  <ol style="margin: 5px 0 0 15px; padding: 0;">
     <li>This generator is limited to the components currently owned by myself;</li>
     <li>Components used may not constitute complete season sets;</li>
     <li>Components may include non-official material.</li>
   </ol>
 </div>
 
+<!-- Number of players -->
+<div class="section">
+  <label>Number of players (1–5):
+    <select id="numPlayers">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3" selected>3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </label>
+</div>
+
+<!-- FILTERS -->
+<div id="filtersContainer">
+  <table id="filtersTable">
+    <caption>Components for generation — select grouped pools to include</caption>
+    <tbody>
+      <tr><td class="labelCell">Investigators</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>S2</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="investigators"><label>Extra (Eddie the Head)</label></span>
+          <button class="toggle-all" data-group="investigators">Select All</button>
+        </td>
+      </tr>
+      <tr><td class="labelCell">Pathologies</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" data-group="pathologies"><label>S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="pathologies"><label>S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="pathologies"><label>Extra (Fear of the Dark)</label></span>
+          <button class="toggle-all" data-group="pathologies">Select All</button>
+        </td>
+      </tr>
+      <tr><td class="labelCell">Bosses</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Cthulhu</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Hastur</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Black Goat of the Woods</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Yog-Sothoth</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Wicker Eddie</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Azathoth</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="bosses"><label>Tsathoggua</label></span>
+          <button class="toggle-all" data-group="bosses">Select All</button>
+        </td>
+      </tr>
+      <tr><td class="labelCell">Episodes</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" data-group="episodes"><label>S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="episodes"><label>S2</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="episodes"><label>S3</label></span>
+          <button class="toggle-all" data-group="episodes">Select All</button>
+        </td>
+      </tr>
+      <tr><td class="labelCell">Relics (Optional)</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>S4</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>Extra (KS exclusive)</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="relics"><label>Animal Allies</label></span>
+          <button class="toggle-all" data-group="relics">Select All</button>
+        </td>
+      </tr>
+      <tr><td class="labelCell">Unknown Monsters (Optional)</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>S1</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>S2</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" data-group="monsters"><label>Extra (Iron Maiden Pack)</label></span>
+          <button class="toggle-all" data-group="monsters">Select All</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <button onclick="generate()">Generate</button>
+</div>
+
+<div id="gameGrid">
+  <div id="playerResults"></div>
+  <div class="game-info-row">
+    <div class="info-container"><div id="episodeSection"></div><div id="bossSection"></div></div>
+    <div class="info-container"><div id="monsterSection"></div></div>
+  </div>
+</div>
+
 <script>
-function toggleGroup(button, groupName) {
-  const checkboxes = document.querySelectorAll(`[data-group='${groupName}']`);
-  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-  checkboxes.forEach(cb => cb.checked = !allChecked);
-  button.textContent = allChecked ? 'Select All' : 'Clear All';
-}
+document.querySelectorAll("button.toggle-all").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const group = btn.dataset.group;
+    const checkboxes = document.querySelectorAll(`input[data-group='${group}']`);
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allChecked);
+    btn.textContent = allChecked ? "Select All" : "Clear All";
+  });
+});
 </script>
 
 </body>

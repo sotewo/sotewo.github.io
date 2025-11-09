@@ -163,7 +163,7 @@
       gap: 30px;
       justify-content: center;
       flex-wrap: wrap;
-      flex: 1; /* Retaining this responsive fix */
+      flex: 1;
     }
     
     #monsterSection {
@@ -179,70 +179,44 @@
         align-items: center;
     }
     
-    /* NEW CSS for Component Selection - Minimal, based on existing styles */
-    #componentSelection {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 20px;
-      border: 2px solid #444; 
-      border-radius: 12px;
-      background-color: #1c1c1c; 
-      box-shadow: 0 0 10px #00000099;
-      text-align: left;
-    }
-
-    .component-group {
-      margin-bottom: 15px;
-      padding: 10px 0;
-      border-bottom: 1px dashed #5c3d3d; 
-    }
-
-    .component-group:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-    }
-
-    .component-group h3 {
-      color: #b0a06f; 
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.2em;
-    }
-
-    .checkbox-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px 30px; 
-    }
-
-    .checkbox-container label {
-      display: flex;
-      align-items: center;
-      font-size: 1em;
-      cursor: pointer;
-    }
-
-    .checkbox-container input[type="checkbox"] {
-      margin-right: 8px;
-      transform: scale(1.3);
-      accent-color: #5c3d3d; 
-    }
-
-    .warning-text {
-      color: #ff6347; 
-      font-weight: bold;
-      margin-top: 10px;
-      display: none; 
-      text-align: center;
-    }
-    /* END NEW CSS */
+    /* MINIMAL CSS FOR NEW CONTROLS - Avoids new classes where possible */
+    .selection-group h3 {
+        color: #b0a06f; /* Gold accent for titles */
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 1.2em;
+    }
+    .selection-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px 30px;
+    }
+    .selection-container label {
+        display: flex;
+        align-items: center;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .selection-container input[type="checkbox"] {
+        margin-right: 8px;
+        transform: scale(1.3);
+        accent-color: #5c3d3d; 
+    }
+    .warning-text {
+        color: #ff6347; 
+        font-weight: bold;
+        margin-top: 10px;
+        display: none; 
+        text-align: center;
+    }
+    /* END MINIMAL NEW CSS */
 
     @media (max-width: 600px) {
       #gameGrid img { width: 80px; height: 80px; }
       #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
       button { padding: 16px 32px; font-size: 1.3em; }
       select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
-      .checkbox-container { flex-direction: column; gap: 8px; }
+      .selection-container { flex-direction: column; gap: 8px; }
     }
   </style>
 </head>
@@ -286,13 +260,13 @@
   </label>
 </div>
 
-<!-- Component Selection Block -->
-<div id="componentSelection">
+<!-- Component Selection Block - Uses inline styles based on player-box/disclaimer block -->
+<div id="componentSelection" style="max-width: 900px; margin: 20px auto; padding: 20px; border: 2px solid #444; border-radius: 12px; background-color: #1c1c1c; box-shadow: 0 0 10px #00000099; text-align: left;">
     <p style="color: #b0a06f; text-align: center; font-size: 1.2em; margin-top: 0;">Select Components for Generation</p>
 
-    <div class="component-group" id="investigators-group">
-      <h3>Investigators (Mandatory)</h3>
-      <div class="checkbox-container">
+    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
+      <h3 class="selection-group-title">Investigators (Mandatory)</h3>
+      <div class="selection-container">
         <label><input type="checkbox" name="investigators" value="s1" checked> Season 1 (S1)</label>
         <label><input type="checkbox" name="investigators" value="s2" checked> Season 2 (S2)</label>
         <label><input type="checkbox" name="investigators" value="s3" checked> Season 3 (S3)</label>
@@ -300,9 +274,9 @@
       </div>
     </div>
 
-    <div class="component-group" id="relics-group">
-      <h3>Relics (Optional)</h3>
-      <div class="checkbox-container">
+    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
+      <h3 class="selection-group-title">Relics (Optional)</h3>
+      <div class="selection-container">
         <label><input type="checkbox" name="relics" value="s3" checked> Season 3 (S3)</label>
         <label><input type="checkbox" name="relics" value="s4" checked> Season 4 (S4)</label>
         <label><input type="checkbox" name="relics" value="extra" checked> Extra</label>
@@ -310,18 +284,18 @@
       </div>
     </div>
 
-    <div class="component-group" id="pathologies-group">
-      <h3>Pathologies (Mandatory) </h3>
-      <div class="checkbox-container">
+    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
+      <h3 class="selection-group-title">Pathologies (Mandatory) </h3>
+      <div class="selection-container">
         <label><input type="checkbox" name="pathologies" value="s1" checked> Season 1 (S1)</label>
         <label><input type="checkbox" name="pathologies" value="s3" checked> Season 3 (S3)</label>
         <label><input type="checkbox" name="pathologies" value="extra" checked> Fear of the Dark</label>
       </div>
     </div>
 
-    <div class="component-group" id="bosses-group">
-      <h3>Elder Ones/Bosses (Mandatory)</h3>
-      <div class="checkbox-container">
+    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
+      <h3 class="selection-group-title">Elder Ones/Bosses (Mandatory)</h3>
+      <div class="selection-container">
         <label><input type="checkbox" name="bosses" value="cthulhu" checked> Cthulhu</label>
         <label><input type="checkbox" name="bosses" value="hastur" checked> Hastur</label>
         <label><input type="checkbox" name="bosses" value="blackgoat" checked> Black Goat of the Woods</label>
@@ -332,18 +306,18 @@
       </div>
     </div>
 
-    <div class="component-group" id="episodes-group">
-      <h3>Episodes (Mandatory)</h3>
-      <div class="checkbox-container">
+    <div class="selection-group" style="margin-bottom: 15px; padding: 10px 0; border-bottom: 1px dashed #5c3d3d;">
+      <h3 class="selection-group-title">Episodes (Mandatory)</h3>
+      <div class="selection-container">
         <label><input type="checkbox" name="episodes" value="s1" checked> Season 1 (S1)</label>
         <label><input type="checkbox" name="episodes" value="s2" checked> Season 2 (S2)</label>
         <label><input type="checkbox" name="episodes" value="s3" checked> Season 3 (S3)</label>
       </div>
     </div>
 
-    <div class="component-group" id="monsters-group">
-      <h3>Unknown Monsters (Optional)</h3>
-      <div class="checkbox-container">
+    <div class="selection-group" style="padding-bottom: 0;">
+      <h3 class="selection-group-title">Unknown Monsters (Optional)</h3>
+      <div class="selection-container">
         <label><input type="checkbox" name="monsters" value="s1" checked> Season 1 (S1)</label>
         <label><input type="checkbox" name="monsters" value="s2" checked> Season 2 (S2)</label>
         <label><input type="checkbox" name="monsters" value="s3" checked> Season 3 (S3)</label>
@@ -425,12 +399,9 @@ function sanitizeFileName(name) {
 
 /**
  * Gathers all selected component names for a specific category.
- * @param {string} category The key in the 'components' object (e.g., 'investigators').
- * @returns {string[]} An array of all component names in the selected sub-pools.
  */
 function getSelectedPool(category) {
   const selectedPool = [];
-  // Checkboxes have the name attribute corresponding to the category (e.g., name="investigators")
   const checkboxes = document.querySelectorAll(`input[name="${category}"]:checked`);
 
   checkboxes.forEach(checkbox => {
@@ -440,7 +411,6 @@ function getSelectedPool(category) {
     if (Array.isArray(list)) {
       selectedPool.push(...list);
     } else if (typeof list === 'string') {
-      // For Bosses where the value is the name itself
       selectedPool.push(list);
     }
   });
@@ -450,12 +420,6 @@ function getSelectedPool(category) {
 
 /**
  * Helper function to create the standard display output (image + text) 
- * for game components.
- * @param {string} title The display title (e.g., "Elder One").
- * @param {string} name The generated name (e.g., "Cthulhu").
- * @param {string} fileName The file path suffix (e.g., "cthulhu.png").
- * @param {string} cssClass The specific CSS class for the element (e.g., "player-output").
- * @returns {HTMLDivElement} The complete display div.
  */
 function createInfoItem(title, name, fileName, cssClass) {
     const div = document.createElement("div");
@@ -478,15 +442,17 @@ function createInfoItem(title, name, fileName, cssClass) {
 // --- MAIN GENERATION FUNCTION ---
 function generate() {
   const numPlayers = parseInt(document.getElementById("numPlayers").value);
+  
+  const selectionWarning = document.getElementById("selectionWarning");
+  selectionWarning.style.display = "none";
+
   if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { 
-    // Since alerts are forbidden, we rely on the selection warning for general errors too
-    document.getElementById("selectionWarning").innerText = "Please select 1–5 players.";
-    document.getElementById("selectionWarning").style.display = "block";
+    selectionWarning.innerText = "Please select 1–5 players.";
+    selectionWarning.style.display = "block";
     document.getElementById("gameGrid").style.display = "none";
     return; 
   }
   
-  const selectionWarning = document.getElementById("selectionWarning");
   const mandatorySections = ['investigators', 'pathologies', 'bosses', 'episodes'];
   let allMandatorySelected = true;
 
@@ -504,8 +470,6 @@ function generate() {
     selectionWarning.style.display = "block";
     document.getElementById("gameGrid").style.display = "none";
     return;
-  } else {
-    selectionWarning.style.display = "none";
   }
   
   // Get Optional Pools
@@ -553,14 +517,20 @@ function generate() {
         const relicFile = sanitizeFileName(relicName) + ".png";
         box.appendChild(createInfoItem("Relic", relicName, relicFile, "relic-output"));
       } else {
-        // Fallback if not enough unique relics were selected for all players
         const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
         const span = document.createElement("span"); 
         span.innerHTML = `Relic:<br><em style="font-style: italic; color: #666;">(Not enough unique Relics selected)</em>`; 
         relicDiv.appendChild(span);
         box.appendChild(relicDiv);
       }
-    }
+    } else {
+        // Show placeholder for skipped optional section
+        const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
+        const span = document.createElement("span"); 
+        span.innerHTML = `Relic:<br><em style="font-style: italic; color: #666;">(Skipped)</em>`; 
+        relicDiv.appendChild(span);
+        box.appendChild(relicDiv);
+    }
 
 
     // Pathology (Mandatory)
@@ -609,7 +579,7 @@ function generate() {
   } else {
       // Show empty space for monsters if none are selected
       const span = document.createElement("span"); 
-      span.innerHTML = `Unknown Monsters:<br><em style="font-style: italic; color: #666;">(Not included in pool)</em>`; 
+      span.innerHTML = `Unknown Monsters:<br><em style="font-style: italic; color: #666;">(Skipped)</em>`; 
       monsterSection.appendChild(span);
   }
 }

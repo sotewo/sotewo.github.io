@@ -178,9 +178,75 @@
         align-items: center;
     }
 
-    @media (max-width: 600px) {
-      #gameGrid img { width: 80px; height: 80px; }
+    /* ---------------- Filter Table Styles (consistent with theme) ---------------- */
+    #filtersContainer {
+      max-width: 900px;
+      margin: 0 auto 18px;
+      border: 2px solid #444;
+      border-radius: 10px;
+      background-color: #151515;
+      padding: 12px;
+      box-shadow: 0 0 12px #000000aa;
+      color: #d6d2c4;
+    }
+
+    #filtersContainer table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95em;
+      color: #d6d2c4;
+    }
+
+    #filtersContainer thead th {
+      text-align: left;
+      padding: 8px;
+      background-color: #1c1c1c;
+      border-bottom: 1px solid #333;
+      color: #b0a06f;
+      font-weight: 700;
+    }
+
+    #filtersContainer tbody td {
+      padding: 6px 8px;
+      border-bottom: 1px dashed #2a2a2a;
+      vertical-align: middle;
+    }
+
+    #filtersContainer .category-heading {
+      background-color: #191919;
+      color: #e2d7a7;
+      font-weight: 700;
+      padding: 10px 8px;
+      border-radius: 6px;
+      margin-top: 8px;
+      border: 1px solid #2f2f2f;
+    }
+
+    #filtersContainer .component-name {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #filtersContainer .checkbox-cell {
+      text-align: right;
+      width: 120px;
+    }
+
+    /* small screens: make table more compact */
+    @media (max-width: 700px) {
+      #filtersContainer table, #filtersContainer tbody td, #filtersContainer thead th { font-size: 0.88em; }
       #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+      #gameGrid img { width: 80px; height: 80px; }
+    }
+
+    @media (max-width: 420px) {
+      #filtersContainer .checkbox-cell { width: 100px; }
+    }
+    /* ----------------------------------------------------------------------------- */
+
+    @media (max-width: 600px) {
       button { padding: 16px 32px; font-size: 1.3em; }
       select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
     }
@@ -224,6 +290,24 @@
       <option value="5">5</option>
     </select>
   </label>
+</div>
+
+<!-- FILTERS: placed directly before the Generate button -->
+<div id="filtersContainer" aria-label="Component filters">
+  <table id="filtersTable" role="table" aria-describedby="filters-desc">
+    <caption id="filters-desc" style="caption-side: top; text-align:left; padding-bottom:8px; color:#b0a06f; font-weight:700;">
+      Component Filters — check components you want included (all checked by default)
+    </caption>
+    <!-- The table body is built dynamically with JS to ensure each unique component has a row -->
+    <thead>
+      <tr>
+        <th style="width: 1%;">Category</th>
+        <th style="width: auto;">Component</th>
+        <th style="width: 120px; text-align: right;">Include</th>
+      </tr>
+    </thead>
+    <tbody id="filtersBody"></tbody>
+  </table>
 </div>
 
 <div class="section">
@@ -300,6 +384,121 @@ function sanitizeFileName(name) {
 
 function getWord(num, list) { return list[num-1] || num; }
 
+/* ----------------------- Build filter table dynamically -----------------------
+   The table will create category headings and create a row for every component
+   found in the arrays above. Each checkbox is checked by default.
+   Checkbox attributes:
+    data-cat = category key (investigator, pathology, boss, episode, relic, monster)
+    data-index = index in the source array (0-based)
+    id = unique id for label association
+-------------------------------------------------------------------------------*/
+(function buildFilterTable(){
+  const tbody = document.getElementById("filtersBody");
+  tbody.innerHTML = "";
+
+  function makeCategoryHeader(categoryLabel) {
+    const tr = document.createElement("tr");
+    const tdCat = document.createElement("td"); tdCat.colSpan = 3;
+    tdCat.className = "category-heading";
+    tdCat.textContent = categoryLabel;
+    tr.appendChild(tdCat);
+    return tr;
+  }
+
+  function addRowsForArray(categoryKey, labelForCategory, arr, subgroupHintFn = null) {
+    // category header row
+    tbody.appendChild(makeCategoryHeader(labelForCategory));
+
+    arr.forEach((name, idx) => {
+      const tr = document.createElement("tr");
+
+      const tdCategory = document.createElement("td");
+      tdCategory.textContent = subgroupHintFn ? (subgroupHintFn(idx) || "") : "";
+      tdCategory.style.opacity = "0.85";
+      tdCategory.style.fontSize = "0.9em";
+      tdCategory.style.paddingRight = "8px";
+
+      const tdName = document.createElement("td");
+      tdName.className = "component-name";
+      tdName.textContent = name;
+
+      const tdCheck = document.createElement("td");
+      tdCheck.className = "checkbox-cell";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.checked = true;
+      input.dataset.cat = categoryKey;
+      input.dataset.index = idx; // 0-based index
+      // id for label compatibility
+      const id = `chk_${categoryKey}_${idx}`;
+      input.id = id;
+      const label = document.createElement("label");
+      label.htmlFor = id;
+      label.style.display = "inline-block";
+      label.style.paddingLeft = "6px";
+      label.appendChild(input);
+      tdCheck.appendChild(label);
+
+      tr.appendChild(tdCategory);
+      tr.appendChild(tdName);
+      tr.appendChild(tdCheck);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Subgroup hint functions provide S1/S2/S3 or special name for a few categories
+  const investigatorsSubgroup = (i)=>{
+    // split investigators into s1 (1-10), s2 (11-20), s3 (21-30), and extra for index 4 (Eddie the Head at index 4)
+    // (note: your array has 31 items; index 30 is last)
+    if (i === 4) return "Extra (Eddie)";
+    if (i < 10) return "S1";
+    if (i < 20) return "S2";
+    if (i < 30) return "S3";
+    return "S3";
+  };
+
+  const pathologiesSubgroup = (i)=>{
+    // user instructed subdivisions: s1, s3, 'Fear of the Dark' (we'll mark Fear of the Dark specially)
+    if (pathologies1to21[i] === "Fear of the Dark") return "Extra (Fear of the Dark)";
+    // simple grouping: first 7 -> S1, next 7 -> S3, rest -> S3 (approx)
+    if (i < 7) return "S1";
+    return "S3";
+  };
+
+  const episodesSubgroup = (i)=>{
+    if (i < 6) return "S1";
+    if (i < 12) return "S2";
+    return "S3";
+  };
+
+  const relicsSubgroup = (i)=>{
+    // user subdivisions: s3, s4, 'extra', 'animal allies'
+    // We'll treat last 4 as animal allies (Midna/Titus/Percy/Luna/Celeste) - indexes 22..26
+    if (i >= 22) return "Animal Allies";
+    if (i < 14) return "S3"; // arbitrary split: first 14 as S3
+    return "S4";
+  };
+
+  const monstersSubgroup = (i)=>{
+    // Subdivide roughly by first 8 S1, next 8 S2, next 8 S3, and 'Iron Maiden Pack' none explicit here but we can mark Fear Eddie/Undead Eddie specially
+    const name = monsters1to25[i];
+    if (name === "Fear Eddie" || name === "Undead Eddie") return "Iron Maiden Pack (Extra)";
+    if (i < 8) return "S1";
+    if (i < 16) return "S2";
+    return "S3";
+  };
+
+  // Add categories in the requested order with subgroup hints
+  addRowsForArray("investigator", "Investigators (s1, s2, s3, Eddie the Head)", investigators1to31, investigatorsSubgroup);
+  addRowsForArray("pathology", "Pathologies (s1, s3, Fear of the Dark)", pathologies1to21, pathologiesSubgroup);
+  addRowsForArray("boss", "Bosses", bosses1to7, (i)=>"");
+  addRowsForArray("episode", "Episodes (s1, s2, s3)", episodes1to18, episodesSubgroup);
+  addRowsForArray("relic", "Relics (s3, s4, extra, animal allies)", relics1to27, relicsSubgroup);
+  addRowsForArray("monster", "Unknown Monsters (s1, s2, s3, Iron Maiden Pack)", monsters1to25, monstersSubgroup);
+
+})(); // buildFilterTable IIFE
+
 
 /**
  * Helper function to create the standard display output (image + text) 
@@ -334,6 +533,31 @@ function createMonsterDisplay(monsterIndex, monsterName) {
     return createInfoItem(title, monsterName, fileName);
 }
 
+/* Utility: get currently selected names for a given category from the filter table */
+function getSelectedNamesForCategory(catKey, sourceArray) {
+  // query all inputs for that category that are checked
+  const inputs = Array.from(document.querySelectorAll(`#filtersBody input[type=checkbox][data-cat="${catKey}"]`));
+  const selected = inputs.filter(i => i.checked).map(i => {
+    const idx = parseInt(i.dataset.index, 10);
+    return sourceArray[idx];
+  }).filter(Boolean);
+  return selected;
+}
+
+/* Show the required message in the playerResults area (styled) */
+function showMessageInResults(msg) {
+  const playerResults = document.getElementById("playerResults");
+  playerResults.innerHTML = "";
+  const box = document.createElement("div");
+  box.className = "player-box";
+  box.style.textAlign = "center";
+  box.style.fontSize = "1.2em";
+  box.textContent = msg;
+  playerResults.appendChild(box);
+  document.getElementById("gameGrid").style.display = "flex";
+}
+
+/* Main generate() updated to use filters */
 function generate() {
   const numPlayers = parseInt(document.getElementById("numPlayers").value);
   if (isNaN(numPlayers) || numPlayers < 1 || numPlayers > 5) { 
@@ -342,6 +566,38 @@ function generate() {
     return; 
   }
   
+  // Get filtered pools from checkboxes
+  const invPool = getSelectedNamesForCategory("investigator", investigators1to31);
+  const relicPool = getSelectedNamesForCategory("relic", relics1to27);
+  const pathPool = getSelectedNamesForCategory("pathology", pathologies1to21);
+  const episodePool = getSelectedNamesForCategory("episode", episodes1to18);
+  const bossPool = getSelectedNamesForCategory("boss", bosses1to7);
+  const monsterPool = getSelectedNamesForCategory("monster", monsters1to25);
+
+  // If absolutely no checkboxes selected at all -> specific requested message.
+  const anyChecked = [invPool, relicPool, pathPool, episodePool, bossPool, monsterPool].some(arr => arr.length > 0);
+  if (!anyChecked) {
+    showMessageInResults('Please select at least one component to generate.');
+    return;
+  }
+
+  // Validate minimal necessary pools: investigators, episodes, bosses, pathologies, relics, monsters
+  // If one of these pools is empty the generator cannot produce a full valid run.
+  // We'll display a clear message pointing to the missing categories.
+  const requiredChecks = [
+    {name: "Investigators", pool: invPool},
+    {name: "Episodes", pool: episodePool},
+    {name: "Bosses", pool: bossPool},
+    {name: "Pathologies", pool: pathPool},
+    {name: "Relics", pool: relicPool},
+    {name: "Unknown Monsters", pool: monsterPool}
+  ];
+  const missing = requiredChecks.filter(x => x.pool.length === 0).map(x => x.name);
+  if (missing.length > 0) {
+    showMessageInResults("Please select at least one component from these categories: " + missing.join(", "));
+    return;
+  }
+
   document.getElementById("gameGrid").style.display = "flex";
 
   const playerResults = document.getElementById("playerResults");
@@ -354,39 +610,49 @@ function generate() {
   bossSection.innerHTML = ""; 
   monsterSection.innerHTML = "";
 
-  const used = [], usedRelics = [], usedPathologies = [];
+  // helper for unique selection from pool with fallback to repeats if needed
+  function pickUniqueFromPool(pool, usedSet) {
+    const available = pool.filter(name => !usedSet.has(name));
+    if (available.length === 0) {
+      // fallback: allow repeats (choose random from whole pool)
+      return pool[Math.floor(Math.random() * pool.length)];
+    } else {
+      const name = available[Math.floor(Math.random() * available.length)];
+      return name;
+    }
+  }
+
+  const usedInvestigators = new Set();
+  const usedRelics = new Set();
+  const usedPathologies = new Set();
 
   for (let i=0; i<numPlayers; i++) {
     const box = document.createElement("div"); box.className="player-box";
 
-    // Investigator 
-    const remaining = Array.from({length:31}, (_,j)=>j+1).filter(n=>!used.includes(n));
-    const sel = remaining[Math.floor(Math.random()*remaining.length)]; used.push(sel);
-    const name = getWord(sel, investigators1to31);
-    const file = sanitizeFileName(name)+".png";
-
-    // Note: Investigator, Relic, and Pathology still use dedicated DOM generation blocks 
-    // to correctly assign specific CSS classes (player-output, relic-output, disorder-output).
+    // Investigator - pick from invPool
+    const invName = pickUniqueFromPool(invPool, usedInvestigators);
+    usedInvestigators.add(invName);
+    const invFile = sanitizeFileName(invName)+".png";
     const div = document.createElement("div"); div.className="player-output";
-    const img = document.createElement("img"); img.src="assets/"+file; img.alt=name;
+    const img = document.createElement("img"); img.src="assets/"+invFile; img.alt=invName;
     img.onerror=()=>{img.style.display="none";};
-    const span = document.createElement("span"); span.innerHTML=`Investigator:<br><em class="bold-italic">${name}</em>`;
+    const span = document.createElement("span"); span.innerHTML=`Investigator:<br><em class="bold-italic">${invName}</em>`;
     div.appendChild(img); div.appendChild(span); box.appendChild(div);
 
-    // Relic
-    const relicRem = Array.from({length:27}, (_,j)=>j+1).filter(n=>!usedRelics.includes(n));
-    const relicSel = relicRem[Math.floor(Math.random()*relicRem.length)]; usedRelics.push(relicSel);
-    const relicName = getWord(relicSel, relics1to27); const relicFile = sanitizeFileName(relicName)+".png";
+    // Relic - pick from relicPool
+    const relicName = pickUniqueFromPool(relicPool, usedRelics);
+    usedRelics.add(relicName);
+    const relicFile = sanitizeFileName(relicName)+".png";
     const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
     const relicImg = document.createElement("img"); relicImg.src="assets/"+relicFile; relicImg.alt=relicName;
     relicImg.onerror=()=>{relicImg.style.display="none";};
     const relicSpan = document.createElement("span"); relicSpan.innerHTML=`Relic:<br><em class="bold-italic">${relicName}</em>`;
     relicDiv.appendChild(relicImg); relicDiv.appendChild(relicSpan); box.appendChild(relicDiv);
 
-    // Pathology
-    const pathRem = Array.from({length:21},(_,j)=>j+1).filter(n=>!usedPathologies.includes(n));
-    const pathSel = pathRem[Math.floor(Math.random()*pathRem.length)]; usedPathologies.push(pathSel);
-    const pathName = getWord(pathSel,pathologies1to21); const pathFile=sanitizeFileName(pathName)+".png";
+    // Pathology - pick from pathPool
+    const pathName = pickUniqueFromPool(pathPool, usedPathologies);
+    usedPathologies.add(pathName);
+    const pathFile = sanitizeFileName(pathName)+".png";
     const pathDiv = document.createElement("div"); pathDiv.className="disorder-output";
     const pathImg = document.createElement("img"); pathImg.src="assets/"+pathFile; pathImg.alt=pathName;
     pathImg.onerror=()=>{pathImg.style.display="none";};
@@ -396,33 +662,32 @@ function generate() {
     playerResults.appendChild(box);
   }
 
-  // Episode
-  const epNum=Math.floor(Math.random()*18)+1; 
-  const epFull=getWord(epNum,episodes1to18);
-  const epCode=epFull.split(" ")[0]; 
-  const epFile=epCode.toLowerCase()+".png";
+  // Episode - choose random from episodePool
+  const epFull = episodePool[Math.floor(Math.random()*episodePool.length)];
+  const epCode = epFull.split(" ")[0] || epFull;
+  const epFile = sanitizeFileName(epCode) + ".png";
   episodeSection.appendChild(createInfoItem("Episode", epFull, epFile));
 
-  // Boss
-  const bossNum=Math.floor(Math.random()*7)+1; 
-  const bossName=getWord(bossNum,bosses1to7); 
-  const bossFile=sanitizeFileName(bossName)+".png";
+  // Boss - choose random from bossPool
+  const bossName = bossPool[Math.floor(Math.random()*bossPool.length)];
+  const bossFile = sanitizeFileName(bossName) + ".png";
   bossSection.appendChild(createInfoItem("Elder One", bossName, bossFile));
 
-  // Unknown Monster(s)
-  const monsterRem = Array.from({length: 25}, (_, j) => j + 1);
-
-  // Select Monster A
-  let randIndex1 = Math.floor(Math.random() * monsterRem.length);
-  let monsterNum1 = monsterRem.splice(randIndex1, 1)[0];
-  let monsterName1 = getWord(monsterNum1, monsters1to25);
-  monsterSection.appendChild(createMonsterDisplay('A', monsterName1));
-
-  // Select Monster B
-  let randIndex2 = Math.floor(Math.random() * monsterRem.length);
-  let monsterNum2 = monsterRem.splice(randIndex2, 1)[0];
-  let monsterName2 = getWord(monsterNum2, monsters1to25);
-  monsterSection.appendChild(createMonsterDisplay('B', monsterName2));
+  // Unknown Monster(s) - pick two distinct if possible
+  const monsterPoolCopy = monsterPool.slice();
+  // select Monster A
+  const idxA = Math.floor(Math.random() * monsterPoolCopy.length);
+  const monsterA = monsterPoolCopy.splice(idxA,1)[0];
+  monsterSection.appendChild(createMonsterDisplay('A', monsterA));
+  // select Monster B - if pool had >=1 remaining pick distinct, otherwise allow repeat
+  let monsterB;
+  if (monsterPoolCopy.length > 0) {
+    const idxB = Math.floor(Math.random() * monsterPoolCopy.length);
+    monsterB = monsterPoolCopy[idxB];
+  } else {
+    monsterB = monsterA; // fallback to the same if only one selected
+  }
+  monsterSection.appendChild(createMonsterDisplay('B', monsterB));
 }
 </script>
 </body>

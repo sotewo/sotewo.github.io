@@ -280,7 +280,7 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 .monster-letter {
   display: inline-block;
   vertical-align: middle;
-  height: 0.5em;
+  height: 1em;
   width: auto;
   transform: translateY(-0.1em); /* slight optical centering */
 }
@@ -526,9 +526,9 @@ function createMonsterDisplay(monsterIndex, monsterName) {
     // Replace letter A/B with inline image
     let title;
     if (monsterIndex === 'A') {
-        title = `Unknown Monster <img src="assets/a.png" alt="A" class="monster-letter">`;
+        title = `Unknown Monster <img src="assets/ui/a.png" alt="A" class="monster-letter">`;
     } else if (monsterIndex === 'B') {
-        title = `Unknown Monster <img src="assets/b.png" alt="B" class="monster-letter">`;
+        title = `Unknown Monster <img src="assets/ui/b.png" alt="B" class="monster-letter">`;
     } else {
         title = `Unknown Monster ${monsterIndex}`;
     }
@@ -764,6 +764,7 @@ document.querySelectorAll("button.toggle-all").forEach(btn => {
 
 </body>
 </html>
+
 
 
 

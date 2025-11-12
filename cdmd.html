@@ -278,11 +278,12 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 }
 
 .monster-letter {
+  all: unset;
   display: inline-block;
-  vertical-align: middle;
   height: 1em;
   width: auto;
-  transform: translateY(-0.1em); /* slight optical centering */
+  vertical-align: middle;
+  object-fit: contain;
 }
   
 </style>
@@ -764,6 +765,7 @@ document.querySelectorAll("button.toggle-all").forEach(btn => {
 
 </body>
 </html>
+
 
 
 

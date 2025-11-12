@@ -276,6 +276,15 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
   button { padding: 16px 32px; font-size: 1.3em; }
   select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
 }
+
+.monster-letter {
+  display: inline-block;
+  vertical-align: middle;
+  height: 1em;
+  width: auto;
+  transform: translateY(-0.1em); /* slight optical centering */
+}
+  
 </style>
 </head>
 <body>
@@ -513,7 +522,17 @@ function createInfoItem(title, name, fileName) {
 
 function createMonsterDisplay(monsterIndex, monsterName) {
     const fileName = sanitizeFileName(monsterName) + ".png";
-    const title = `Unknown Monster ${monsterIndex}`;
+
+    // Replace letter A/B with inline image
+    let title;
+    if (monsterIndex === 'A') {
+        title = `Unknown Monster <img src="assets/a.png" alt="A" class="monster-letter">`;
+    } else if (monsterIndex === 'B') {
+        title = `Unknown Monster <img src="assets/b.png" alt="B" class="monster-letter">`;
+    } else {
+        title = `Unknown Monster ${monsterIndex}`;
+    }
+
     return createInfoItem(title, monsterName, fileName);
 }
 
@@ -745,4 +764,5 @@ document.querySelectorAll("button.toggle-all").forEach(btn => {
 
 </body>
 </html>
+
 

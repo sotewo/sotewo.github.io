@@ -152,6 +152,14 @@ button.generate-btn:hover {
   border-radius: 6px;
 }
 
+/* isolates the small letter icons */
+.monster-title img.monster-letter {
+  width: auto !important;
+  height: 1em !important;
+  vertical-align: middle !important;
+  object-fit: contain !important;
+}
+  
 em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 
 .game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
@@ -524,15 +532,14 @@ function createInfoItem(title, name, fileName) {
 function createMonsterDisplay(monsterIndex, monsterName) {
     const fileName = sanitizeFileName(monsterName) + ".png";
 
-    // Replace letter A/B with inline image
-    let title;
-    if (monsterIndex === 'A') {
-        title = `Unknown Monster <img src="assets/ui/a.png" alt="A" class="monster-letter">`;
-    } else if (monsterIndex === 'B') {
-        title = `Unknown Monster <img src="assets/ui/b.png" alt="B" class="monster-letter">`;
-    } else {
-        title = `Unknown Monster ${monsterIndex}`;
-    }
+    const letterImg = (index) => 
+      `<img src="assets/ui/${index.toLowerCase()}.png" alt="${index}" class="monster-letter">`;
+
+    const title = `
+      <span class="monster-title">
+        Unknown Monster ${['A','B'].includes(monsterIndex) ? letterImg(monsterIndex) : monsterIndex}:
+      </span>
+    `;
 
     return createInfoItem(title, monsterName, fileName);
 }
@@ -765,6 +772,7 @@ document.querySelectorAll("button.toggle-all").forEach(btn => {
 
 </body>
 </html>
+
 
 
 

@@ -160,7 +160,7 @@ button.generate-btn:hover {
   object-fit: contain !important;
   margin-right: -0.2em;
 }
-  
+   
 em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 
 .game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
@@ -294,7 +294,7 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
   vertical-align: middle;
   object-fit: contain;
 }
-  
+   
 </style>
 </head>
 <body>
@@ -488,6 +488,35 @@ const monstersS3 = [
 ];
 
 const ironMaiden = ["Fear Eddie","Undead Eddie"];
+
+/* ----------------- Exclusions Mapping ----------------- */
+/* Maps specific Episode names to an array of monsters that should NOT be selected as Unknown Monsters. */
+/* NOTE: Monster names here must match exactly the strings in the monster pools above. */
+const episodeExclusions = {
+  // S1
+  "S01E01 - Blasphemous Alchemy": ["Fire Vampire", "Byakhee"],
+  "S01E02 - Tomes of Madness":    ["Ghoul", "Chthonic Entity"],
+  "S01E03 - Danse Macabre":      ["Deep One", "Hunting Horror"],
+  "S01E04 - Eldritch Idols":     ["Byakhee", "Shoggoth"],
+  "S01E05 - Accursed Tide":      ["Deep One", "Chthonic Entity"],
+  "S01E06 - Unspeakable Hour":   ["Ghoul", "Fire Vampire"],
+
+  // S2
+  "S02E01 - Strange Bedfellows":         ["Tcho-Tcho", "Elder Thing"],
+  "S02E02 - Nameless Woods":             ["Nightgaunt", "Flying Polyp"],
+  "S02E03 - Sanctificetur Nomen":        ["Ghoul", "Star Vampire"],
+  "S02E04 - Shootout at the H.P. Corral":["Hunting Horror", "Bokrug"],
+  "S02E05 - Monsters in Sin City":       ["Hound of Tindalos", "Yugg"],
+  "S02E06 - Endgame":                    ["Tcho-Tcho", "Dimensional Shambler"],
+
+  // S3
+  "S03E01 - Top of the Mourning":     ["Ghast", "The Unnamable"],
+  "S03E02 - Isle of the Damned":      ["Fisher from Outside", "Dhole"],
+  "S03E03 - Deliver Us From Evil":    ["Gyaa-Yothn", "Dhole"],
+  "S03E04 - By Request of the Queen": ["Ghast", "Gug"],
+  "S03E05 - Festival of Death":       ["Serpent Man", "Gyaa-Yothn"],
+  "S03E06 - Die Schöne und das Biest":["Serpent Man", "Fisher from Outside"]
+};
 
 /* ----------------- Utility functions ----------------- */
 
@@ -703,13 +732,39 @@ function generate() {
 
   // Monsters (optional) - up to two distinct
   if (includeMonsters) {
-    const poolCopy = pools.monsters.slice();
-    const mA = pickRandomFrom(poolCopy);
-    const idx = poolCopy.indexOf(mA);
-    if (idx !== -1) poolCopy.splice(idx,1);
-    const mB = poolCopy.length ? pickRandomFrom(poolCopy) : mA;
-    document.getElementById("monsterSection").appendChild(createMonsterDisplay('A', mA));
-    document.getElementById("monsterSection").appendChild(createMonsterDisplay('B', mB));
+    // Start with all selected monsters
+    let validMonsters = pools.monsters.slice();
+
+    // EXCLUSION LOGIC: Filter out monsters that belong to the selected episode
+    if (epChoice && episodeExclusions[epChoice]) {
+        const exclusions = episodeExclusions[epChoice];
+        // Remove excluded monsters from valid list
+        validMonsters = validMonsters.filter(m => !exclusions.includes(m));
+    }
+
+    // Ensure we still have enough monsters to pick from
+    if (validMonsters.length > 0) {
+        const mA = pickRandomFrom(validMonsters);
+        document.getElementById("monsterSection").appendChild(createMonsterDisplay('A', mA));
+        
+        // Remove mA so we don't pick it again
+        const remaining = validMonsters.filter(m => m !== mA);
+        
+        if (remaining.length > 0) {
+            const mB = pickRandomFrom(remaining);
+            document.getElementById("monsterSection").appendChild(createMonsterDisplay('B', mB));
+        }
+    } else {
+        // Fallback if filtering removed everything (unlikely unless very few packs selected)
+        const fallbackA = pickRandomFrom(pools.monsters);
+        document.getElementById("monsterSection").appendChild(createMonsterDisplay('A', fallbackA));
+        // Try to pick a different second one from original pool
+        const poolCopy = pools.monsters.filter(m => m !== fallbackA);
+        if (poolCopy.length > 0) {
+             const fallbackB = pickRandomFrom(poolCopy);
+             document.getElementById("monsterSection").appendChild(createMonsterDisplay('B', fallbackB));
+        }
+    }
   }
 } // end generate
 

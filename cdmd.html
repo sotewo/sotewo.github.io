@@ -160,7 +160,7 @@ button.generate-btn:hover {
   object-fit: contain !important;
   margin-right: -0.2em;
 }
-   
+    
 em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 
 .game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
@@ -294,7 +294,7 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
   vertical-align: middle;
   object-fit: contain;
 }
-   
+    
 </style>
 </head>
 <body>
@@ -334,7 +334,8 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
           <span class="group-checkbox"><input type="checkbox" id="inv_s1" data-group="investigators" data-sub="s1"><label for="inv_s1">S1</label></span>
           <span class="group-checkbox"><input type="checkbox" id="inv_s2" data-group="investigators" data-sub="s2"><label for="inv_s2">S2</label></span>
           <span class="group-checkbox"><input type="checkbox" id="inv_s3" data-group="investigators" data-sub="s3"><label for="inv_s3">S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="inv_extra" data-group="investigators" data-sub="extra"><label for="inv_extra">Extra (Eddie the Head)</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="inv_s4" data-group="investigators" data-sub="s4"><label for="inv_s4">S4</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="inv_extra" data-group="investigators" data-sub="extra"><label for="inv_extra">Extra (Eddie)</label></span>
           <button class="toggle-all" data-group="investigators" aria-label="Toggle investigators">Select All</button>
         </td>
       </tr>
@@ -344,6 +345,7 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
         <td class="controlsCell">
           <span class="group-checkbox"><input type="checkbox" id="pth_s1" data-group="pathologies" data-sub="s1"><label for="pth_s1">S1</label></span>
           <span class="group-checkbox"><input type="checkbox" id="pth_s3" data-group="pathologies" data-sub="s3"><label for="pth_s3">S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="pth_s4" data-group="pathologies" data-sub="s4"><label for="pth_s4">S4</label></span>
           <span class="group-checkbox"><input type="checkbox" id="pth_extra" data-group="pathologies" data-sub="extra"><label for="pth_extra">Extra (Fear of the Dark)</label></span>
           <button class="toggle-all" data-group="pathologies" aria-label="Toggle pathologies">Select All</button>
         </td>
@@ -354,12 +356,13 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
         <td class="controlsCell">
           <span class="group-checkbox"><input type="checkbox" id="boss_cthulhu" data-group="bosses" data-sub="Cthulhu"><label for="boss_cthulhu">Cthulhu</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_hastur" data-group="bosses" data-sub="Hastur"><label for="boss_hastur">Hastur</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="boss_blackgoat" data-group="bosses" data-sub="Black Goat of the Woods"><label for="boss_blackgoat">Black Goat of the Woods</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_blackgoat" data-group="bosses" data-sub="Black Goat of the Woods"><label for="boss_blackgoat">Black Goat</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_yog" data-group="bosses" data-sub="Yog-Sothoth"><label for="boss_yog">Yog-Sothoth</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_wicker" data-group="bosses" data-sub="Wicker Eddie"><label for="boss_wicker">Wicker Eddie</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_azathoth" data-group="bosses" data-sub="Azathoth"><label for="boss_azathoth">Azathoth</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_tsath" data-group="bosses" data-sub="Tsathoggua"><label for="boss_tsath">Tsathoggua</label></span>
           <span class="group-checkbox"><input type="checkbox" id="boss_ithaqua" data-group="bosses" data-sub="Ithaqua"><label for="boss_ithaqua">Ithaqua</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="boss_nyar" data-group="bosses" data-sub="Nyarlathotep"><label for="boss_nyar">Nyarlathotep</label></span>
           <button class="toggle-all" data-group="bosses" aria-label="Toggle bosses">Select All</button>
         </td>
       </tr>
@@ -370,6 +373,7 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
           <span class="group-checkbox"><input type="checkbox" id="ep_s1" data-group="episodes" data-sub="s1"><label for="ep_s1">S1</label></span>
           <span class="group-checkbox"><input type="checkbox" id="ep_s2" data-group="episodes" data-sub="s2"><label for="ep_s2">S2</label></span>
           <span class="group-checkbox"><input type="checkbox" id="ep_s3" data-group="episodes" data-sub="s3"><label for="ep_s3">S3</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="ep_s4" data-group="episodes" data-sub="s4"><label for="ep_s4">S4</label></span>
           <button class="toggle-all" data-group="episodes" aria-label="Toggle episodes">Select All</button>
         </td>
       </tr>
@@ -391,7 +395,8 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
           <span class="group-checkbox"><input type="checkbox" id="mon_s1" data-group="monsters" data-sub="s1"><label for="mon_s1">S1</label></span>
           <span class="group-checkbox"><input type="checkbox" id="mon_s2" data-group="monsters" data-sub="s2"><label for="mon_s2">S2</label></span>
           <span class="group-checkbox"><input type="checkbox" id="mon_s3" data-group="monsters" data-sub="s3"><label for="mon_s3">S3</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="mon_iron" data-group="monsters" data-sub="iron"><label for="mon_iron">Extra (Iron Maiden Pack)</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="mon_s4" data-group="monsters" data-sub="s4"><label for="mon_s4">S4</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="mon_iron" data-group="monsters" data-sub="iron"><label for="mon_iron">Extra (Iron Maiden)</label></span>
           <button class="toggle-all" data-group="monsters" aria-label="Toggle monsters">Select All</button>
         </td>
       </tr>
@@ -419,28 +424,36 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 </div>
 
 <script>
-/* ----------------- Data arrays (same pools you provided) ----------------- */
+/* ----------------- Data arrays ----------------- */
 const investigatorsAll = [
-  // S1 (10)
+  // S1 (0-9)
   "Lord Adam Benchley","Ahmed Yasin","Borden","Elizabeth Ives","Fatima Safar",
   "Sergeant Ian Welles","John Morgan","Rasputin","Sister Beth","The Kid",
-  // S2 (10)
+  // S2 (10-19)
   "Adilah Vidal","Alex Parker","Ariele Venturi","Hailia Hovath","Father Luke",
   "Margarethe Richter","Sergeant Mario Braghieri","Mary Diaz","Sam Wood","Mate Tony Boyle",
-  // S3 (10)
+  // S3 (20-29)
   "Ruth Weber","Agatha May","Sally Withers","Huikong","Sandra Atkinson",
   "Jakub Peters","Stella Fontaine","Julien Dulik","Leon Barnes","Mike Kozlov",
-  // Extra (Eddie)
+  // S4 (30-35)
+  "Anika Biko","Bruno Vitale","Gary West","John Fernsby","Rosario Guerra","Sylvia Doyle",
+  // Extra (36)
   "Eddie the Head"
 ];
 
-const episodes1to18 = [
+const episodesAll = [
+  // S1
   "S01E01 - Blasphemous Alchemy","S01E02 - Tomes of Madness","S01E03 - Danse Macabre",
   "S01E04 - Eldritch Idols","S01E05 - Accursed Tide","S01E06 - Unspeakable Hour",
+  // S2
   "S02E01 - Strange Bedfellows","S02E02 - Nameless Woods","S02E03 - Sanctificetur Nomen",
   "S02E04 - Shootout at the H.P. Corral","S02E05 - Monsters in Sin City","S02E06 - Endgame",
+  // S3
   "S03E01 - Top of the Mourning","S03E02 - Isle of the Damned","S03E03 - Deliver Us From Evil",
-  "S03E04 - By Request of the Queen","S03E05 - Festival of Death","S03E06 - Die Schöne und das Biest"
+  "S03E04 - By Request of the Queen","S03E05 - Festival of Death","S03E06 - Die Schöne und das Biest",
+  // S4
+  "S04E01 - Horror in the Sky", "S04E02 - The Haunted Garden", "S04E03 - Fields of Hell",
+  "S04E04 - Death on the Nile", "S04E05 - Pyramid of Fear", "S04E06 - The Window into the Infinite"
 ];
 
 const relicsS3 = [
@@ -472,6 +485,10 @@ const pathologiesS3 = [
   "Bloodlust","Impulsive Aggression","Hallucinations"
 ];
 
+const pathologiesS4 = [
+  "Uncontrollable Fear", "Hyperactivity", "Shared Psychosis", "Dissociative Identity"
+];
+
 const pathologyExtra = ["Fear of the Dark"];
 
 const monstersS1 = [
@@ -487,19 +504,23 @@ const monstersS3 = [
   "Ghast","Serpent Man","Gug","Gyaa-Yothn","Fisher from Outside","Dhole","The Unnamable"
 ];
 
+const monstersS4 = [
+  "Man of Leng", "Sand Dweller", "Albino Penguin", "Spider of Leng", 
+  "White Polypous Thing", "Monstrous Frog", "Ancient One"
+];
+
 const ironMaiden = ["Fear Eddie","Undead Eddie"];
 
 /* ----------------- Exclusions Mapping ----------------- */
 /* Maps specific Episode names to an array of monsters that should NOT be selected as Unknown Monsters. */
-/* NOTE: Monster names here must match exactly the strings in the monster pools above. */
 const episodeExclusions = {
   // S1
   "S01E01 - Blasphemous Alchemy": ["Fire Vampire", "Byakhee"],
   "S01E02 - Tomes of Madness":    ["Ghoul", "Chthonic Entity"],
-  "S01E03 - Danse Macabre":      ["Deep One", "Hunting Horror"],
-  "S01E04 - Eldritch Idols":     ["Byakhee", "Shoggoth"],
-  "S01E05 - Accursed Tide":      ["Deep One", "Chthonic Entity"],
-  "S01E06 - Unspeakable Hour":   ["Ghoul", "Fire Vampire"],
+  "S01E03 - Danse Macabre":       ["Deep One", "Hunting Horror"],
+  "S01E04 - Eldritch Idols":      ["Byakhee", "Shoggoth"],
+  "S01E05 - Accursed Tide":       ["Deep One", "Chthonic Entity"],
+  "S01E06 - Unspeakable Hour":    ["Ghoul", "Fire Vampire"],
 
   // S2
   "S02E01 - Strange Bedfellows":         ["Tcho-Tcho", "Elder Thing"],
@@ -515,7 +536,15 @@ const episodeExclusions = {
   "S03E03 - Deliver Us From Evil":    ["Gyaa-Yothn", "Dhole"],
   "S03E04 - By Request of the Queen": ["Ghast", "Gug"],
   "S03E05 - Festival of Death":       ["Serpent Man", "Gyaa-Yothn"],
-  "S03E06 - Die Schöne und das Biest":["Serpent Man", "Fisher from Outside"]
+  "S03E06 - Die Schöne und das Biest":["Serpent Man", "Fisher from Outside"],
+  
+  // S4
+  "S04E01 - Horror in the Sky":       ["Man of Leng", "Spider of Leng"],
+  "S04E02 - The Haunted Garden":      ["Albino Penguin", "Ancient One"],
+  "S04E03 - Fields of Hell":          ["Spider of Leng", "White Polypous Thing"],
+  "S04E04 - Death on the Nile":       ["Man of Leng", "Monstrous Frog"],
+  "S04E05 - Pyramid of Fear":         ["Sand Dweller", "White Polypous Thing"],
+  "S04E06 - The Window into the Infinite": ["Sand Dweller", "Albino Penguin"]
 };
 
 /* ----------------- Utility functions ----------------- */
@@ -572,14 +601,17 @@ function buildPoolsFromFilters() {
   const pools = { investigators: [], pathologies: [], bosses: [], episodes: [], relics: [], monsters: [] };
 
   // Investigators by season/extra
+  // S1: 0-10, S2: 10-20, S3: 20-30, S4: 30-36, Extra: 36
   if (document.getElementById("inv_s1").checked) pools.investigators.push(...investigatorsAll.slice(0,10));
   if (document.getElementById("inv_s2").checked) pools.investigators.push(...investigatorsAll.slice(10,20));
   if (document.getElementById("inv_s3").checked) pools.investigators.push(...investigatorsAll.slice(20,30));
-  if (document.getElementById("inv_extra").checked) pools.investigators.push("Eddie the Head");
+  if (document.getElementById("inv_s4").checked) pools.investigators.push(...investigatorsAll.slice(30,36));
+  if (document.getElementById("inv_extra").checked) pools.investigators.push(investigatorsAll[36]);
 
   // Pathologies
   if (document.getElementById("pth_s1").checked) pools.pathologies.push(...pathologiesS1);
   if (document.getElementById("pth_s3").checked) pools.pathologies.push(...pathologiesS3);
+  if (document.getElementById("pth_s4").checked) pools.pathologies.push(...pathologiesS4);
   if (document.getElementById("pth_extra").checked) pools.pathologies.push(...pathologyExtra);
 
   // Boss checkboxes
@@ -591,7 +623,8 @@ function buildPoolsFromFilters() {
     {id:"boss_wicker", name:"Wicker Eddie"},
     {id:"boss_azathoth", name:"Azathoth"},
     {id:"boss_tsath", name:"Tsathoggua"},
-    {id:"boss_ithaqua", name:"Ithaqua"}
+    {id:"boss_ithaqua", name:"Ithaqua"},
+    {id:"boss_nyar", name:"Nyarlathotep"}
   ];
   bossCheckboxes.forEach(b => {
     const el = document.getElementById(b.id);
@@ -599,9 +632,11 @@ function buildPoolsFromFilters() {
   });
 
   // Episodes by season
-  if (document.getElementById("ep_s1").checked) pools.episodes.push(...episodes1to18.slice(0,6));
-  if (document.getElementById("ep_s2").checked) pools.episodes.push(...episodes1to18.slice(6,12));
-  if (document.getElementById("ep_s3").checked) pools.episodes.push(...episodes1to18.slice(12,18));
+  // S1: 0-6, S2: 6-12, S3: 12-18, S4: 18-24
+  if (document.getElementById("ep_s1").checked) pools.episodes.push(...episodesAll.slice(0,6));
+  if (document.getElementById("ep_s2").checked) pools.episodes.push(...episodesAll.slice(6,12));
+  if (document.getElementById("ep_s3").checked) pools.episodes.push(...episodesAll.slice(12,18));
+  if (document.getElementById("ep_s4").checked) pools.episodes.push(...episodesAll.slice(18,24));
 
   // Relics (optional)
   if (document.getElementById("rel_s3").checked) pools.relics.push(...relicsS3);
@@ -613,6 +648,7 @@ function buildPoolsFromFilters() {
   if (document.getElementById("mon_s1").checked) pools.monsters.push(...monstersS1);
   if (document.getElementById("mon_s2").checked) pools.monsters.push(...monstersS2);
   if (document.getElementById("mon_s3").checked) pools.monsters.push(...monstersS3);
+  if (document.getElementById("mon_s4").checked) pools.monsters.push(...monstersS4);
   if (document.getElementById("mon_iron").checked) pools.monsters.push(...ironMaiden);
 
   return pools;
@@ -770,12 +806,6 @@ function generate() {
 
 /* ---------------- toggle buttons behavior ----------------- */
 
-/*
- * Single toggle button per group:
- * - toggles select/clear for the group when clicked
- * - updates text on click
- * - also listens for manual checkbox changes to keep label in sync
- */
 function updateToggleLabelForGroup(btn) {
   const group = btn.dataset.group;
   const checkboxes = document.querySelectorAll(`input[data-group='${group}']`);

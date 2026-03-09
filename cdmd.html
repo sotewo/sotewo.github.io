@@ -29,7 +29,7 @@
 }
 @font-face {
   font-family: 'Metallophile Sp8';
-  src: url('assets/fonts/Metallophile-Sp8-Bold-Italic.woff2') format('woff2');
+  src: url('/fonts/Metallophile-Sp8-Bold-Italic.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -558,7 +558,7 @@ function createInfoItem(title, name, fileName) {
     div.className = "player-output";
 
     const img = document.createElement("img");
-    img.src = "assets/" + fileName;
+    img.src = "assets/cdmd/" + fileName;
     img.alt = name;
     img.onerror = () => { img.style.display = "none"; };
 
@@ -724,7 +724,7 @@ function generate() {
     const invName = pickUniqueFromPool(pools.investigators, usedInv);
     usedInv.add(invName);
     const invDiv = document.createElement("div"); invDiv.className="player-output";
-    const invImg = document.createElement("img"); invImg.src="assets/" + sanitizeFileName(invName) + ".png"; invImg.alt=invName;
+    const invImg = document.createElement("img"); invImg.src="assets/cdmd/" + sanitizeFileName(invName) + ".png"; invImg.alt=invName;
     invImg.onerror=()=>{invImg.style.display="none";};
     const invSpan = document.createElement("span"); invSpan.innerHTML=`Investigator:<br><em class="bold-italic">${invName}</em>`;
     invDiv.appendChild(invImg); invDiv.appendChild(invSpan); box.appendChild(invDiv);
@@ -734,7 +734,7 @@ function generate() {
       const relicName = pickUniqueFromPool(pools.relics, usedRel);
       usedRel.add(relicName);
       const relicDiv = document.createElement("div"); relicDiv.className="relic-output";
-      const relicImg = document.createElement("img"); relicImg.src="assets/" + sanitizeFileName(relicName) + ".png"; relicImg.alt=relicName;
+      const relicImg = document.createElement("img"); relicImg.src="assets/cdmd/" + sanitizeFileName(relicName) + ".png"; relicImg.alt=relicName;
       relicImg.onerror=()=>{relicImg.style.display="none";};
       const relicSpan = document.createElement("span"); relicSpan.innerHTML=`Relic:<br><em class="bold-italic">${relicName}</em>`;
       relicDiv.appendChild(relicImg); relicDiv.appendChild(relicSpan); box.appendChild(relicDiv);
@@ -744,7 +744,7 @@ function generate() {
     const pathName = pickUniqueFromPool(pools.pathologies, usedPath);
     usedPath.add(pathName);
     const pathDiv = document.createElement("div"); pathDiv.className="disorder-output";
-    const pathImg = document.createElement("img"); pathImg.src="assets/" + sanitizeFileName(pathName) + ".png"; pathImg.alt=pathName;
+    const pathImg = document.createElement("img"); pathImg.src="assets/cdmd/" + sanitizeFileName(pathName) + ".png"; pathImg.alt=pathName;
     pathImg.onerror=()=>{pathImg.style.display="none";};
     const pathSpan = document.createElement("span"); pathSpan.innerHTML=`Pathology:<br><em class="bold-italic">${pathName}</em>`;
     pathDiv.appendChild(pathImg); pathDiv.appendChild(pathSpan); box.appendChild(pathDiv);
@@ -841,3 +841,4 @@ document.querySelectorAll("button.toggle-all").forEach(btn => {
 
 </body>
 </html>
+

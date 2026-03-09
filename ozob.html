@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>OZOB: A Cyberpunk Board Game (RNG)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+/* ===== fonts ===== */
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Metallophile Sp8';
+  src: url('assets/fonts/Metallophile-Sp8-Bold-Italic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ===== page styling ===== */
+body {
+  font-family: 'Metallophile Sp8', 'Georgia', serif;
+  background-color: #0e0e0e;
+  color: #d6d2c4;
+  margin: 0;
+  padding: 20px;
+  background-image: radial-gradient(#1b1b1b 1px, transparent 1px), radial-gradient(#1b1b1b 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+}
+
+a.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 2em;
+  text-decoration: none;
+  color: #b0a06f;
+  background-color: #1b1b1b;
+  padding: 5px 12px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 1000;
+}
+a.back-button:hover { background-color: #2a2a2a; transform: scale(1.1); }
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #b0a06f;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.section { text-align: center; margin-bottom: 20px; }
+
+select#numPlayers {
+  padding: 5px;
+  font-size: 1.2em;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #222;
+  color: #eee;
+  appearance: none;
+}
+
+button.generate-btn {
+  font-family: inherit;
+  font-size: 1.25em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #e0d4b0;
+  background: none;
+  border: 1px solid #5c3d3d;
+  border-radius: 8px;
+  padding: 12px 30px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.25s ease-in-out;
+}
+button.generate-btn:hover {
+  background-color: #2a1c1c;
+  color: #f0c080;
+  border-color: #8c5b3f;
+}
+
+/* grid for generated results */
+#gameGrid { display: none; margin-top: 30px; flex-direction: column; gap: 30px; }
+
+.player-box {
+  border: 2px solid #444;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #1c1c1c;
+  box-shadow: 0 0 10px #00000099;
+}
+
+#playerResults {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.player-output {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.5em;
+}
+
+#gameGrid img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
+
+.game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
+
+.info-container {
+  border: 2px solid #444;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #1c1c1c;
+  box-shadow: 0 0 10px #00000099;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#archetypesSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+}
+
+#archetypesSection h3 {
+  color: #b0a06f;
+  margin: 0 0 15px 0;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#archetypeSymbols {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Filter block */
+#filtersContainer {
+  max-width: 1200px;
+  margin: 0 auto 18px;
+  border: 2px solid #444;
+  border-radius: 10px;
+  background-color: #151515;
+  padding: 12px;
+  box-shadow: 0 0 12px #000000aa;
+  color: #d6d2c4;
+}
+
+#filtersContainer caption {
+  color: #f0c080;
+  font-weight: 700;
+  padding-bottom: 8px;
+  caption-side: top;
+  text-align: left;
+}
+
+#filtersTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98em;
+  color: #d6d2c4;
+  table-layout: fixed;
+}
+#filtersTable tr { border-bottom: 1px dashed #2a2a2a; }
+
+#filtersTable td.labelCell {
+  width: 180px;
+  padding: 10px 8px;
+  color: #f0c080;
+  font-weight: 700;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+#filtersTable td.controlsCell {
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.controlsCell {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.group-checkbox {
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.group-checkbox input[type="checkbox"] {
+  transform: scale(1.05);
+  cursor: pointer;
+  margin: 0;
+}
+.group-checkbox label {
+  cursor: pointer;
+  color: #d6d2c4;
+  font-size: 0.95em;
+  margin-left: 2px;
+}
+
+#filtersContainer button.toggle-all {
+  font-family: inherit;
+  font-size: 0.95em;
+  color: #e0d4b0;
+  background: none;
+  border: 1px solid #5c3d3d;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.2s ease-in-out;
+}
+#filtersContainer button.toggle-all:hover {
+  background-color: #2a1c1c;
+  color: #f0c080;
+  border-color: #8c5b3f;
+}
+#filtersContainer button.toggle-all:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+}
+
+@media (max-width: 760px) {
+  #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
+  .group-checkbox { display:block; margin-bottom:6px; }
+  #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+  #gameGrid img { width: 80px; height: 80px; }
+}
+@media (max-width: 420px) { #filtersTable td.labelCell { width: 120px; } }
+@media (max-width: 600px) {
+  button { padding: 16px 32px; font-size: 1.3em; }
+  select#numPlayers { font-size: 1.2em; padding: 6px 10px; }
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-button" title="Back to Game Selection">&#8592;</a>
+<h1>OZOB: A Cyberpunk Board Game (RNG)</h1>
+
+<div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
+    <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
+    <ol style="margin: 5px 0 0 15px; padding: 0;">
+      <li>This generator is limited to the components currently owned by myself;</li>
+      <li>Since the game is not fully released, missing components have placeholder titles;</li>
+      <li>Image fetching will fail silently if the specific character/archetype asset is not yet uploaded.</li>
+    </ol>
+</div>
+
+<div class="section">
+  <label>Number of players (1–4):
+    <select id="numPlayers">
+      <option value="1">1</option>
+      <option value="2" selected>2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+  </label>
+</div>
+
+<div id="filtersContainer" aria-label="Component filters">
+  <table id="filtersTable" role="table" aria-describedby="filters-desc">
+    <caption id="filters-desc">Components for generation — select grouped pools to include</caption>
+    <tbody>
+
+      <tr>
+        <td class="labelCell">War Rodies (Sets)</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" id="wr_cb" data-group="warrodies" checked><label for="wr_cb">Core Box</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="wr_ks" data-group="warrodies" checked><label for="wr_ks">KS Exclusive</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="wr_av" data-group="warrodies" checked><label for="wr_av">EXP1: Asteroid Vegas</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="wr_rs" data-group="warrodies" checked><label for="wr_rs">EXP2: Residiuum</label></span>
+          <button class="toggle-all" data-group="warrodies">Clear All</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="labelCell">Archetypes</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" id="arch_brute" data-group="archetypes" checked><label for="arch_brute">Brute</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="arch_support" data-group="archetypes" checked><label for="arch_support">Support</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="arch_hunter" data-group="archetypes" checked><label for="arch_hunter">Hunter</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="arch_tech" data-group="archetypes" checked><label for="arch_tech">Tech-Expert</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="arch_brawler" data-group="archetypes" checked><label for="arch_brawler">Brawler</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="arch_gunslinger" data-group="archetypes" checked><label for="arch_gunslinger">Gunslinger</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="arch_scavenger" data-group="archetypes" checked><label for="arch_scavenger">Scavanger</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="arch_droid" data-group="archetypes" checked><label for="arch_droid">Droid</label></span>
+          <button class="toggle-all" data-group="archetypes">Clear All</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="labelCell">Alt. Archetypes</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" id="alt_base" data-group="alts" checked><label for="alt_base">Base (No)</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="alt_alt" data-group="alts" checked><label for="alt_alt">Alternates (Yes)</label></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="labelCell">Episodes (Sets)</td>
+        <td class="controlsCell">
+          <span class="group-checkbox"><input type="checkbox" id="ep_cb" data-group="episodes" checked><label for="ep_cb">Core Box</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="ep_ks" data-group="episodes" checked><label for="ep_ks">KS Exclusive</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="ep_av" data-group="episodes" checked><label for="ep_av">EXP1: Asteroid Vegas</label></span>
+          <span class="group-checkbox"><input type="checkbox" id="ep_rs" data-group="episodes" checked><label for="ep_rs">EXP2: Residiuum</label></span>
+          <button class="toggle-all" data-group="episodes">Clear All</button>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <button class="generate-btn" id="generateBtn" onclick="generate()">GENERATE</button>
+</div>
+
+<div id="gameGrid">
+  <div id="playerResults"></div>
+  <div class="game-info-row">
+    <div class="info-container">
+      <div id="episodeOutput"></div>
+      <div id="originOutput"></div>
+    </div>
+
+    <div class="info-container">
+      <div id="archetypesSection">
+        <h3>Archetypes:</h3>
+        <div id="archetypeSymbols"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ----------------- Data Arrays ----------------- */
+const rodiesData = [
+  // Brute
+  { name: "OZOB (CB)", set: "CB", arch: "Brute", isAlt: false },
+  { name: "Mc Gorgor", set: "KS", arch: "Brute", isAlt: false },
+  { name: "Steven T. Durden", set: "AV", arch: "Brute", isAlt: false },
+
+  // Support
+  { name: "Mamma Guzzo", set: "CB", arch: "Support", isAlt: false },
+  { name: "Johnny Molotov", set: "KS", arch: "Support", isAlt: false },
+  { name: "Sila & Brico", set: "RS", arch: "Support", isAlt: false },
+
+  // Hunter
+  { name: "Vivika", set: "CB", arch: "Hunter", isAlt: false },
+  { name: "Dante", set: "KS", arch: "Hunter", isAlt: false },
+  { name: "Coral", set: "RS", arch: "Hunter", isAlt: false },
+  { name: "Alt. Oleg", set: "KS", arch: "Hunter", isAlt: true },
+
+  // Tech-Expert
+  { name: "California", set: "CB", arch: "Tech-Expert", isAlt: false },
+  { name: "Glitch-chan", set: "KS", arch: "Tech-Expert", isAlt: false },
+  { name: "Cricket", set: "RS", arch: "Tech-Expert", isAlt: false },
+
+  // Brawler
+  { name: "Ximira", set: "CB", arch: "Brawler", isAlt: false },
+  { name: "OZOB Ex Machina", set: "KS", arch: "Brawler", isAlt: false },
+  { name: "Sir Hudson", set: "KS", arch: "Brawler", isAlt: false },
+  { name: "Valter", set: "RS", arch: "Brawler", isAlt: false },
+  { name: "Alt. OZOB", set: "KS", arch: "Brawler", isAlt: true },
+
+  // Gunslinger
+  { name: "Oleg", set: "CB", arch: "Gunslinger", isAlt: false },
+  { name: "Dr. Angus Silvana", set: "KS", arch: "Gunslinger", isAlt: false },
+  { name: "James Rexus", set: "AV", arch: "Gunslinger", isAlt: false },
+
+  // Scavanger
+  { name: "Dona", set: "KS", arch: "Scavanger", isAlt: false },
+  { name: "Techno Shaman", set: "KS", arch: "Scavanger", isAlt: false },
+  { name: "Yelena", set: "AV", arch: "Scavanger", isAlt: false },
+
+  // Droid
+  { name: "NDR Lolita", set: "KS", arch: "Droid", isAlt: false },
+  { name: "NDR Droid", set: "AV", arch: "Droid", isAlt: false }
+];
+
+/* Placeholder for episodes until real names are provided */
+const episodesData = {
+  "CB": ["Episode 1 (Placeholder)"],
+  "KS": ["KS Exclusive Episode (Placeholder)"],
+  "AV": ["Asteroid Vegas Episode 1 (Placeholder)"],
+  "RS": ["Residiuum Episode 1 (Placeholder)"]
+};
+
+/* ----------------- Utility functions ----------------- */
+
+// Simplifies names for asset fetching
+function sanitizeFileName(name) {
+  return name.toLowerCase().replace(/[’'"]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_-]/g,'');
+}
+
+// Maps specific models that conflict with each other
+function getConflictID(name) {
+  if (name === "OZOB (CB)" || name === "Alt. OZOB") return "ozob_model";
+  if (name === "Oleg" || name === "Alt. Oleg") return "oleg_model";
+  return name; // OZOB Ex Machina naturally returns "OZOB Ex Machina" and won't conflict.
+}
+
+function pickRandomFrom(arr) {
+  if (!arr || arr.length === 0) return null;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/* ----------------- Main Generation Logic ----------------- */
+
+function buildPools() {
+  const activeSets = [];
+  if (document.getElementById("wr_cb").checked) activeSets.push("CB");
+  if (document.getElementById("wr_ks").checked) activeSets.push("KS");
+  if (document.getElementById("wr_av").checked) activeSets.push("AV");
+  if (document.getElementById("wr_rs").checked) activeSets.push("RS");
+
+  const activeArchs = [];
+  if (document.getElementById("arch_brute").checked) activeArchs.push("Brute");
+  if (document.getElementById("arch_support").checked) activeArchs.push("Support");
+  if (document.getElementById("arch_hunter").checked) activeArchs.push("Hunter");
+  if (document.getElementById("arch_tech").checked) activeArchs.push("Tech-Expert");
+  if (document.getElementById("arch_brawler").checked) activeArchs.push("Brawler");
+  if (document.getElementById("arch_gunslinger").checked) activeArchs.push("Gunslinger");
+  if (document.getElementById("arch_scavenger").checked) activeArchs.push("Scavanger");
+  if (document.getElementById("arch_droid").checked) activeArchs.push("Droid");
+
+  const allowBase = document.getElementById("alt_base").checked;
+  const allowAlt = document.getElementById("alt_alt").checked;
+
+  let pool = rodiesData.filter(char => {
+    if (!activeSets.includes(char.set)) return false;
+    if (!activeArchs.includes(char.arch)) return false;
+    if (char.isAlt && !allowAlt) return false;
+    if (!char.isAlt && !allowBase) return false;
+    return true;
+  });
+
+  // Episodes Pool
+  const epSets = [];
+  if (document.getElementById("ep_cb").checked) epSets.push("CB");
+  if (document.getElementById("ep_ks").checked) epSets.push("KS");
+  if (document.getElementById("ep_av").checked) epSets.push("AV");
+  if (document.getElementById("ep_rs").checked) epSets.push("RS");
+
+  let epPool = [];
+  epSets.forEach(set => {
+    if(episodesData[set]) {
+      episodesData[set].forEach(ep => {
+        epPool.push({ name: ep, origin: set });
+      });
+    }
+  });
+
+  return { characters: pool, episodes: epPool };
+}
+
+function generate() {
+  const numPlayers = parseInt(document.getElementById("numPlayers").value, 10);
+  const pools = buildPools();
+
+  if (pools.characters.length === 0) {
+    alert("No War Rodies available with the current filter selection.");
+    return;
+  }
+  if (pools.episodes.length === 0) {
+    alert("Please select at least one Episode pool.");
+    return;
+  }
+
+  let selectedRodies = [];
+  let currentPool = [...pools.characters];
+  let drawnArchetypesOrder = [];
+
+  for (let i = 0; i < numPlayers; i++) {
+    if (currentPool.length === 0) {
+      alert(`Could only generate ${i} character(s) due to archetype/alternate constraints. Try expanding your filters.`);
+      break;
+    }
+
+    const picked = pickRandomFrom(currentPool);
+    selectedRodies.push(picked);
+    drawnArchetypesOrder.push(picked.arch);
+
+    // Rule 1 & Rule 2 Application:
+    // Remove characters of the SAME archetype OR the SAME miniature/conflict ID
+    const pickedConflictID = getConflictID(picked.name);
+    
+    currentPool = currentPool.filter(c => {
+      if (c.arch === picked.arch) return false; // Rule 1
+      if (getConflictID(c.name) === pickedConflictID) return false; // Rule 2
+      return true;
+    });
+  }
+
+  // Visual Cleanup
+  document.getElementById("gameGrid").style.display = "flex";
+  document.getElementById("playerResults").innerHTML = "";
+  document.getElementById("episodeOutput").innerHTML = "";
+  document.getElementById("originOutput").innerHTML = "";
+  document.getElementById("archetypeSymbols").innerHTML = "";
+
+  // Render Rodies
+  selectedRodies.forEach(char => {
+    const box = document.createElement("div"); box.className="player-box";
+    const div = document.createElement("div"); div.className="player-output";
+    
+    const img = document.createElement("img"); 
+    img.src = "assets/" + sanitizeFileName(char.name) + ".png"; 
+    img.alt = char.name;
+    img.onerror = () => { img.style.display="none"; };
+
+    const span = document.createElement("span"); 
+    span.innerHTML = `War Rodie:<br><em class="bold-italic">${char.name}</em>`;
+    
+    div.appendChild(img); 
+    div.appendChild(span); 
+    box.appendChild(div);
+    document.getElementById("playerResults").appendChild(box);
+  });
+
+  // Render Episode & Origin
+  const epChoice = pickRandomFrom(pools.episodes);
+  if (epChoice) {
+    // Map acronyms back to full names
+    const originMap = {
+        "CB": "Core Box",
+        "KS": "KS Exclusive",
+        "AV": "Asteroid Vegas",
+        "RS": "Residiuum"
+    };
+
+    // Episode File mapping placeholder logic
+    const epDiv = document.createElement("div"); epDiv.className="player-output";
+    const epSpan = document.createElement("span"); 
+    epSpan.innerHTML = `Episode:<br><em class="bold-italic">${epChoice.name}</em>`;
+    epDiv.appendChild(epSpan);
+
+    const orDiv = document.createElement("div"); orDiv.className="player-output";
+    const orSpan = document.createElement("span"); 
+    orSpan.innerHTML = `Origin:<br><em class="bold-italic">${originMap[epChoice.origin]}</em>`;
+    orDiv.appendChild(orSpan);
+
+    document.getElementById("episodeOutput").appendChild(epDiv);
+    document.getElementById("originOutput").appendChild(orDiv);
+  }
+
+  // Render Archetype Symbols
+  drawnArchetypesOrder.forEach(arch => {
+      const archImg = document.createElement("img");
+      archImg.src = "assets/" + sanitizeFileName(arch) + ".png";
+      archImg.alt = arch;
+      archImg.title = arch;
+      // Fallback styling if the archetype image is missing
+      archImg.onerror = () => { 
+          archImg.style.display="none"; 
+          const altText = document.createElement("span");
+          altText.textContent = `[${arch}] `;
+          altText.style.color = "#b0a06f";
+          document.getElementById("archetypeSymbols").appendChild(altText);
+      };
+      document.getElementById("archetypeSymbols").appendChild(archImg);
+  });
+}
+
+/* ---------------- toggle buttons behavior ----------------- */
+function updateToggleLabelForGroup(btn) {
+  const group = btn.dataset.group;
+  const checkboxes = document.querySelectorAll(`input[data-group='${group}']`);
+  if (!checkboxes.length) return;
+  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+  btn.textContent = allChecked ? "Clear All" : "Select All";
+}
+
+document.querySelectorAll("button.toggle-all").forEach(btn => {
+  const group = btn.dataset.group;
+  updateToggleLabelForGroup(btn);
+
+  btn.addEventListener("click", () => {
+    const checkboxes = document.querySelectorAll(`input[data-group='${group}']`);
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allChecked);
+    updateToggleLabelForGroup(btn);
+  });
+
+  const checkboxesForGroup = document.querySelectorAll(`input[data-group='${group}']`);
+  checkboxesForGroup.forEach(cb => {
+    cb.addEventListener("change", () => updateToggleLabelForGroup(btn));
+  });
+});
+</script>
+
+</body>
+</html>

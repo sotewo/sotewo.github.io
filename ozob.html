@@ -552,7 +552,8 @@ function generate() {
     const div = document.createElement("div"); div.className="player-output";
     
     const img = document.createElement("img"); 
-    img.src = "assets/" + sanitizeFileName(char.name) + ".png"; 
+    // UPDATED PATH TO ozob/
+    img.src = "assets/ozob/" + sanitizeFileName(char.name) + ".png"; 
     img.alt = char.name;
     img.onerror = () => { img.style.display="none"; };
 
@@ -594,7 +595,8 @@ function generate() {
   // Render Archetype Symbols
   drawnArchetypesOrder.forEach(arch => {
       const archImg = document.createElement("img");
-      archImg.src = "assets/" + sanitizeFileName(arch) + ".png";
+      // UPDATED PATH TO ozob/
+      archImg.src = "assets/ozob/" + sanitizeFileName(arch) + ".png";
       archImg.alt = arch;
       archImg.title = arch;
       // Fallback styling if the archetype image is missing

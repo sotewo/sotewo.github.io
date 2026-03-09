@@ -75,13 +75,17 @@ a.back-button {
 a.back-button:hover { background-color: #2a2a2a; transform: scale(1.1); }
 
 h1 {
-  font-family: 'Doctor Glitch', sans-serif;
-  font-weight: normal; /* Doctor Glitch handles its own weight */
   font-size: 2.5em;
   text-align: center;
   margin-bottom: 10px;
   color: #b0a06f;
   text-shadow: 1px 1px 2px #000;
+}
+
+/* Specific class for just the OZOB word in the title */
+.glitch-title {
+  font-family: 'Doctor Glitch', sans-serif;
+  font-weight: normal;
 }
 
 .section { text-align: center; margin-bottom: 20px; }
@@ -133,7 +137,6 @@ button.generate-btn:hover {
 
 #playerResults {
   display: grid;
-  /* Updated to 380px per your request */
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 20px;
 }
@@ -145,20 +148,20 @@ button.generate-btn:hover {
   font-size: 1.5em;
 }
 
+/* Image height increased to 120px */
 #gameGrid img {
   width: auto;
-  height: 100px;
+  height: 120px;
   border-radius: 6px;
 }
 
-/* New class strictly for the glitch text generation */
 .glitch-name {
   font-family: 'Doctor Glitch', sans-serif;
   font-style: normal;
   font-weight: normal;
   color: #e2d7a7;
   display: inline-block;
-  margin-top: 5px; /* Adds a tiny bit of breathing room below the label */
+  margin-top: 5px; 
 }
 
 .game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
@@ -292,7 +295,7 @@ button.generate-btn:hover {
   #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
   .group-checkbox { display:block; margin-bottom:6px; }
   #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-  #gameGrid img { width: 80px; height: 80px; }
+  #gameGrid img { height: 100px; } /* Drop height a bit on mobile to save space */
 }
 @media (max-width: 420px) { #filtersTable td.labelCell { width: 120px; } }
 @media (max-width: 600px) {
@@ -304,7 +307,7 @@ button.generate-btn:hover {
 <body>
 
 <a href="index.html" class="back-button" title="Back to Game Selection">&#8592;</a>
-<h1>OZOB: A Cyberpunk Board Game (RNG)</h1>
+<h1><span class="glitch-title">OZOB</span>: A Cyberpunk Board Game (RNG)</h1>
 
 <div style="max-width: 700px; margin: 20px auto; padding: 10px; border: 1px dashed #5c3d3d; border-radius: 5px; background-color: #151515; color: #f0c080; font-size: 0.9em; text-align: left;">
     <p style="color: #b0a06f; margin: 0;">DISCLAIMER:</p>
@@ -480,6 +483,11 @@ function pickRandomFrom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// Intercepts strings and pushes "A"s apart if they surround a space
+function fixGlitchKerning(text) {
+  return text.replace(/([aA])\s+([aA])/g, "$1&nbsp; $2");
+}
+
 /* ----------------- Main Generation Logic ----------------- */
 
 function buildPools() {
@@ -496,7 +504,7 @@ function buildPools() {
   if (document.getElementById("arch_tech").checked) activeArchs.push("Tech-Expert");
   if (document.getElementById("arch_brawler").checked) activeArchs.push("Brawler");
   if (document.getElementById("arch_gunslinger").checked) activeArchs.push("Gunslinger");
-  if (document.getElementById("arch_scavenger").checked) activeArchs.push("Scavanger");
+  if (document.getElementById("arch_scavenger").checked) activeArchs.push("Scavenger");
   if (document.getElementById("arch_droid").checked) activeArchs.push("Droid");
 
   const allowBase = document.getElementById("alt_base").checked;
@@ -582,8 +590,9 @@ function generate() {
     img.alt = char.name;
     img.onerror = () => { img.style.display="none"; };
 
+    const fixedName = fixGlitchKerning(char.name);
     const span = document.createElement("span"); 
-    span.innerHTML = `War Rodie:<br><span class="glitch-name">${char.name}</span>`;
+    span.innerHTML = `War Rodie:<br><span class="glitch-name">${fixedName}</span>`;
     
     div.appendChild(img); 
     div.appendChild(span); 
@@ -601,14 +610,16 @@ function generate() {
         "RS": "Residiuum"
     };
 
+    const fixedEpName = fixGlitchKerning(epChoice.name);
     const epDiv = document.createElement("div"); epDiv.className="player-output";
     const epSpan = document.createElement("span"); 
-    epSpan.innerHTML = `Episode:<br><span class="glitch-name">${epChoice.name}</span>`;
+    epSpan.innerHTML = `Episode:<br><span class="glitch-name">${fixedEpName}</span>`;
     epDiv.appendChild(epSpan);
 
+    const fixedOrigin = fixGlitchKerning(originMap[epChoice.origin]);
     const orDiv = document.createElement("div"); orDiv.className="player-output";
     const orSpan = document.createElement("span"); 
-    orSpan.innerHTML = `Origin:<br><span class="glitch-name">${originMap[epChoice.origin]}</span>`;
+    orSpan.innerHTML = `Origin:<br><span class="glitch-name">${fixedOrigin}</span>`;
     orDiv.appendChild(orSpan);
 
     document.getElementById("episodeOutput").appendChild(epDiv);

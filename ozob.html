@@ -446,9 +446,13 @@ function sanitizeFileName(name) {
 
 // Maps specific models that conflict with each other
 function getConflictID(name) {
-  if (name === "OZOB (CB)" || name === "Alt. OZOB") return "ozob_model";
-  if (name === "Oleg" || name === "Alt. Oleg") return "oleg_model";
-  return name; // OZOB Ex Machina naturally returns "OZOB Ex Machina" and won't conflict.
+  if (name === "OZOB" || name === "Alt. OZOB") return "ozob_model";
+  if (name === "Oleg Korolenko" || name === "Alt. Oleg Korolenko") return "oleg_model";
+  if (name === "California" || name === "Alt. California") return "california_model";
+  if (name === "Vivika" || name === "Alt. Vivika") return "vivika_model";
+  if (name === "Ximira Aisu" || name === "Alt. Ximira Aisu") return "ximira_model";
+  if (name === "Mama Guzzo" || name === "Alt. Mama Guzzo") return "guzzo_model";
+  return name; 
 }
 
 function pickRandomFrom(arr) {

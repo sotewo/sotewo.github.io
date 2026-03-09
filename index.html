@@ -55,6 +55,7 @@
   <select id="gameSelect">
     <option value="">-- Select --</option>
     <option value="cthulhu">Cthulhu: Death May Die</option>
+    <option value="ozob">OZOB: A Cyberpunk Board Game</option>
   </select>
 
   <button onclick="goToGame()">Continue</button>
@@ -68,7 +69,9 @@
       }
 
       if (game === "cthulhu") {
-        window.location.href = "cdmd.html"; // Your original generator page
+        window.location.href = "cdmd.html";
+      } else if (game === "ozob") {
+        window.location.href = "ozob.html";
       }
     }
   </script>

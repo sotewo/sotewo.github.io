@@ -290,14 +290,49 @@ button.generate-btn:hover {
   transform: scale(0.96);
   opacity: 0.85;
 }
-
 @media (max-width: 760px) {
-  #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
-  .group-checkbox { display:block; margin-bottom:6px; }
-  #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-  #gameGrid img { height: 100px; } /* Drop height a bit on mobile to save space */
+  /* Keep the filter layout tweaks */
+  #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding: 8px; }
+  .group-checkbox { display: block; margin-bottom: 6px; }
+  
+  /* Stack the player boxes in a single column */
+  #playerResults { 
+    grid-template-columns: 1fr; 
+    gap: 15px; 
+  }
+  
+  /* Stack the bottom episode/archetype boxes */
+  .game-info-row { 
+    flex-direction: column; 
+    gap: 20px; 
+  }
+  .info-container { 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    gap: 15px;
+  }
+
+  /* Drop font size and stack the image ON TOP of the text for narrow screens */
+  .player-output { 
+    font-size: 1.2em; 
+    flex-direction: column; 
+    text-align: center;
+    gap: 10px;
+  }
+
+  /* Ensure images don't break their boundaries */
+  #gameGrid img { 
+    height: 100px; 
+    max-width: 100%; 
+    object-fit: contain; 
+  }
 }
-@media (max-width: 420px) { #filtersTable td.labelCell { width: 120px; } }
+
+@media (max-width: 420px) { 
+  #filtersTable td.labelCell { width: 120px; } 
+}
+
 @media (max-width: 600px) {
   button { padding: 16px 32px; font-size: 1.3em; }
   select#numPlayers { font-size: 1.2em; padding: 6px 10px; }

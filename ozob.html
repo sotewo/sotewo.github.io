@@ -267,7 +267,8 @@ button.generate-btn:hover {
   gap: 6px;
   white-space: nowrap;
 }
-.group-checkbox input[type="checkbox"] {
+.group-checkbox input[type="checkbox"],
+.group-checkbox input[type="radio"] {
   transform: scale(1.05);
   cursor: pointer;
   margin: 0;
@@ -277,6 +278,10 @@ button.generate-btn:hover {
   color: #d6d2c4;
   font-size: 0.95em;
   margin-left: 2px;
+}
+.group-checkbox input[type="radio"]:disabled + label {
+  color: #555;
+  cursor: not-allowed;
 }
 
 #filtersContainer button.toggle-all {
@@ -338,7 +343,7 @@ button.generate-btn:hover {
     object-fit: contain; 
   }
   
-/* Maintain the level icon size relative to text on mobile */
+  /* Maintain the level icon size relative to text on mobile */
   #gameGrid img.level-icon {
     width: 1.5em;
     height: auto;
@@ -412,10 +417,16 @@ button.generate-btn:hover {
       </tr>
 
       <tr>
-        <td class="labelCell">Alt. Archetypes</td>
+        <td class="labelCell">Include Alt. Archetypes?</td>
         <td class="controlsCell">
-          <span class="group-checkbox"><input type="checkbox" id="alt_base" data-group="alts" checked><label for="alt_base">Base (No)</label></span>
-          <span class="group-checkbox"><input type="checkbox" id="alt_alt" data-group="alts" checked><label for="alt_alt">Alternates (Yes)</label></span>
+          <span class="group-checkbox">
+            <input type="radio" name="alt_toggle" id="alt_yes" value="yes" checked>
+            <label for="alt_yes">Yes</label>
+          </span>
+          <span class="group-checkbox">
+            <input type="radio" name="alt_toggle" id="alt_no" value="no">
+            <label for="alt_no">No</label>
+          </span>
         </td>
       </tr>
 
@@ -583,14 +594,17 @@ function buildPools() {
   if (document.getElementById("arch_scavenger").checked) activeArchs.push("Scavenger");
   if (document.getElementById("arch_droid").checked) activeArchs.push("Droid");
 
-  const allowBase = document.getElementById("alt_base").checked;
-  const allowAlt = document.getElementById("alt_alt").checked;
+  // The Alt toggle relies strictly on the radio buttons now
+  const allowAlt = document.getElementById("alt_yes").checked && document.getElementById("wr_ks").checked;
 
   let pool = rodiesData.filter(char => {
     if (!activeSets.includes(char.set)) return false;
     if (!activeArchs.includes(char.arch)) return false;
+    
+    // If it's an alternate character, strictly check the allowAlt variable
     if (char.isAlt && !allowAlt) return false;
-    if (!char.isAlt && !allowBase) return false;
+    
+    // Base characters are always included as long as their set/arch passed the checks above
     return true;
   });
 
@@ -747,6 +761,23 @@ document.querySelectorAll("button.toggle-all").forEach(btn => {
     cb.addEventListener("change", () => updateToggleLabelForGroup(btn));
   });
 });
+
+/* ---------------- Dependency Logic ----------------- */
+// KS Exclusive dependency for Alt Archetypes
+const wrKsCheckbox = document.getElementById("wr_ks");
+const altYesRadio = document.getElementById("alt_yes");
+const altNoRadio = document.getElementById("alt_no");
+
+wrKsCheckbox.addEventListener("change", () => {
+  if (!wrKsCheckbox.checked) {
+    altNoRadio.checked = true;
+    altYesRadio.disabled = true;
+  } else {
+    altYesRadio.disabled = false;
+  }
+});
+// Trigger once on load to ensure proper initial state
+wrKsCheckbox.dispatchEvent(new Event("change"));
 </script>
 
 </body>

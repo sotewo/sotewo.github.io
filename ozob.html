@@ -155,16 +155,6 @@ button.generate-btn:hover {
   border-radius: 6px;
 }
 
-/* Special styling for the small level icon */
-#gameGrid img.level-icon {
-  width: 1.5em; /* Locks the width to match the font sizing */
-  height: auto; /* Allows the height to naturally stretch or shrink */
-  border-radius: 0;
-  vertical-align: middle;
-  margin-right: 8px;
-  margin-bottom: 4px; /* Optical adjustment to center it with text */
-}
-
 .glitch-name {
   font-family: 'Doctor Glitch', sans-serif;
   font-style: normal;
@@ -184,28 +174,6 @@ button.generate-btn:hover {
   box-shadow: 0 0 10px #00000099;
   display: flex;
   gap: 30px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-#archetypesSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 200px;
-}
-
-#archetypesSection h3 {
-  color: #b0a06f;
-  margin: 0 0 15px 0;
-  font-size: 1.5em;
-  text-align: center;
-}
-
-#archetypeSymbols {
-  display: flex;
-  gap: 15px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -342,12 +310,6 @@ button.generate-btn:hover {
     max-width: 100%; 
     object-fit: contain; 
   }
-  
-  /* Maintain the level icon size relative to text on mobile */
-  #gameGrid img.level-icon {
-    width: 1.5em;
-    height: auto;
-  }
 }
 
 @media (max-width: 420px) { 
@@ -370,7 +332,7 @@ button.generate-btn:hover {
     <ol style="margin: 5px 0 0 15px; padding: 0;">
       <li>This generator is limited to the components currently owned by myself;</li>
       <li>Since the game is not fully released, missing components have placeholder titles;</li>
-      <li>Image fetching will fail silently if the specific character/archetype asset is not yet uploaded.</li>
+      <li>Image fetching will fail silently if the specific character asset is not yet uploaded.</li>
     </ol>
 </div>
 
@@ -456,13 +418,6 @@ button.generate-btn:hover {
       <div id="episodeOutput"></div>
       <div id="originOutput"></div>
     </div>
-
-    <div class="info-container">
-      <div id="archetypesSection">
-        <h3>Archetypes:</h3>
-        <div id="archetypeSymbols"></div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -491,7 +446,7 @@ const rodiesData = [
   { name: "Glitch-chan", set: "KS", arch: "Tech-Expert", isAlt: false },
   { name: "Cricket", set: "RS", arch: "Tech-Expert", isAlt: false },
   { name: "Alt. California", set: "KS", arch: "Tech-Expert", isAlt: true }, 
-  { name: "Alt. Ximira Aisu", set: "KS", arch: "Tech-Expert", isAlt: true }, // Moved from Brawler
+  { name: "Alt. Ximira Aisu", set: "KS", arch: "Tech-Expert", isAlt: true }, 
 
   // Brawler
   { name: "Ximira Aisu", set: "CB", arch: "Brawler", isAlt: false },
@@ -504,7 +459,7 @@ const rodiesData = [
   { name: "Oleg Korolenko", set: "CB", arch: "Gunslinger", isAlt: false },
   { name: "Dr. Angus Silvana", set: "KS", arch: "Gunslinger", isAlt: false },
   { name: "James Rexus", set: "AV", arch: "Gunslinger", isAlt: false },
-  { name: "Alt. Mama Guzzo", set: "KS", arch: "Gunslinger", isAlt: true }, // Moved from Support
+  { name: "Alt. Mama Guzzo", set: "KS", arch: "Gunslinger", isAlt: true }, 
 
   // Scavanger
   { name: "Dona", set: "KS", arch: "Scavanger", isAlt: false },
@@ -608,7 +563,7 @@ function buildPools() {
     return true;
   });
 
-  // Episodes Pool (Now passes the level through)
+  // Episodes Pool 
   const epSets = [];
   if (document.getElementById("ep_cb").checked) epSets.push("CB");
   if (document.getElementById("ep_ks").checked) epSets.push("KS");
@@ -642,7 +597,6 @@ function generate() {
 
   let selectedRodies = [];
   let currentPool = [...pools.characters];
-  let drawnArchetypesOrder = [];
 
   for (let i = 0; i < numPlayers; i++) {
     if (currentPool.length === 0) {
@@ -652,7 +606,6 @@ function generate() {
 
     const picked = pickRandomFrom(currentPool);
     selectedRodies.push(picked);
-    drawnArchetypesOrder.push(picked.arch);
 
     const pickedConflictID = getConflictID(picked.name);
     
@@ -668,7 +621,6 @@ function generate() {
   document.getElementById("playerResults").innerHTML = "";
   document.getElementById("episodeOutput").innerHTML = "";
   document.getElementById("originOutput").innerHTML = "";
-  document.getElementById("archetypeSymbols").innerHTML = "";
 
   // Render Rodies
   selectedRodies.forEach(char => {
@@ -682,7 +634,8 @@ function generate() {
 
     const fixedName = fixGlitchKerning(char.name);
     const span = document.createElement("span"); 
-    span.innerHTML = `War Rodie:<br><span class="glitch-name">${fixedName}</span>`;
+    // Injected archetype text below the character name with requested styling
+    span.innerHTML = `War Rodie:<br><span class="glitch-name">${fixedName}</span><br><span style="color: #b0a06f; font-size: 0.65em;">${char.arch}</span>`;
     
     div.appendChild(img); 
     div.appendChild(span); 
@@ -704,9 +657,8 @@ function generate() {
     const epDiv = document.createElement("div"); epDiv.className="player-output";
     const epSpan = document.createElement("span"); 
     
-    // Injects the level icon based on the rolled episode's level property
-    const iconHTML = `<img src="assets/ozob/level${epChoice.level}.png" class="level-icon" alt="Level ${epChoice.level}" onerror="this.style.display='none'">`;
-    epSpan.innerHTML = `Episode:<br><span class="glitch-name">${iconHTML}${fixedEpName}</span>`;
+    // Level icon completely removed, just showing the episode name now
+    epSpan.innerHTML = `Episode:<br><span class="glitch-name">${fixedEpName}</span>`;
     epDiv.appendChild(epSpan);
 
     const fixedOrigin = fixGlitchKerning(originMap[epChoice.origin]);
@@ -718,39 +670,6 @@ function generate() {
     document.getElementById("episodeOutput").appendChild(epDiv);
     document.getElementById("originOutput").appendChild(orDiv);
   }
-
-  // Render Archetype Symbols with explicitly visible Player labels
-  drawnArchetypesOrder.forEach((arch, index) => {
-      // Create a wrapper column for the label and the image
-      const wrapper = document.createElement("div");
-      wrapper.style.display = "flex";
-      wrapper.style.flexDirection = "column";
-      wrapper.style.alignItems = "center";
-      wrapper.style.gap = "8px";
-
-      // Create the P1, P2... indicator
-      const label = document.createElement("span");
-      label.textContent = `P${index + 1}`;
-      label.style.color = "#b0a06f";
-      label.style.fontWeight = "bold";
-      label.style.fontSize = "1em";
-
-      const archImg = document.createElement("img");
-      archImg.src = "assets/ozob/" + sanitizeFileName(arch) + ".png";
-      archImg.alt = arch;
-      archImg.title = arch;
-      archImg.onerror = () => { 
-          archImg.style.display="none"; 
-          const altText = document.createElement("span");
-          altText.textContent = `[${arch}] `;
-          altText.style.color = "#b0a06f";
-          wrapper.appendChild(altText);
-      };
-      
-      wrapper.appendChild(label);
-      wrapper.appendChild(archImg);
-      document.getElementById("archetypeSymbols").appendChild(wrapper);
-  });
 }
 
 /* ---------------- toggle buttons behavior ----------------- */

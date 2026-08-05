@@ -478,7 +478,6 @@ const rodiesData = [
   { name: "Mama Guzzo", set: "CB", arch: "Support", isAlt: false },
   { name: "Johnny Molotov", set: "KS", arch: "Support", isAlt: false },
   { name: "Sila & Brico", set: "RS", arch: "Support", isAlt: false },
-  { name: "Alt. Mama Guzzo", set: "KS", arch: "Support", isAlt: true }, 
 
   // Hunter
   { name: "Vivika", set: "CB", arch: "Hunter", isAlt: false },
@@ -492,6 +491,7 @@ const rodiesData = [
   { name: "Glitch-chan", set: "KS", arch: "Tech-Expert", isAlt: false },
   { name: "Cricket", set: "RS", arch: "Tech-Expert", isAlt: false },
   { name: "Alt. California", set: "KS", arch: "Tech-Expert", isAlt: true }, 
+  { name: "Alt. Ximira Aisu", set: "KS", arch: "Tech-Expert", isAlt: true }, // Moved from Brawler
 
   // Brawler
   { name: "Ximira Aisu", set: "CB", arch: "Brawler", isAlt: false },
@@ -499,12 +499,12 @@ const rodiesData = [
   { name: "Sir Hudson", set: "KS", arch: "Brawler", isAlt: false },
   { name: "Valter", set: "RS", arch: "Brawler", isAlt: false },
   { name: "Alt. OZOB", set: "KS", arch: "Brawler", isAlt: true },
-  { name: "Alt. Ximira Aisu", set: "KS", arch: "Brawler", isAlt: true }, 
 
   // Gunslinger
   { name: "Oleg Korolenko", set: "CB", arch: "Gunslinger", isAlt: false },
   { name: "Dr. Angus Silvana", set: "KS", arch: "Gunslinger", isAlt: false },
   { name: "James Rexus", set: "AV", arch: "Gunslinger", isAlt: false },
+  { name: "Alt. Mama Guzzo", set: "KS", arch: "Gunslinger", isAlt: true }, // Moved from Support
 
   // Scavanger
   { name: "Dona", set: "KS", arch: "Scavanger", isAlt: false },
@@ -719,8 +719,22 @@ function generate() {
     document.getElementById("originOutput").appendChild(orDiv);
   }
 
-  // Render Archetype Symbols
-  drawnArchetypesOrder.forEach(arch => {
+  // Render Archetype Symbols with explicitly visible Player labels
+  drawnArchetypesOrder.forEach((arch, index) => {
+      // Create a wrapper column for the label and the image
+      const wrapper = document.createElement("div");
+      wrapper.style.display = "flex";
+      wrapper.style.flexDirection = "column";
+      wrapper.style.alignItems = "center";
+      wrapper.style.gap = "8px";
+
+      // Create the P1, P2... indicator
+      const label = document.createElement("span");
+      label.textContent = `P${index + 1}`;
+      label.style.color = "#b0a06f";
+      label.style.fontWeight = "bold";
+      label.style.fontSize = "1em";
+
       const archImg = document.createElement("img");
       archImg.src = "assets/ozob/" + sanitizeFileName(arch) + ".png";
       archImg.alt = arch;
@@ -730,9 +744,12 @@ function generate() {
           const altText = document.createElement("span");
           altText.textContent = `[${arch}] `;
           altText.style.color = "#b0a06f";
-          document.getElementById("archetypeSymbols").appendChild(altText);
+          wrapper.appendChild(altText);
       };
-      document.getElementById("archetypeSymbols").appendChild(archImg);
+      
+      wrapper.appendChild(label);
+      wrapper.appendChild(archImg);
+      document.getElementById("archetypeSymbols").appendChild(wrapper);
   });
 }
 

@@ -138,11 +138,16 @@ button.generate-btn:hover {
   gap: 20px;
 }
 
+/* Text wrap safety feature applied here */
 .player-output, .relic-output, .disorder-output {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 1.5em;
+}
+.player-output span, .relic-output span, .disorder-output span {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #gameGrid img {
@@ -177,8 +182,18 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
   flex-wrap: wrap;
 }
 
-#monsterSection { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; }
-#monsterSection .player-output { display: flex; flex-direction: row; align-items: center; }
+/* Unified layout logic for Monsters AND the Story elements (Episode/Boss) */
+#storySection, #monsterSection { 
+  display: flex; 
+  gap: 30px; 
+  flex-wrap: wrap; 
+  align-items: flex-start; 
+}
+#storySection .player-output, #monsterSection .player-output { 
+  display: flex; 
+  flex-direction: row; 
+  align-items: center; 
+}
 
 /* Filter block (single-row-per-category horizontal checkboxes) */
 #filtersContainer {
@@ -277,7 +292,8 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 @media (max-width: 760px) {
   #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
   .group-checkbox { display:block; margin-bottom:6px; }
-  #playerResults { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+  /* grid-template-columns changed to strictly 1 column (1fr) on mobile to fix overflow */
+  #playerResults { grid-template-columns: 1fr; gap: 15px; } 
   #gameGrid img { width: 80px; height: 80px; }
 }
 @media (max-width: 420px) { #filtersTable td.labelCell { width: 120px; } }
@@ -412,11 +428,13 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 <div id="gameGrid">
   <div id="playerResults"></div>
   <div class="game-info-row">
+    
+    <!-- Unified Story Container -->
     <div class="info-container">
-      <div id="episodeSection"></div>
-      <div id="bossSection"></div>
+      <div id="storySection"></div>
     </div>
 
+    <!-- Monsters Container -->
     <div class="info-container">
       <div id="monsterSection"></div>
     </div>
@@ -601,7 +619,6 @@ function buildPoolsFromFilters() {
   const pools = { investigators: [], pathologies: [], bosses: [], episodes: [], relics: [], monsters: [] };
 
   // Investigators by season/extra
-  // S1: 0-10, S2: 10-20, S3: 20-30, S4: 30-36, Extra: 36
   if (document.getElementById("inv_s1").checked) pools.investigators.push(...investigatorsAll.slice(0,10));
   if (document.getElementById("inv_s2").checked) pools.investigators.push(...investigatorsAll.slice(10,20));
   if (document.getElementById("inv_s3").checked) pools.investigators.push(...investigatorsAll.slice(20,30));
@@ -632,7 +649,6 @@ function buildPoolsFromFilters() {
   });
 
   // Episodes by season
-  // S1: 0-6, S2: 6-12, S3: 12-18, S4: 18-24
   if (document.getElementById("ep_s1").checked) pools.episodes.push(...episodesAll.slice(0,6));
   if (document.getElementById("ep_s2").checked) pools.episodes.push(...episodesAll.slice(6,12));
   if (document.getElementById("ep_s3").checked) pools.episodes.push(...episodesAll.slice(12,18));
@@ -706,8 +722,7 @@ function generate() {
   // Passed validation -> perform generation
   document.getElementById("gameGrid").style.display = "flex";
   document.getElementById("playerResults").innerHTML = "";
-  document.getElementById("episodeSection").innerHTML = "";
-  document.getElementById("bossSection").innerHTML = "";
+  document.getElementById("storySection").innerHTML = ""; /* Now controls both episode and boss */
   document.getElementById("monsterSection").innerHTML = "";
 
   const includeRelics = pools.relics.length > 0;
@@ -756,14 +771,14 @@ function generate() {
   const epChoice = pickRandomFrom(pools.episodes);
   if (epChoice) {
     const epFile = sanitizeFileName(epChoice.split(" ")[0] || epChoice) + ".png";
-    document.getElementById("episodeSection").appendChild(createInfoItem("Episode", epChoice, epFile));
+    document.getElementById("storySection").appendChild(createInfoItem("Episode", epChoice, epFile));
   }
 
   // Boss
   const bossChoice = pickRandomFrom(pools.bosses);
   if (bossChoice) {
     const bossFile = sanitizeFileName(bossChoice) + ".png";
-    document.getElementById("bossSection").appendChild(createInfoItem("Elder One", bossChoice, bossFile));
+    document.getElementById("storySection").appendChild(createInfoItem("Elder One", bossChoice, bossFile));
   }
 
   // Monsters (optional) - up to two distinct
@@ -841,5 +856,3 @@ document.querySelectorAll("button.toggle-all").forEach(btn => {
 
 </body>
 </html>
-
-

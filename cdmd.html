@@ -230,7 +230,7 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
   color: #f0c080;
   font-weight: 700;
   vertical-align: middle;
-  white-space: nowrap;
+  white-space: nowrap; /* Forces one line on PC */
 }
 
 #filtersTable td.controlsCell {
@@ -290,13 +290,14 @@ em.bold-italic { font-style: italic; font-weight: bold; color: #e2d7a7; }
 
 /* small responsive tweaks preserved */
 @media (max-width: 760px) {
-  #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; }
+  /* white-space: normal added below to allow longer titles to wrap on mobile */
+  #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding:8px; white-space: normal; line-height: 1.2; }
   .group-checkbox { display:block; margin-bottom:6px; }
   /* grid-template-columns changed to strictly 1 column (1fr) on mobile to fix overflow */
   #playerResults { grid-template-columns: 1fr; gap: 15px; } 
   #gameGrid img { width: 80px; height: 80px; }
 }
-@media (max-width: 420px) { #filtersTable td.labelCell { width: 120px; } }
+@media (max-width: 420px) { #filtersTable td.labelCell { width: 100px; } }
 @media (max-width: 600px) {
   button { padding: 16px 32px; font-size: 1.3em; }
   select#numPlayers { font-size: 1.2em; padding: 6px 10px; }

@@ -164,6 +164,23 @@ button.generate-btn:hover {
   margin-top: 5px; 
 }
 
+/* New CSS for archetype alignment and sizing */
+.arch-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #b0a06f;
+  font-size: 0.65em;
+  margin-top: 4px;
+}
+
+.arch-icon {
+  height: 24px !important; /* Way smaller than 120px */
+  width: auto;
+  object-fit: contain;
+  border-radius: 0 !important;
+}
+
 .game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
 
 .info-container {
@@ -273,6 +290,7 @@ button.generate-btn:hover {
   transform: scale(0.96);
   opacity: 0.85;
 }
+
 @media (max-width: 760px) {
   /* Keep the filter layout tweaks */
   #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding: 8px; }
@@ -428,19 +446,19 @@ const rodiesData = [
   { name: "OZOB", set: "CB", arch: "Brute", isAlt: false },
   { name: "Mc Gorgor", set: "KS", arch: "Brute", isAlt: false },
   { name: "Steven T. Durden", set: "AV", arch: "Brute", isAlt: false },
+  { name: "Alt. Vivika", set: "KS", arch: "Brute", isAlt: true },
 
   // Support
   { name: "Mama Guzzo", set: "CB", arch: "Support", isAlt: false },
   { name: "Johnny Molotov", set: "KS", arch: "Support", isAlt: false },
   { name: "Sila & Brico", set: "RS", arch: "Support", isAlt: false },
-  { name: "Alt. California", set: "KS", arch: "Tech-Expert", isAlt: true }, 
+  { name: "Alt. California", set: "KS", arch: "Support", isAlt: true }, 
 
   // Hunter
   { name: "Vivika", set: "CB", arch: "Hunter", isAlt: false },
   { name: "Dante", set: "KS", arch: "Hunter", isAlt: false },
   { name: "Coral", set: "RS", arch: "Hunter", isAlt: false },
-  { name: "Alt. Oleg Korolenko", set: "KS", arch: "Hunter", isAlt: true },
-  { name: "Alt. Vivika", set: "KS", arch: "Hunter", isAlt: true }, 
+  { name: "Alt. Oleg Korolenko", set: "KS", arch: "Hunter", isAlt: true }, 
 
   // Tech-Expert
   { name: "California", set: "CB", arch: "Tech-Expert", isAlt: false },
@@ -633,9 +651,17 @@ function generate() {
     img.onerror = () => { img.style.display="none"; };
 
     const fixedName = fixGlitchKerning(char.name);
+    const archFilename = char.arch.toLowerCase(); // Ensures proper formatting like tech-expert.png
+
     const span = document.createElement("span"); 
-    // Injected archetype text below the character name with requested styling
-    span.innerHTML = `War Rodie:<br><span class="glitch-name">${fixedName}</span><br><span style="color: #b0a06f; font-size: 0.65em;">${char.arch}</span>`;
+    
+    // Injected archetype layout combining the image and text inline-flex wrapper
+    span.innerHTML = `War Rodie:<br>
+    <span class="glitch-name">${fixedName}</span><br>
+    <span class="arch-wrapper">
+      <img src="assets/ozob/${archFilename}.png" class="arch-icon" alt="${char.arch}" onerror="this.style.display='none'">
+      <span>${char.arch}</span>
+    </span>`;
     
     div.appendChild(img); 
     div.appendChild(span); 

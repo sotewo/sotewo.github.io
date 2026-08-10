@@ -125,14 +125,15 @@ button.generate-btn:hover {
 #gameGrid { display: none; margin-top: 30px; flex-direction: column; gap: 30px; }
 
 .player-box {
-  border: 2px solid #444;
+  border: 2px solid #444; /* Default border, overwritten by JS */
   padding: 15px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background-color: #1c1c1c;
-  box-shadow: 0 0 10px #00000099;
+  background-color: #1c1c1c; /* Default BG, overwritten by JS */
+  box-shadow: 0 0 10px #00000099; /* Default shadow, overwritten by JS */
+  transition: all 0.3s ease;
 }
 
 #playerResults {
@@ -169,13 +170,12 @@ button.generate-btn:hover {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #b0a06f;
   font-size: 0.65em;
   margin-top: 4px;
 }
 
 .arch-icon {
-  height: 32px !important; /* Way smaller than 120px */
+  height: 32px !important; 
   width: auto;
   object-fit: contain;
   border-radius: 0 !important;
@@ -440,6 +440,18 @@ button.generate-btn:hover {
 </div>
 
 <script>
+/* ----------------- Color Dictionary ----------------- */
+const archetypeColors = {
+  "Brawler": "#ffe036",
+  "Brute": "#ff2224",
+  "Droid": "#8ec1fc",
+  "Gunslinger": "#cc409b",
+  "Hunter": "#f88c3a",
+  "Scavenger": "#00e1bc",
+  "Support": "#00bc46",
+  "Tech-Expert": "#00b4e6"
+};
+
 /* ----------------- Data Arrays ----------------- */
 const rodiesData = [
   // Brute
@@ -645,6 +657,12 @@ function generate() {
     const box = document.createElement("div"); box.className="player-box";
     const div = document.createElement("div"); div.className="player-output";
     
+    // Apply dynamic color styling to the specific player box
+    const archColor = archetypeColors[char.arch] || "#444444"; 
+    box.style.borderColor = archColor;
+    box.style.boxShadow = `0 0 15px ${archColor}4D`; // 30% opacity glow of the archetype color
+    box.style.backgroundColor = `${archColor}1A`; // 10% opacity tint for the background
+
     const img = document.createElement("img"); 
     img.src = "assets/ozob/" + sanitizeFileName(char.name) + ".png"; 
     img.alt = char.name;
@@ -656,9 +674,10 @@ function generate() {
     const span = document.createElement("span"); 
     
     // Injected archetype layout combining the image and text inline-flex wrapper
+    // Now applies the specific archetype color to the text label
     span.innerHTML = `War Rodie:<br>
     <span class="glitch-name">${fixedName}</span><br>
-    <span class="arch-wrapper">
+    <span class="arch-wrapper" style="color: ${archColor};">
       <img src="assets/ozob/${archFilename}.png" class="arch-icon" alt="${char.arch}" onerror="this.style.display='none'">
       <span>${char.arch}</span>
     </span>`;

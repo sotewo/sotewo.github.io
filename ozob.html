@@ -183,18 +183,6 @@ button.generate-btn:hover {
 
 .game-info-row { display: flex; justify-content: flex-start; gap: 40px; flex-wrap: wrap; }
 
-.info-container {
-  border: 2px solid #444;
-  padding: 15px;
-  border-radius: 12px;
-  background-color: #1c1c1c;
-  box-shadow: 0 0 10px #00000099;
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
 /* Filter block */
 #filtersContainer {
   max-width: 1200px;
@@ -307,12 +295,6 @@ button.generate-btn:hover {
     flex-direction: column; 
     gap: 20px; 
   }
-  .info-container { 
-    flex-direction: column; 
-    align-items: center; 
-    text-align: center; 
-    gap: 15px;
-  }
 
   /* Drop font size and stack the image ON TOP of the text for narrow screens */
   .player-output { 
@@ -411,7 +393,7 @@ button.generate-btn:hover {
       </tr>
 
       <tr>
-        <td class="labelCell">Episodes (Sets)</td>
+        <td class="labelCell">Stages (Sets)</td>
         <td class="controlsCell">
           <span class="group-checkbox"><input type="checkbox" id="ep_cb" data-group="episodes" checked><label for="ep_cb">Core Box</label></span>
           <span class="group-checkbox"><input type="checkbox" id="ep_ks" data-group="episodes" checked><label for="ep_ks">KS Exclusive</label></span>
@@ -431,12 +413,7 @@ button.generate-btn:hover {
 
 <div id="gameGrid">
   <div id="playerResults"></div>
-  <div class="game-info-row">
-    <div class="info-container">
-      <div id="episodeOutput"></div>
-      <div id="originOutput"></div>
-    </div>
-  </div>
+  <div id="stageResults" class="game-info-row"></div>
 </div>
 
 <script>
@@ -622,7 +599,7 @@ function generate() {
     return;
   }
   if (pools.episodes.length === 0) {
-    alert("Please select at least one Episode pool.");
+    alert("Please select at least one Stage pool.");
     return;
   }
 
@@ -650,8 +627,7 @@ function generate() {
   // Visual Cleanup
   document.getElementById("gameGrid").style.display = "flex";
   document.getElementById("playerResults").innerHTML = "";
-  document.getElementById("episodeOutput").innerHTML = "";
-  document.getElementById("originOutput").innerHTML = "";
+  document.getElementById("stageResults").innerHTML = "";
 
   // Render Rodies
   selectedRodies.forEach(char => {
@@ -689,7 +665,7 @@ function generate() {
     document.getElementById("playerResults").appendChild(box);
   });
 
-  // Render Episode & Origin
+  // Render Stage & Origin
   const epChoice = pickRandomFrom(pools.episodes);
   if (epChoice) {
     const originMap = {
@@ -699,8 +675,21 @@ function generate() {
         "RS": "Residiuum"
     };
 
+    // Create the main box for the stage, mimicking the player box UI
+    const stageBox = document.createElement("div"); 
+    stageBox.className = "player-box";
+    
+    // Applying white color scheme logic to the Stage box
+    const stageColor = "#ffffff";
+    stageBox.style.borderColor = stageColor;
+    stageBox.style.boxShadow = `0 0 15px ${stageColor}4D`; 
+    stageBox.style.backgroundColor = `${stageColor}1A`;
+
+    const stageDiv = document.createElement("div"); 
+    stageDiv.className = "player-output";
+
     const fixedEpName = fixGlitchKerning(epChoice.name);
-    const epDiv = document.createElement("div"); epDiv.className="player-output";
+    const fixedOrigin = fixGlitchKerning(originMap[epChoice.origin]);
     
     // Render the unique episode image utilizing its ID
     if (epChoice.id) {
@@ -708,23 +697,23 @@ function generate() {
       epImg.src = `assets/ozob/${epChoice.id}.png`;
       epImg.alt = epChoice.name;
       epImg.onerror = () => { epImg.style.display = "none"; };
-      epDiv.appendChild(epImg);
+      stageDiv.appendChild(epImg);
     }
 
-    const epSpan = document.createElement("span"); 
+    const stageSpan = document.createElement("span"); 
     
-    // Level icon completely removed, just showing the episode name now
-    epSpan.innerHTML = `Episode:<br><span class="glitch-name">${fixedEpName}</span>`;
-    epDiv.appendChild(epSpan);
+    // Generating the layout matching War Rodies with Stage wording, level icons, and Origin text
+    stageSpan.innerHTML = `Stage:<br>
+    <span class="glitch-name">${fixedEpName}</span><br>
+    <span class="arch-wrapper" style="color: ${stageColor};">
+      <img src="assets/ozob/level${epChoice.level}.png" class="arch-icon" alt="Level ${epChoice.level}" onerror="this.style.display='none'">
+      <span>${fixedOrigin}</span>
+    </span>`;
+    
+    stageDiv.appendChild(stageSpan);
+    stageBox.appendChild(stageDiv);
 
-    const fixedOrigin = fixGlitchKerning(originMap[epChoice.origin]);
-    const orDiv = document.createElement("div"); orDiv.className="player-output";
-    const orSpan = document.createElement("span"); 
-    orSpan.innerHTML = `Origin:<br><span class="glitch-name">${fixedOrigin}</span>`;
-    orDiv.appendChild(orSpan);
-
-    document.getElementById("episodeOutput").appendChild(epDiv);
-    document.getElementById("originOutput").appendChild(orDiv);
+    document.getElementById("stageResults").appendChild(stageBox);
   }
 }
 

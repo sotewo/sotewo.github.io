@@ -501,36 +501,36 @@ const rodiesData = [
   { name: "NDR Droid", set: "AV", arch: "Droid", isAlt: false }
 ];
 
-/* Re-structured object layout to handle levels */
+/* Re-structured object layout to handle levels & strict asset ID */
 const episodesData = {
   "CB": [
-    { name: "Times Square", level: 1 },
-    { name: "Stage 2", level: 2 },
-    { name: "Stage 3", level: 3 },
-    { name: "Stage 4", level: 1 },
-    { name: "Stage 5", level: 2 },
-    { name: "Stage 6", level: 3 },
-    { name: "Stage 7", level: 1 },
-    { name: "Stage 8", level: 2 },
-    { name: "Stage 9", level: 3 },
-    { name: "Stage 10", level: 4 }
+    { name: "Times Square", level: 1, id: "s1_cb" },
+    { name: "Stage 2", level: 2, id: "s2_cb" },
+    { name: "Stage 3", level: 3, id: "s3_cb" },
+    { name: "Stage 4", level: 1, id: "s4_cb" },
+    { name: "Stage 5", level: 2, id: "s5_cb" },
+    { name: "Stage 6", level: 3, id: "s6_cb" },
+    { name: "Stage 7", level: 1, id: "s7_cb" },
+    { name: "Stage 8", level: 2, id: "s8_cb" },
+    { name: "Stage 9", level: 3, id: "s9_cb" },
+    { name: "Stage 10", level: 4, id: "s10_cb" }
   ],
   "KS": [
-    { name: "The Great Heist", level: 1 },
-    { name: "Passenger From the Future", level: 2 },
-    { name: "Highway to Hell", level: 3 }
+    { name: "The Great Heist", level: 1, id: "s1_ks" },
+    { name: "Passenger From the Future", level: 2, id: "s2_ks" },
+    { name: "Highway to Hell", level: 3, id: "s3_ks" }
   ],
   "AV": [
-    { name: "Emergency Landing", level: 1 },
-    { name: "Stage 2", level: 2 },
-    { name: "Stage 3", level: 3 },
-    { name: "Stage 4", level: 4 }
+    { name: "Emergency Landing", level: 1, id: "s1_av" },
+    { name: "Stage 2", level: 2, id: "s2_av" },
+    { name: "Stage 3", level: 3, id: "s3_av" },
+    { name: "Stage 4", level: 4, id: "s4_av" }
   ],
   "RS": [
-    { name: "Stage 1", level: 1 },
-    { name: "Stage 2", level: 2 },
-    { name: "Stage 3", level: 3 },
-    { name: "Stage 4", level: 4 }
+    { name: "Stage 1", level: 1, id: "s1_rs" },
+    { name: "Stage 2", level: 2, id: "s2_rs" },
+    { name: "Stage 3", level: 3, id: "s3_rs" },
+    { name: "Stage 4", level: 4, id: "s4_rs" }
   ]
 };
 
@@ -604,7 +604,8 @@ function buildPools() {
   epSets.forEach(set => {
     if(episodesData[set]) {
       episodesData[set].forEach(ep => {
-        epPool.push({ name: ep.name, level: ep.level, origin: set });
+        // Now carrying the explicit ID from the data block
+        epPool.push({ name: ep.name, level: ep.level, origin: set, id: ep.id });
       });
     }
   });
@@ -700,6 +701,16 @@ function generate() {
 
     const fixedEpName = fixGlitchKerning(epChoice.name);
     const epDiv = document.createElement("div"); epDiv.className="player-output";
+    
+    // Render the unique episode image utilizing its ID
+    if (epChoice.id) {
+      const epImg = document.createElement("img");
+      epImg.src = `assets/ozob/${epChoice.id}.png`;
+      epImg.alt = epChoice.name;
+      epImg.onerror = () => { epImg.style.display = "none"; };
+      epDiv.appendChild(epImg);
+    }
+
     const epSpan = document.createElement("span"); 
     
     // Level icon completely removed, just showing the episode name now

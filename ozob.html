@@ -279,6 +279,18 @@ button.generate-btn:hover {
   opacity: 0.85;
 }
 
+.stage-box-layout {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap: 30px;
+}
+
+.boss-output {
+  border-left: 1px dashed #444;
+  padding-left: 30px;
+}
+  
 @media (max-width: 760px) {
   /* Keep the filter layout tweaks */
   #filtersTable td.labelCell { width: 130px; font-size: 0.95em; padding: 8px; }
@@ -304,6 +316,19 @@ button.generate-btn:hover {
     gap: 10px;
   }
 
+  .stage-box-layout {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .boss-output {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px dashed #444;
+    padding-top: 15px;
+    width: 100%;
+  }
+  
   /* Ensure images don't break their boundaries */
   #gameGrid img { 
     height: 100px; 
@@ -482,8 +507,8 @@ const rodiesData = [
 const episodesData = {
   "CB": [
     { name: "Times Square", level: 1, id: "s1_cb" },
-    { name: "Church of Salvation", level: 2, id: "s2_cb" },
-    { name: "Stage 3", level: 3, id: "s3_cb" },
+    { name: "Salvation Cult", level: 2, id: "s2_cb" },
+    { name: "Alien Slaughterhouse", level: 3, id: "s3_cb" },
     { name: "Stage 4", level: 1, id: "s4_cb" },
     { name: "Stage 5", level: 2, id: "s5_cb" },
     { name: "Stage 6", level: 3, id: "s6_cb" },
@@ -509,6 +534,32 @@ const episodesData = {
     { name: "Stage 3", level: 3, id: "s3_rs" },
     { name: "Stage 4", level: 4, id: "s4_rs" }
   ]
+};
+
+/* ----------------- Boss Mapping ----------------- */
+// Map stage IDs to boss names.
+// Easily include or update names here as soon as you have them.
+const bossMapping = {
+  // Core Box (CB)
+  "s1_cb": "Regulator",
+  "s2_cb": "Indoctrinator",
+  "s3_cb": "Chernobyl",
+  "s4_cb": "XBS",
+  // e.g., "s5_cb": "Laffy & L.4.U.G.H.T.3.R.", 
+
+  // Asteroid Vegas (AV)
+  "s1_av": "Aeroskolex",
+  "s2_av": "All-in Bill",
+  "s3_av": "Maripox",
+  // e.g., "s4_av": "Neuroraptor",
+
+  // Residiuum (RS)
+  "s1_rs": "Big Owl",
+  "s2_rs": "Thing",
+  "s3_rs": "Kraken",
+
+  // KS Exclusive (KS)
+  // "s1_ks": "Unknown Boss Name",
 };
 
 /* ----------------- Utility functions ----------------- */
@@ -677,7 +728,7 @@ function generate() {
 
     // Create the main box for the stage, mimicking the player box UI
     const stageBox = document.createElement("div"); 
-    stageBox.className = "player-box";
+    stageBox.className = "player-box stage-box-layout";
     
     // Applying white color scheme logic to the Stage box
     const stageColor = "#ffffff";
@@ -685,6 +736,7 @@ function generate() {
     stageBox.style.boxShadow = `0 0 15px ${stageColor}4D`; 
     stageBox.style.backgroundColor = `${stageColor}1A`;
 
+    // 1. Stage Info Container
     const stageDiv = document.createElement("div"); 
     stageDiv.className = "player-output";
 
@@ -713,6 +765,28 @@ function generate() {
     stageDiv.appendChild(stageSpan);
     stageBox.appendChild(stageDiv);
 
+    // 2. Boss Info Container
+    // Check mapping. If unmapped, default to 'Unknown Boss'
+    const bossName = bossMapping[epChoice.id] || "Unknown Boss";
+    
+    const bossDiv = document.createElement("div");
+    bossDiv.className = "player-output boss-output";
+
+    const bossImg = document.createElement("img");
+    bossImg.src = "assets/ozob/" + sanitizeFileName(bossName) + ".png";
+    bossImg.alt = bossName;
+    bossImg.onerror = () => { bossImg.style.display = "none"; };
+
+    const fixedBossName = fixGlitchKerning(bossName);
+    const bossSpan = document.createElement("span");
+    bossSpan.innerHTML = `Boss:<br>
+    <span class="glitch-name">${fixedBossName}</span>`;
+
+    bossDiv.appendChild(bossImg);
+    bossDiv.appendChild(bossSpan);
+    stageBox.appendChild(bossDiv);
+
+    // Finally append the combined box to the results
     document.getElementById("stageResults").appendChild(stageBox);
   }
 }
